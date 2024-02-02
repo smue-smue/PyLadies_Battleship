@@ -12,9 +12,21 @@ grid = [[" ","A","B","C","D","E","F","G","H","I","J"],
         ["9",".",".",".",".",".",".",".",".",".","."],
         ]
 
-for x in grid:
-    for y in x:
-        print(f"{y} ", end="")
-    print()
+choice = "A0"
+coordinates_x = {'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8, 'I': 9, 'J': 10}
+coordinates_y = {'0': 1, '1': 2, '2': 3, '3': 4, '4': 5, '5': 6, '6': 7, '7': 8, '8': 9, '9': 10}
 
 
+def draw_grid(grid, coordinates_x, coordinates_y, choice):
+    coord_1 = coordinates_x[choice[0]]
+    coord_2 = coordinates_y[choice[1]]
+    grid[coord_1][coord_2] = "X"
+
+    for x in grid:
+        for y in x:
+            print(f"{y} ", end="")
+        print()
+    
+    return grid
+
+draw_grid(grid, coordinates_x, coordinates_y, choice)
