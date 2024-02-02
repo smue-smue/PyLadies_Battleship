@@ -35,7 +35,7 @@ def print_grid(grid):
     print()
     for x in grid:
         for y in x:
-            print(f"{y} ", end="")
+            print(f"{y:<2} ", end="")
         print()
     print()
 
