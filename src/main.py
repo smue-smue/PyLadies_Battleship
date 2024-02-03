@@ -4,18 +4,39 @@ import grid
 from random import randrange
 
 #### TEMPORARY PLACE ####
+def ship_destroyer(coordinate_1, coordinate_2):
+    return(coordinate_1, coordinate_2)
+
+
 def player_ships():
     '''This function asks the player where to place their ships.'''
-    choice = input("Please enter the coordinates of your ship: ")
-    return choice
 
-def position_ships(create_grid, coordinates_x, coordinates_y, choice):
-    '''This function places the players ships on the grid.'''
-    coord_1 = coordinates_x[choice[0]]
-    coord_2 = coordinates_y[choice[1]]
-    create_grid[coord_2][coord_1] = "X"
-    updated_grid = create_grid
-    return updated_grid
+    fleet = {
+            2: {"1st destroyer": [], "2nd destroyer": []},
+            3: {"Cruiser": []},
+            4: {"Battleship": []},
+            5: {"Aircraft Carrier": []}
+            }
+ 
+    while True:
+        for shipsize in fleet.keys():
+                for shiptype in fleet[shipsize].keys():
+                    for coordinate in range(shipsize):
+                        coordinate = input(f"Please enter a coordinate of your {shiptype} (total size: {shipsize} squares). ")
+                        fleet[shipsize][shiptype].append(coordinate)
+                        # Hier sicherstellen, dass c1 bei c2 etc. anschließt
+                # print grid for overview after each ship
+        print(fleet)
+        return fleet
+
+
+# def position_ships(create_grid, coordinates_x, coordinates_y, choice): # needs to be redone!
+#     '''This function places the players ships on the grid.'''
+#     coord_1 = coordinates_x[choice[0]]
+#     coord_2 = coordinates_y[choice[1]]
+#     create_grid[coord_2][coord_1] = "X"
+#     updated_grid = create_grid
+#     return updated_grid
 
 #################################
 
@@ -41,6 +62,6 @@ grid.print_grid(create_grid)
 # Game logic
 
 choice = player_ships()
-updated_grid = position_ships(create_grid, grid.coordinates_x, grid.coordinates_y, choice)
+#updated_grid = position_ships(create_grid, grid.coordinates_x, grid.coordinates_y, choice)
 
-grid.print_grid(updated_grid)
+#grid.print_grid(updated_grid)
