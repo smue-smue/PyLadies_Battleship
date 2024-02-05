@@ -15,7 +15,7 @@ class Grid:
             '16': 16, '17': 17, '18': 18, '19': 19, '20': 20
             }
 
-        # Initialize Grid ## Original Alexandra, Adapt Sandra
+    # Initialize Grid ## Original Alexandra, Adapt Sandra
 
     def initialize_grid(self, size=10):
         '''
@@ -25,15 +25,13 @@ class Grid:
         '''
         grid = []
         for _ in range(size + 1): 
-            row = [] 
-            for _ in range(size + 1):
-                row.append('.')  
+            row = ['.'] * (size + 1) 
             grid.append(row) 
         
         # Fill in column headers
         column_labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[:size]
-        for column, label in enumerate(column_labels):
-            grid[0][column + 1] = label
+        for column, label in enumerate(column_labels, start=1):
+            grid[0][column] = label
 
         # Fill in row headers
         for row in range(1, size + 1):
@@ -42,14 +40,12 @@ class Grid:
         return grid
 
     # print grid ## Original Sandra, Adapt Alexandra
-    def print_grid(self, grid):
+    def print_grid(self):
         '''
         This method prints the grid in its current state.
         '''
         print()
-        for row in grid:
-            for cell in row:
-                print(f"{cell:<2} ", end="")
-            print()
+        for row in self.grid:
+            print(' '.join(f"{cell:<2}" for cell in row))
         print()
 
