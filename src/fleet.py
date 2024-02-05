@@ -1,7 +1,25 @@
 from ship import Destroyer, Cruiser, Battleship, AircraftCarrier
 
 class Fleet:
-    max_size = 16 # Class attribute
+    '''
+    A class to represent a fleet of ships.
+
+    Class Attributes:
+        max_size (int): Class attribute to define the maximum size of the fleet. Default is 16.
+
+    Attributes:
+        name (str): Name of the fleet.
+        ships (dict): Dictionary to store ship instances, with ship names as keys and
+                      dictionaries containing 'size' and 'coordinates' as values.
+
+    Methods:
+        __init__(self, name, *ships): Constructor for Fleet class.
+        add_ship(self, ship): Adds a ship instance to the fleet.
+        get_fleet_size(self): Returns the current size of the fleet.
+    '''
+
+    max_size = 16
+
     def __init__(self, name, *ships): # '*ships' stands for a variable number of ship instances
         self.name = name
         self.ships = {}
