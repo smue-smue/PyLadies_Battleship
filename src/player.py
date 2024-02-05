@@ -1,6 +1,6 @@
 # Player Setup
 
-
+from fleet import *
 
 class Player():
     '''
@@ -9,6 +9,7 @@ class Player():
     def __init__(self, name=None):
          self.name = name
 
+    @staticmethod
     def prompt_for_player_name():
         '''
         Static method to prompt the user for their name.
@@ -21,26 +22,23 @@ class Player():
 
         return input("Ready, Player? What's your name?\n")
 
-    def player_ships():
+    @staticmethod
+    def player_placing_ships(fleet_player):
         '''This function asks the player where to place their ships.'''
 
-        fleet = {
-                2: {"1st destroyer": [], "2nd destroyer": []},
-                3: {"Cruiser": []},
-                4: {"Battleship": []},
-                5: {"Aircraft Carrier": []}
-                }
-    
+# The Player's Fleet: {'Destroyer 1': {'size': 2, 'coordinates': []}, 'Destroyer 2': {'size': 2, 'coordinates': []}, 'Cruiser 1': {'size': 3, 'coordinates': []}, 'Battleship 1': {'size': 4, 'coordinates': []}, 'Aircraft Carrier 1': {'size': 5, 'coordinates': []}}
+# The Computer's Fleet: {'Destroyer 1': {'size': 2, 'coordinates': []}, 'Destroyer 2': {'size': 2, 'coordinates': []}, 'Cruiser 1': {'size': 3, 'coordinates': []}, 'Battleship 1': {'size': 4, 'coordinates': []}, 'Aircraft Carrier 1': {'size': 5, 'coordinates': []}}
+
+
         while True:
-            for shipsize in fleet.keys():
-                    for shiptype in fleet[shipsize].keys():
-                        for coordinate in range(shipsize):
-                            coordinate = input(f"Please enter a coordinate of your {shiptype} (total size: {shipsize} squares). ")
-                            fleet[shipsize][shiptype].append(coordinate)
+            for shipname in fleet_player.keys():
+                    for key, values in fleet_player[shipname].items():
+                            coordinate = input(f"Please enter a coordinate of your {shipname} (total size: {values} squares). ")
+                            fleet_player[shipname][key[1]].append(coordinate)
                             # Hier sicherstellen, dass c1 bei c2 etc. anschließt
                     # print grid for overview after each ship
-            print(fleet)
-            return fleet
+            print(fleet_player)
+            #return fleet
 
 
     # def position_ships(create_grid, coordinates_x, coordinates_y, choice): # needs to be redone!
@@ -53,6 +51,5 @@ class Player():
 
     #################################
 
-player_name = Player.prompt_for_player_name() # Calls the static method on the class
-player = Player(player_name) # Creates a new Player instance with the provided name
+
 
