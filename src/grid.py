@@ -1,5 +1,6 @@
 class Grid:
-    def __init__(self):
+    def __init__(self, size=10):
+        self.grid = self.initialize_grid(size)
     
         self.coordinates_x = {
             'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5,
