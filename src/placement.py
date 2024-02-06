@@ -1,7 +1,7 @@
-from main import board_player
-
-def player_placing_ships(fleet_player):
-    '''This function asks the player where to place their ships.'''
+def player_placing_ships(fleet_player, board_player):
+    '''
+    This function asks the player where to place their ships.
+    '''
 
     while True:
         all_ships_processed = True # Assume all ships are processed until proven otherwise
@@ -20,4 +20,3 @@ def player_placing_ships(fleet_player):
             break # Exit the while loop if all ships have been processed
 
     print(fleet_player)
-    # return fleet_player
