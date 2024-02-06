@@ -29,6 +29,7 @@ aircraft_carrier_1_pc = AircraftCarrier("Aircraft Carrier 1")
 # Creating Fleet instances and adding the ship instances to it
 
 fleet_player = Fleet("Fleet Player", destroyer_1_pl, destroyer_2_pl, cruiser_1_pl, battleship_1_pl, aircraft_carrier_1_pl)
+print(type(fleet_player))
 fleet_computer = Fleet("Fleet Computer", destroyer_1_pc, destroyer_2_pc, cruiser_1_pc, battleship_1_pc, aircraft_carrier_1_pc)
 
 # Coin Flip who starts:
@@ -49,8 +50,9 @@ board_player.print_grid()
 board_computer = Grid()
 board_computer.print_grid()
 
-
 # Game logic
+
+player.player_placing_ships(fleet_player.ships) # Parameter: dict ships of the instance fleet_player from the class Fleet
 
 #choice = player_ships() # old
 #updated_grid = position_ships(create_grid, grid.coordinates_x, grid.coordinates_y, choice)
