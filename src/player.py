@@ -1,6 +1,7 @@
 # Player Setup
 
 from fleet import *
+from grid import Grid
 
 class Player():
     '''
@@ -32,6 +33,7 @@ class Player():
                 if not fleet_player[shipname]['coordinates']: # Check if ship lacks coordinates
                     coordinate = input(f"Please enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares). ")
                     fleet_player[shipname]['coordinates'].append(coordinate)
+                    Grid.update_grid(fleet_player, coordinate)
                     all_ships_processed = False # A ship was processed, so not all were done
                     break # Break after processing each ship to check the condition again
 
@@ -41,17 +43,9 @@ class Player():
                 break # Exit the while loop if all ships have been processed
 
         print(fleet_player)
-            #return fleet
+        # return fleet_player
 
 
-
-    # def position_ships(create_grid, coordinates_x, coordinates_y, choice): # needs to be redone!
-    #     '''This function places the players ships on the grid.'''
-    #     coord_1 = coordinates_x[choice[0]]
-    #     coord_2 = coordinates_y[choice[1]]
-    #     create_grid[coord_2][coord_1] = "X"
-    #     updated_grid = create_grid
-    #     return updated_grid
 
     #################################
 
