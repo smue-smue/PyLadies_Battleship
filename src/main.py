@@ -5,7 +5,6 @@ from grid import Grid
 from ship import *
 from fleet import Fleet
 from player import Player
-from placement import player_placing_ships
 
 # Set up Player
 player_name = Player.prompt_for_player_name() # Calls the static method on the class
@@ -53,7 +52,7 @@ board_computer.print_grid()
 
 # Game logic
 
-player_placing_ships(fleet_player.ships, board_player) # Parameter: dict ships of the instance fleet_player from the class Fleet
+player.player_placing_ships(fleet_player.ships, board_player) # Parameter: dict ships of the instance fleet_player from the class Fleet
 
 #choice = player_ships() # old
 #updated_grid = position_ships(create_grid, grid.coordinates_x, grid.coordinates_y, choice)
