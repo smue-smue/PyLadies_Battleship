@@ -39,6 +39,29 @@ class Grid:
             grid[row][0] = str(row)
         
         return grid
+    
+    def update_grid(self, coordinates=None, direction=None):
+        '''
+        This method updates the grid after changes to it.
+        '''
+        if coordinates is None:
+            return ### We should insert a raise error here
+        
+        # Extract colum letter and row number from the coordinates
+        column_letter = coordinates[0]
+        row_number = coordinates[1:]
+
+        # Convert to 0-based grid indices
+        column_index = self.coordinates_x[column_letter] - 1  # Debug: Attribute Error!!!! 'dict' object has no attribute 'coordinates_x'
+        row_index = int(row_number) 
+
+        if row_index < 0 or row_index >= len(self.grid) or column_index < 0 or column_index >= len(self.grid[0]):
+            print("Error: Coordinates are out of the grid bounds.")
+            return
+        
+        # Update the grid cell
+
+        self.grid[row_index][column_index] = "X"
 
     # print grid ## Original Sandra, Adapt Alexandra
     def print_grid(self):
