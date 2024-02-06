@@ -2,6 +2,7 @@
 
 from fleet import *
 from grid import Grid
+from main import board_player
 
 class Player():
     '''
@@ -33,7 +34,8 @@ class Player():
                 if not fleet_player[shipname]['coordinates']: # Check if ship lacks coordinates
                     coordinate = input(f"Please enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares). ")
                     fleet_player[shipname]['coordinates'].append(coordinate)
-                    Grid.update_grid(fleet_player, coordinate)
+                    board_player.update_grid(coordinate)
+                    board_player.print_grid()
                     all_ships_processed = False # A ship was processed, so not all were done
                     break # Break after processing each ship to check the condition again
 
