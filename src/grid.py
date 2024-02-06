@@ -52,7 +52,7 @@ class Grid:
         row_number = coordinates[1:]
 
         # Convert to 0-based grid indices
-        column_index = self.coordinates_x[column_letter] - 1  # Debug: Attribute Error!!!! 'dict' object has no attribute 'coordinates_x'
+        column_index = self.coordinates_x[column_letter]
         row_index = int(row_number) 
 
         if row_index < 0 or row_index >= len(self.grid) or column_index < 0 or column_index >= len(self.grid[0]):
