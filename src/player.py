@@ -26,19 +26,23 @@ class Player():
     def player_placing_ships(fleet_player):
         '''This function asks the player where to place their ships.'''
 
-# The Player's Fleet: {'Destroyer 1': {'size': 2, 'coordinates': []}, 'Destroyer 2': {'size': 2, 'coordinates': []}, 'Cruiser 1': {'size': 3, 'coordinates': []}, 'Battleship 1': {'size': 4, 'coordinates': []}, 'Aircraft Carrier 1': {'size': 5, 'coordinates': []}}
-# The Computer's Fleet: {'Destroyer 1': {'size': 2, 'coordinates': []}, 'Destroyer 2': {'size': 2, 'coordinates': []}, 'Cruiser 1': {'size': 3, 'coordinates': []}, 'Battleship 1': {'size': 4, 'coordinates': []}, 'Aircraft Carrier 1': {'size': 5, 'coordinates': []}}
-
-
         while True:
+            all_ships_processed = True # Assume all ships are processed until proven otherwise
             for shipname in fleet_player.keys():
-                    for key, values in fleet_player[shipname].items():
-                            coordinate = input(f"Please enter a coordinate of your {shipname} (total size: {values} squares). ")
-                            fleet_player[shipname][key[1]].append(coordinate)
-                            # Hier sicherstellen, dass c1 bei c2 etc. anschließt
-                    # print grid for overview after each ship
-            print(fleet_player)
+                if not fleet_player[shipname]['coordinates']: # Check if ship lacks coordinates
+                    coordinate = input(f"Please enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares). ")
+                    fleet_player[shipname]['coordinates'].append(coordinate)
+                    all_ships_processed = False # A ship was processed, so not all were done
+                    break # Break after processing each ship to check the condition again
+
+                # Hier sicherstellen, dass c1 bei c2 etc. anschließt
+                # print grid for overview after each ship
+            if all_ships_processed:
+                break # Exit the while loop if all ships have been processed
+
+        print(fleet_player)
             #return fleet
+
 
 
     # def position_ships(create_grid, coordinates_x, coordinates_y, choice): # needs to be redone!
