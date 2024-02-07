@@ -42,7 +42,33 @@ class Grid:
         
         return grid
     
-    def update_grid_attacks(self, coordinates=None):
+    def _convert_coordinate_to_indices(self, coordinates):
+
+        # Extract colum letter and row number from the coordinates
+        column_letter = coordinates[0]
+        row_number = coordinates[1:]
+
+        # Convert to 0-based grid indices
+        column_index = self.coordinates_x[column_letter]
+        row_index = int(row_number)
+
+        return column_index, row_index
+    
+    def update_grid_fleet(self, coordinates, directions, length): # Input from player_placing_ships
+        '''
+        This method updates the grid after each placed ship by player and computer.
+        '''
+        if coordinates is None:
+            return # TODO: We should insert a raise error here
+        
+        column_index, row_index = self._convert_coordinate_to_indices(coordinates)
+        if row_index < 0 or row_index >= len(self.grid) or column_index < 0 or column_index >= len(self.grid[0]):
+            print("Error: Coordinates are out of the grid bounds.")
+            return
+        
+        
+    
+    def update_grid_attacks(self, coordinates=None): # TODO: redo for different kind of attacks (hits and misses)
         '''
         This method updates the grid after changes to it.
         '''
@@ -61,8 +87,7 @@ class Grid:
             print("Error: Coordinates are out of the grid bounds.")
             return
         
-        # Update the grid cell 
-                                # TODO: redo for different kind of attacks (hits and misses)
+        # Update the grid cell
 
         self.grid[row_index][column_index] = "O"
 
