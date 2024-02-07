@@ -18,8 +18,6 @@ class Grid:
             '16': 16, '17': 17, '18': 18, '19': 19, '20': 20
             }
 
-    # Initialize Grid ## Original Alexandra, Adapt Sandra
-
     def initialize_grid(self, size=10):
         '''
         This method creates an empty grid with headers for columns
@@ -42,11 +40,11 @@ class Grid:
         
         return grid
     
-    def _convert_coordinate_to_indices(self, coordinates):
+    def _convert_coordinate_to_indices(self, coordinate):
 
         # Extract colum letter and row number from the coordinates
-        column_letter = coordinates[0]
-        row_number = coordinates[1:]
+        column_letter = coordinate[0]
+        row_number = coordinate[1:]
 
         # Convert to 0-based grid indices
         column_index = self.coordinates_x[column_letter]
@@ -54,34 +52,50 @@ class Grid:
 
         return column_index, row_index
     
-    def update_grid_fleet(self, coordinates, directions, length): # Input from player_placing_ships
+    def update_grid_fleet(self, coordinate, direction, size): # Input from player_placing_ships
         '''
-        This method updates the grid after each placed ship by player and computer.
+        Updates the grid after each placed ship by player and computer.
+        Returns True if the ship was successfully placed, False otherwise.
         '''
-        if coordinates is None:
-            return # TODO: We should insert a raise error here
+
+        # TODO: checken, ob Feld frei ist = "."
+        # TODO: umliegende Felder sperren und zu "w" machen
         
-        column_index, row_index = self._convert_coordinate_to_indices(coordinates)
+        if coordinate is None:
+            print("Error: Coordinate cannot be None.")
+            return False
+        
+        column_index, row_index = self._convert_coordinate_to_indices(coordinate)
+
+        # Check if the starting coordinate is out of bounds.
         if row_index < 0 or row_index >= len(self.grid) or column_index < 0 or column_index >= len(self.grid[0]):
             print("Error: Coordinates are out of the grid bounds.")
-            return
+            return False
         
-        
-    
-    def update_grid_attacks(self, coordinates=None): # TODO: redo for different kind of attacks (hits and misses)
+        # Check if the ship placement exceed grid bounds
+        if direction == "V" and row_index + size > len(self.grid):
+            print("Error: Ship placement exceeds grid bounds vertically.") 
+            return False
+        if direction == "H" and column_index + size > len(self.grid[0]):
+            print("Error: Ship placement exceeds grid bounds horizontally.")
+            return False
+
+        for i in range(size):
+            if direction == "V":
+                self.grid[row_index + i][column_index] = "X" # Vertical placement
+            elif direction == "H":
+                self.grid[row_index][column_index + i] = "X" # Horizontal placement
+
+        return True
+     
+    def update_grid_attacks(self, coordinate=None): # TODO: redo for different kind of attacks (hits and misses)
         '''
         This method updates the grid after changes to it.
         '''
-        if coordinates is None:
-            return ### We should insert a raise error here
-        
-        # Extract colum letter and row number from the coordinates
-        column_letter = coordinates[0]
-        row_number = coordinates[1:]
-
-        # Convert to 0-based grid indices
-        column_index = self.coordinates_x[column_letter]
-        row_index = int(row_number) 
+        if coordinate is None:
+            return # TODO: We should insert a raise error here
+    
+        column_index, row_index = self._convert_coordinate_to_indices(coordinate)
 
         if row_index < 0 or row_index >= len(self.grid) or column_index < 0 or column_index >= len(self.grid[0]):
             print("Error: Coordinates are out of the grid bounds.")
@@ -91,7 +105,6 @@ class Grid:
 
         self.grid[row_index][column_index] = "O"
 
-    # print grid ## Original Sandra, Adapt Alexandra
     def print_grid(self):
         '''
         This method prints the grid in its current state.
