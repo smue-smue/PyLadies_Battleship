@@ -1,3 +1,5 @@
+# Grid setup - manages the state and rules of the game board.
+
 class Grid:
     def __init__(self, size=10):
         self.grid = self.initialize_grid(size)
@@ -40,7 +42,7 @@ class Grid:
         
         return grid
     
-    def update_grid(self, coordinates=None, direction=None):
+    def update_grid_attacks(self, coordinates=None):
         '''
         This method updates the grid after changes to it.
         '''
@@ -59,9 +61,10 @@ class Grid:
             print("Error: Coordinates are out of the grid bounds.")
             return
         
-        # Update the grid cell
+        # Update the grid cell 
+                                # TODO: redo for different kind of attacks (hits and misses)
 
-        self.grid[row_index][column_index] = "X"
+        self.grid[row_index][column_index] = "O"
 
     # print grid ## Original Sandra, Adapt Alexandra
     def print_grid(self):
