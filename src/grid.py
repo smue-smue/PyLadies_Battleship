@@ -52,20 +52,26 @@ class Grid:
 
         return column_index, row_index
     
-    def update_grid_fleet(self, coordinate, direction, size): # Input from player_placing_ships
+    def _convert_indices_to_coordinate(self, column_index, row_index):
+
+        column_letter = chr(64 + column_index) # 64 is 'A' in ASCII code
+        coordinate = column_letter + str(row_index) # coordinate string, e.g. A3
+
+        return coordinate
+
+    def update_grid_fleet(self, start_coordinate, direction, fleet, size): # Input from player_placing_ships
         '''
         Updates the grid after each placed ship by player and computer.
         Returns True if the ship was successfully placed, False otherwise.
         '''
 
-        # TODO: checken, ob Feld frei ist = "."
         # TODO: umliegende Felder sperren und zu "w" machen
         
-        if coordinate is None:
+        if start_coordinate is None:
             print("Error: Coordinate cannot be None.")
             return False
         
-        column_index, row_index = self._convert_coordinate_to_indices(coordinate)
+        column_index, row_index = self._convert_coordinate_to_indices(start_coordinate)
 
         # Check if the starting coordinate is out of bounds.
         if row_index < 0 or row_index >= len(self.grid) or column_index < 0 or column_index >= len(self.grid[0]):
@@ -79,15 +85,40 @@ class Grid:
         if direction == "H" and column_index + size > len(self.grid[0]):
             print("Error: Ship placement exceeds grid bounds horizontally.")
             return False
+        
+        # Check if the spaces are free
 
         for i in range(size):
             if direction == "V":
-                self.grid[row_index + i][column_index] = "X" # Vertical placement
+                if self.grid[row_index + i][column_index] != ".": # Vertical checking
+                    print("Error: Space is occupied by another ship.")
+                    return False
+            
             elif direction == "H":
-                self.grid[row_index][column_index + i] = "X" # Horizontal placement
+                if self.grid[row_index][column_index + i] != ".": # Horizontal checking
+                    print("Error: Space is occupied by another ship.")
+                    return False
 
+        # Place the ship
+
+        for i in range(size):
+
+            if direction == "V":
+                self.grid[row_index + i][column_index] = "X" # Vertical placement
+                coordinate = self._convert_indices_to_coordinate(row_index + 1, column_index)
+                fleet[shipname]['coordinates'].append(coordinate) # ================================= BLÖDSINN?
+
+            elif direction == "H":
+                self.grid[row_index][column_index + i] = "X" # Horizontal
+            
         return True
-     
+
+
+        
+
+
+
+
     def update_grid_attacks(self, coordinate=None): # TODO: redo for different kind of attacks (hits and misses)
         '''
         This method updates the grid after changes to it.
