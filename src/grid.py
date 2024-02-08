@@ -52,14 +52,14 @@ class Grid:
 
         return column_index, row_index
     
-    def _convert_indices_to_coordinate(self, column_index, row_index):
+    def _convert_indices_to_coordinate(self, column_index, row_index): # TODO: Fix conversion, not doing what it should
 
         column_letter = chr(64 + column_index) # 64 is 'A' in ASCII code
         coordinate = column_letter + str(row_index) # coordinate string, e.g. A3
 
         return coordinate
 
-    def update_grid_fleet(self, start_coordinate, direction, fleet, size): # Input from player_placing_ships
+    def update_grid_fleet(self, start_coordinate, direction, fleet, size, shipname): # Input from player_placing_ships
         '''
         Updates the grid after each placed ship by player and computer.
         Returns True if the ship was successfully placed, False otherwise.
@@ -105,18 +105,15 @@ class Grid:
 
             if direction == "V":
                 self.grid[row_index + i][column_index] = "X" # Vertical placement
-                coordinate = self._convert_indices_to_coordinate(row_index + 1, column_index)
-                fleet[shipname]['coordinates'].append(coordinate) # ================================= BLÖDSINN?
+                coordinate = self._convert_indices_to_coordinate(row_index + i, column_index) # TODO: Fix this A2 = B1, A3 = C1, something is funky!
+                fleet[shipname]['coordinates'].append(coordinate)
 
             elif direction == "H":
                 self.grid[row_index][column_index + i] = "X" # Horizontal
-            
+                coordinate = self._convert_indices_to_coordinate[row_index][column_index + i] # TODO: Also fix this, must be also funky!
+                fleet[shipname]['coordinates'].append(coordinate)
+
         return True
-
-
-        
-
-
 
 
     def update_grid_attacks(self, coordinate=None): # TODO: redo for different kind of attacks (hits and misses)

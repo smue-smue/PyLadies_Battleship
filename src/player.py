@@ -42,8 +42,8 @@ class Player():
                             print("Invalid input. Please enter 'H' for horizontal or 'V' for vertical. ")
                             direction = input("Please enter the direction (H for horizontal, V for vertical). ")
 
-                        if  board_player.update_grid_fleet(coordinate, direction, fleet_player[shipname]['size']):
-                            fleet_player[shipname]['coordinates'].append(coordinate)
+                        if board_player.update_grid_fleet(coordinate, direction, fleet_player, fleet_player[shipname]['size'], shipname): # update_grid_fleet returns True
+                            print(fleet_player)
                             board_player.print_grid()
                             break
                         else:
