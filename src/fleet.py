@@ -62,8 +62,3 @@ class Fleet:
         '''
 
         return len(self.ships)
-
-    #### TODO update ship instances or fleet instances, not sure what and how yet, when placing ships on grid with coordinates ####
-
-#print(f"The Player's Fleet: {fleet_player.ships}")
-#print(f"The Computer's Fleet: {fleet_computer.ships}")
