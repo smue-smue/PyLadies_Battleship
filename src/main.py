@@ -48,7 +48,7 @@ board_player = Grid()
 board_player.print_grid()
 
 board_computer = Grid()
-board_computer.print_grid()
+board_computer.print_grid() # TODO: löschen
 
 # Game logic
 
