@@ -16,12 +16,13 @@ class Grid:
 
     Methods:
     --------
-    initialize_grid(size=10):      
-    _convert_coordinate_to_indices(coordinate):      
-    _convert_indices_to_coordinate(column_index, row_index):     
-    update_grid_fleet(start_coordinate, direction, fleet, size, shipname):    
-    update_grid_attacks(coordinate=None):   
-    print_grid():
+    initialize_grid(size=10)      
+    _convert_coordinate_to_indices(coordinate) 
+    _convert_indices_to_coordinate(column_index, row_index)
+    _mark_water_around_ship(self, row_index, column_index)
+    update_grid_fleet(start_coordinate, direction, fleet, size, shipname)   
+    update_grid_attacks(coordinate=None)
+    print_grid()
     
     Notes:
     ------
@@ -115,6 +116,26 @@ class Grid:
         coordinate = column_letter + str(row_index) # coordinate string, e.g. A3
 
         return coordinate
+    
+    def _mark_water_around_ship(self, row_index, column_index):
+        '''
+        Modifies the grid attribute of the Grid class instance by marking adjacent cells 
+        around the specified ship part as water ("~"). It is used to visually distinguish 
+        ship parts from the surrounding area and to prevent other ships from being placed too close.
+
+        Parameters:
+            row_index       (int):  The 0-based row index.
+            column_index    (int):  The 0-based column index.
+
+        Returns:
+            None: This method does not return a value but modifies the grid in place.
+        '''
+        for r in range(-1, 2):  # From -1 to 1, covering above, same, and below rows
+            for c in range(-1, 2):  # From -1 to 1, covering left, same, and right columns
+                new_row, new_col = row_index + r, column_index + c
+                # Check boundaries and avoid marking the ship cell itself as water
+                if 0 <= new_row < len(self.grid) and 0 <= new_col < len(self.grid[0]) and self.grid[new_row][new_col] == ".":
+                    self.grid[new_row][new_col] = "~"
 
     def update_grid_fleet(self, start_coordinate, direction, fleet, size, shipname): # Input from player_placing_ships
         '''
@@ -132,8 +153,6 @@ class Grid:
             bool:   True if the ship was successfully placed, 
                     False otherwise.
         '''
-
-        # TODO: umliegende Felder sperren und zu "w" machen
         
         if start_coordinate is None:
             print("Error: Coordinate cannot be None.")
@@ -167,7 +186,7 @@ class Grid:
                     print("Error: Space is occupied by another ship.")
                     return False
 
-        # Place the ship
+        # Place the ship 
 
         for i in range(size):
 
@@ -175,14 +194,14 @@ class Grid:
                 self.grid[row_index + i][column_index] = "X" # Vertical placement
                 coordinate = self._convert_indices_to_coordinate(column_index, row_index + i)
                 fleet[shipname]['coordinates'].append(coordinate)
-
+                self._mark_water_around_ship(row_index + i, column_index)
             elif direction == "H":
                 self.grid[row_index][column_index + i] = "X" # Horizontal
-                coordinate = self._convert_indices_to_coordinate(column_index + i, row_index) # TODO: Also fix this, must be also funky!
+                coordinate = self._convert_indices_to_coordinate(column_index + i, row_index)
                 fleet[shipname]['coordinates'].append(coordinate)
-
+                self._mark_water_around_ship(row_index, column_index + i)
+     
         return True
-
 
     def update_grid_attacks(self, coordinate=None): # TODO: redo for different kind of attacks (hits and misses)
         '''

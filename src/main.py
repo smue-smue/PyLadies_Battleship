@@ -54,7 +54,3 @@ board_computer.print_grid() # TODO: löschen
 
 player.player_placing_ships(fleet_player.ships, board_player) # Parameter: dict ships of the instance fleet_player from the class Fleet
 
-#choice = player_ships() # old
-#updated_grid = position_ships(create_grid, grid.coordinates_x, grid.coordinates_y, choice)
-
-#grid.print_grid(updated_grid)

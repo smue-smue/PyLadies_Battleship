@@ -36,7 +36,7 @@ class Player():
             for shipname in fleet_player.keys():
                 if not fleet_player[shipname]['coordinates']: # Check if ship lacks coordinates
                     while True:
-                        coordinate = input(f"Please enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares). ")
+                        coordinate = input(f"Please enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares). ") # TODO: ValueError for inputs like "E" or only "8"
                         direction = input("Please enter the direction (H for horizontal, V for vertical). ")
                         while direction not in ['H', 'V']:
                             print("Invalid input. Please enter 'H' for horizontal or 'V' for vertical. ")
@@ -53,4 +53,4 @@ class Player():
                     break # Break after processing each ship to recheck the condition
 
             if all_ships_processed:
-                break # Exit the while loop if all ships have been processed
+                break # Exit the while loop if all ships have been processed 
