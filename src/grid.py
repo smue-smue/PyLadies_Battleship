@@ -98,7 +98,7 @@ class Grid:
 
         return column_index, row_index
     
-    def _convert_indices_to_coordinate(self, column_index, row_index): # TODO: Fix conversion, not doing what it should
+    def _convert_indices_to_coordinate(self, column_index, row_index):
         '''
         Converts 0-based grid indices back into a coordinate (e.g., 'A1').
 
@@ -173,12 +173,12 @@ class Grid:
 
             if direction == "V":
                 self.grid[row_index + i][column_index] = "X" # Vertical placement
-                coordinate = self._convert_indices_to_coordinate(row_index + i, column_index) # TODO: Fix this A2 = B1, A3 = C1, something is funky!
+                coordinate = self._convert_indices_to_coordinate(column_index, row_index + i)
                 fleet[shipname]['coordinates'].append(coordinate)
 
             elif direction == "H":
                 self.grid[row_index][column_index + i] = "X" # Horizontal
-                coordinate = self._convert_indices_to_coordinate[row_index][column_index + i] # TODO: Also fix this, must be also funky!
+                coordinate = self._convert_indices_to_coordinate(column_index + i, row_index) # TODO: Also fix this, must be also funky!
                 fleet[shipname]['coordinates'].append(coordinate)
 
         return True
