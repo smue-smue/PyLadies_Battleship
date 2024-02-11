@@ -30,7 +30,7 @@ battleship_1_pc= Battleship("Battleship 1")
 aircraft_carrier_1_pc = AircraftCarrier("Aircraft Carrier 1")
 
 # Creating Fleet instances and adding the ship instances to it
-#TODO : Add a Timer, that Player has like 2 Minutes for placing the ships
+#TODO: Add a Timer, that Player has like 2 Minutes for placing the ships
 
 fleet_player = Fleet("Fleet Player", destroyer_1_pl, destroyer_2_pl, cruiser_1_pl, battleship_1_pl, aircraft_carrier_1_pl)
 print(type(fleet_player))
@@ -57,5 +57,5 @@ board_computer.print_grid() # TODO: löschen
 # Game logic
 
 player.player_placing_ships(fleet_player.ships, board_player) # Parameter: dict ships of the instance fleet_player from the class Fleet
-place_ships_randomly(fleet_computer.ships, board_computer)
+place_ships_randomly(fleet_computer.ships, board_computer)  # Parameter: dict ships of the instance fleet_computer from the class Fleet
 board_computer.print_grid() # TODO: löschen, nur zum nachschauen, ob das Grid befüllt wird
