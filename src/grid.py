@@ -191,12 +191,12 @@ class Grid:
         for i in range(size):
 
             if direction == "V":
-                self.grid[row_index + i][column_index] = "X" # Vertical placement
+                self.grid[row_index + i][column_index] = "S" # Vertical placement
                 coordinate = self._convert_indices_to_coordinate(column_index, row_index + i)
                 fleet[shipname]['coordinates'].append(coordinate)
                 self._mark_water_around_ship(row_index + i, column_index)
             elif direction == "H":
-                self.grid[row_index][column_index + i] = "X" # Horizontal
+                self.grid[row_index][column_index + i] = "S" # Horizontal
                 coordinate = self._convert_indices_to_coordinate(column_index + i, row_index)
                 fleet[shipname]['coordinates'].append(coordinate)
                 self._mark_water_around_ship(row_index, column_index + i)
