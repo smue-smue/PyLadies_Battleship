@@ -5,12 +5,15 @@ from grid import Grid
 from ship import *
 from fleet import Fleet
 from player import Player
+from computer_placement import place_ships_randomly
+
 
 # Set up Player
 player_name = Player.prompt_for_player_name() # Calls the static method on the class
 player = Player(player_name) # Creates a new Player instance with the provided name
 
 # Set up Computer?
+computer = Player("Captain Computer")
 
 # Creating ship instances
 
@@ -27,6 +30,7 @@ battleship_1_pc= Battleship("Battleship 1")
 aircraft_carrier_1_pc = AircraftCarrier("Aircraft Carrier 1")
 
 # Creating Fleet instances and adding the ship instances to it
+#TODO : Add a Timer, that Player has like 2 Minutes for placing the ships
 
 fleet_player = Fleet("Fleet Player", destroyer_1_pl, destroyer_2_pl, cruiser_1_pl, battleship_1_pl, aircraft_carrier_1_pl)
 print(type(fleet_player))
@@ -53,4 +57,5 @@ board_computer.print_grid() # TODO: löschen
 # Game logic
 
 player.player_placing_ships(fleet_player.ships, board_player) # Parameter: dict ships of the instance fleet_player from the class Fleet
+place_ships_randomly(board_computer, fleet_computer)
 

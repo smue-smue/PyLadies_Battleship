@@ -33,6 +33,7 @@ class Grid:
    ''' 
     
     def __init__(self, size=10):
+        self.size = size  
         self.grid = self.initialize_grid(size)
     
         self.coordinates_x = {
