@@ -33,6 +33,7 @@ class Grid:
    ''' 
     
     def __init__(self, size=10):
+        self.size = size  
         self.grid = self.initialize_grid(size)
     
         self.coordinates_x = {
@@ -137,7 +138,7 @@ class Grid:
                 if 0 <= new_row < len(self.grid) and 0 <= new_col < len(self.grid[0]) and self.grid[new_row][new_col] == ".":
                     self.grid[new_row][new_col] = "~"
 
-    def update_grid_fleet(self, start_coordinate, direction, fleet, size, shipname): # Input from player_placing_ships
+    def update_grid_fleet(self, start_coordinate, direction, fleet, size, shipname, show_errors=True): # Input from player_placing_ships
         '''
         Updates the grid with a new ship placement based on the given parameters. It checks for valid placement 
         and updates the fleet's information with the ship's coordinates.
@@ -148,6 +149,7 @@ class Grid:
             fleet               (dict): A dictionary containing the fleet information, updated with the ship's coordinates.
             size                (int):  The size (length) of the ship being placed.
             shipname            (str):  The name of the ship being placed.
+            show_errors         (bool): If True, prints error messages to the console when placement fails.
 
         Returns:
             bool:   True if the ship was successfully placed, 
@@ -162,15 +164,18 @@ class Grid:
 
         # Check if the starting coordinate is out of bounds.
         if row_index < 0 or row_index >= len(self.grid) or column_index < 0 or column_index >= len(self.grid[0]):
-            print("Error: Coordinates are out of the grid bounds.")
+            if show_errors:
+                print("Error: Coordinates are out of the grid bounds.")
             return False
         
         # Check if the ship placement exceed grid bounds
         if direction == "V" and row_index + size > len(self.grid):
-            print("Error: Ship placement exceeds grid bounds vertically.") 
+            if show_errors:
+                print("Error: Ship placement exceeds grid bounds vertically.") 
             return False
         if direction == "H" and column_index + size > len(self.grid[0]):
-            print("Error: Ship placement exceeds grid bounds horizontally.")
+            if show_errors:
+                print("Error: Ship placement exceeds grid bounds horizontally.")
             return False
         
         # Check if the spaces are free
@@ -178,12 +183,14 @@ class Grid:
         for i in range(size):
             if direction == "V":
                 if self.grid[row_index + i][column_index] != ".": # Vertical checking
-                    print("Error: Space is occupied by another ship.")
+                    if show_errors:
+                        print("Error: Space is occupied by another ship.")
                     return False
             
             elif direction == "H":
                 if self.grid[row_index][column_index + i] != ".": # Horizontal checking
-                    print("Error: Space is occupied by another ship.")
+                    if show_errors:
+                        print("Error: Space is occupied by another ship.")
                     return False
 
         # Place the ship 
