@@ -5,7 +5,7 @@ from grid import Grid
 from ship import *
 from fleet import Fleet
 from player import Player
-from computer_placement import place_ships_randomly
+from computer import place_ships_randomly
 
 
 # Set up Player
@@ -57,5 +57,5 @@ board_computer.print_grid() # TODO: löschen
 # Game logic
 
 player.player_placing_ships(fleet_player.ships, board_player) # Parameter: dict ships of the instance fleet_player from the class Fleet
-place_ships_randomly(board_computer, fleet_computer)
-
+place_ships_randomly(fleet_computer.ships, board_computer)
+board_computer.print_grid() # TODO: löschen, nur zum nachschauen, ob das Grid befüllt wird
