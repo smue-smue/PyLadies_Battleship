@@ -1,7 +1,7 @@
 # Description: This file contains the computer's logic for placing ships on the grid.
 
 import random
-from grid import Grid
+from grid import Grid # TODO: Delete, not used
 
 def random_coordinate(grid_size):
     '''
@@ -19,7 +19,7 @@ def random_direction():
     
     return random.choice(['H', 'V'])
 
-def is_valid_placement(grid, start_coordinate, direction, size):
+def is_valid_placement(grid, start_coordinate, direction, size): # TODO: Use as grid method so player and comp can use it
     '''
     Checks if the ship placement is valid.
     '''
