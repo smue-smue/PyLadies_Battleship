@@ -24,8 +24,27 @@ class Player():
 
         return input("Ready, Player? What's your name?\n")
     
-    @staticmethod
-    def player_placing_ships(fleet_player, board_player):
+
+    def player_coordinate(self, fleet_player, shipname):
+        '''
+        Asks the player where to place their ships.
+        '''
+
+        coordinate = input(f"Please enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares). ") # TODO: ValueError for inputs like "E" or only "8"
+        
+        return coordinate
+    
+    def player_direction(self):
+        '''
+        Asks the player in which direction to place their ships.
+        '''
+
+        direction = input("Please enter the direction (H for horizontal, V for vertical). ")
+        
+        return direction
+
+
+    def player_placing_ships(self, fleet_player, board_player):
         '''
         Asks the player where to place their ships. Repeats for invalid placements.
         '''
@@ -36,8 +55,8 @@ class Player():
             for shipname in fleet_player.keys():
                 if not fleet_player[shipname]['coordinates']: # Check if ship lacks coordinates
                     while True:
-                        coordinate = input(f"Please enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares). ") # TODO: ValueError for inputs like "E" or only "8"
-                        direction = input("Please enter the direction (H for horizontal, V for vertical). ")
+                        coordinate = self.player_coordinate(fleet_player, shipname)
+                        direction = self.player_direction()
                         while direction not in ['H', 'V']:
                             print("Invalid input. Please enter 'H' for horizontal or 'V' for vertical. ")
                             direction = input("Please enter the direction (H for horizontal, V for vertical). ")
