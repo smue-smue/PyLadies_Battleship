@@ -1,7 +1,7 @@
 # Player Setup - handles Player interactions and decisions
 
 from fleet import *
-from combined_placements import is_valid_placement # TODO: Fix that
+# from combined_placements import is_valid_placement # TODO: Fix that
 from grid import Grid
 
 class Player():
@@ -59,10 +59,10 @@ class Player():
 
             return direction
     
-    def tryingout(self, grid, start_coordinate, direction, shipdetails): # TODO: Fix that 
-        test = is_valid_placement(grid, start_coordinate, direction, shipdetails['size'])
+    # def tryingout(self, grid, start_coordinate, direction, shipdetails): # TODO: Fix that 
+    #     test = is_valid_placement(grid, start_coordinate, direction, shipdetails['size'])
 
-        return test
+    #     return test
 
     def player_placing_ships(self, fleet_player, board_player):
         '''
@@ -77,7 +77,7 @@ class Player():
                     while True:
                         coordinate = self.player_coordinate(fleet_player, shipname)
                         direction = self.player_direction()
-                        self.tryingout(board_player, coordinate, direction, fleet_player[shipname]) # TODO: Fix that
+                        board_player.is_valid_placement(coordinate, direction, fleet_player[shipname]['size']) # TODO: Fix that
 
                         if board_player.update_grid_fleet(coordinate, direction, fleet_player, fleet_player[shipname]['size'], shipname): # update_grid_fleet returns True
                             print(fleet_player)
