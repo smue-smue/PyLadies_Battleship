@@ -28,7 +28,7 @@ def initialize_game(player_name):
 
     # Initialize fleets using consistent variable names
     fleet_player = Fleet(f"{player.name}'s Fleet")
-    fleet_computer = Fleet(f"{computer.name}'s Fleet")
+    fleet_computer = Fleet("Captain Computer's Fleet")
 
     # Further initialization like placing ships can be added here
 
