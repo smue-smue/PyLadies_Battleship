@@ -33,27 +33,27 @@ class Grid:
    ''' 
     
     coordinates_x = {
-        'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5,
-        'F': 6, 'G': 7, 'H': 8, 'I': 9, 'J': 10,
-        'K': 11, 'L': 12, 'M': 13, 'N': 14, 'O': 15,
-        'P': 16, 'Q': 17, 'R': 18, 'S': 19, 'T': 20
+        'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4,
+        'F': 5, 'G': 6, 'H': 7, 'I': 8, 'J': 9,
+        'K': 10, 'L': 11, 'M': 12, 'N': 13, 'O': 14,
+        'P': 15, 'Q': 16, 'R': 17, 'S': 18, 'T': 19
         }
 
     coordinates_y = {
-        '1': 1, '2': 2, '3': 3, '4': 4, '5': 5,
-        '6': 6, '7': 7, '8': 8, '9': 9, '10': 10,
-        '11': 11, '12': 12, '13': 13, '14': 14, '15': 15,
-        '16': 16, '17': 17, '18': 18, '19': 19, '20': 20
+        '1': 0, '2': 1, '3': 2, '4': 3, '5': 4,
+        '6': 5, '7': 6, '8': 7, '9': 8, '10': 9,
+        '11': 10, '12': 11, '13': 12, '14': 13, '15': 14,
+        '16': 15, '17': 16, '18': 17, '19': 18, '20': 19
         }
 
     def __init__(self, size=10):
-        self.size = size  
+        self.size = size
         self.grid = self.initialize_grid(size)
     
     def initialize_grid(self, size=10):
         '''
         Initializes the grid as a list of lists (matrix) to a specified size, 
-        with '.' indicating empty cells, and sets up row and column headers.
+        with '.' indicating empty cells.
 
         Parameters:
             size    (int, optional):    The size of the grid, defaults to 10. 
@@ -63,18 +63,9 @@ class Grid:
             list:   A 2D list (matrix) representing the initialized game grid.
         '''
         grid = []
-        for _ in range(size + 1): 
-            row = ['.'] * (size + 1) 
+        for _ in range(size): 
+            row = ['.'] * (size)
             grid.append(row) 
-        
-        # Fill in column headers
-        column_labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[:size]
-        for column, label in enumerate(column_labels, start=1):
-            grid[0][column] = label
-
-        # Fill in row headers
-        for row in range(1, size + 1):
-            grid[row][0] = str(row)
         
         return grid
     
@@ -96,7 +87,7 @@ class Grid:
 
         # Convert to 0-based grid indices
         column_index = self.coordinates_x[column_letter]
-        row_index = int(row_number)
+        row_index = int(row_number) - 1 # Convert row to 0-based
 
         return column_index, row_index
     
@@ -113,9 +104,11 @@ class Grid:
                     to the given indices.
         '''
 
-        column_letter = chr(64 + column_index) # 64 is 'A' in ASCII code
-        coordinate = column_letter + str(row_index) # coordinate string, e.g. A3
-
+        # Find the letter corresponding to the 0-based column index
+        column_letter = [key for key, value in self.coordinates_x.items() if value == column_index][0]
+        
+        # Adjust row_index to 1-based for display
+        coordinate = f"{column_letter}{row_index + 1}"
         return coordinate
     
     def _mark_water_around_ship(self, row_index, column_index):
@@ -140,12 +133,14 @@ class Grid:
     
     def is_valid_placement(grid, start_coordinate, direction, size):
         '''
-        Checks if the ship placement is valid.
+        Determines the validity of a proposed ship placement.
+        Firstly, if the placement exceeds grid bounds based on the direction and size of the ship.
+        Secondly, if any of the cells intended for the ship's placement are already occupied.
         '''
 
         column_label, row_number = start_coordinate[0], int(start_coordinate[1:])
-        column_index = grid.coordinates_x[column_label] - 1  # Adjust for 0-based index
-        row_index = row_number - 1  # Adjust for 0-based index
+        column_index = grid.coordinates_x[column_label]
+        row_index = row_number -1 # Convert to 0-based indexing
 
         if direction == 'H':
             if column_index + size > grid.size:
@@ -162,10 +157,9 @@ class Grid:
 
         return True  # Valid placement
 
-    def update_grid_fleet(self, start_coordinate, direction, fleet, size, shipname, show_errors=True): # Input from player_placing_ships
+    def update_grid_fleet(self, start_coordinate, direction, fleet, size, shipname, show_errors=True):
         '''
-        Updates the grid with a new ship placement based on the given parameters. It checks for valid placement 
-        and updates the fleet's information with the ship's coordinates.
+        Updates the grid with a new ship placement based on the given parameters.
 
         Parameters:
             start_coordinate    (str):  The starting coordinate of the ship placement, e.g., 'A1'.
@@ -185,39 +179,6 @@ class Grid:
             return False
         
         column_index, row_index = self._convert_coordinate_to_indices(start_coordinate)
-
-        # Check if the starting coordinate is out of bounds.
-        # if row_index < 0 or row_index >= len(self.grid) or column_index < 0 or column_index >= len(self.grid[0]):
-        #     if show_errors:
-        #         print("Error: Coordinates are out of the grid bounds.")
-        #     return False
-        
-        # # Check if the ship placement exceed grid bounds
-        # if direction == "V" and row_index + size > len(self.grid):
-        #     if show_errors:
-        #         print("Error: Ship placement exceeds grid bounds vertically.") 
-        #     return False
-        # if direction == "H" and column_index + size > len(self.grid[0]):
-        #     if show_errors:
-        #         print("Error: Ship placement exceeds grid bounds horizontally.")
-        #     return False
-        
-        # Check if the spaces are free
-
-        # for i in range(size):
-        #     if direction == "V":
-        #         if self.grid[row_index + i][column_index] != ".": # Vertical checking
-        #             if show_errors:
-        #                 print("Error: Space is occupied by another ship.")
-        #             return False
-            
-        #     elif direction == "H":
-        #         if self.grid[row_index][column_index + i] != ".": # Horizontal checking
-        #             if show_errors:
-        #                 print("Error: Space is occupied by another ship.")
-        #             return False
-
-        # Place the ship 
 
         for i in range(size):
 
@@ -265,8 +226,12 @@ class Grid:
         Returns:
             None:   This method does not return a value but outputs the grid state to the console.
         '''
+        # Display column headers
         print()
-        for row in self.grid:
-            print(' '.join(f"{cell:<2}" for cell in row))
+        column_labels = '   ' + ' '.join('ABCDEFGHIJKLMNOPQRSTUVWXYZ'[:self.size])
+        print(column_labels)
+        # Display each row with its row number
+        for index, row in enumerate(self.grid, start=1):
+            print(f"{index:<2} {' '.join(row)}")
         print()
 
