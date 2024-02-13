@@ -6,13 +6,14 @@ from ship import *
 from fleet import Fleet
 from player import Player
 from computer import place_ships_randomly
+from gamelogic import initialize_game
 
 
 # Set up Player
 player_name = Player.prompt_for_player_name() # Calls the static method on the class
 player = Player(player_name) # Creates a new Player instance with the provided name
 
-# Set up Computer?
+# Set up Computer
 computer = Player("Captain Computer")
 
 # Creating ship instances
