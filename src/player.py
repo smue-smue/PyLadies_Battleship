@@ -1,7 +1,6 @@
 # Player Setup - handles Player interactions and decisions
 
 from fleet import *
-# from combined_placements import is_valid_placement # TODO: Fix that
 from grid import Grid
 
 class Player():
@@ -58,11 +57,6 @@ class Player():
                 print("Invalid input. Please enter 'H' for horizontal or 'V' for vertical.")  # Notify the user and ask again
 
             return direction
-    
-    # def tryingout(self, grid, start_coordinate, direction, shipdetails): # TODO: Fix that 
-    #     test = is_valid_placement(grid, start_coordinate, direction, shipdetails['size'])
-
-    #     return test
 
     def player_placing_ships(self, fleet_player, board_player):
         '''
@@ -77,17 +71,18 @@ class Player():
                     while True:
                         coordinate = self.player_coordinate(fleet_player, shipname)
                         direction = self.player_direction()
-                        board_player.is_valid_placement(coordinate, direction, fleet_player[shipname]['size']) # TODO: Fix that
 
-                        if board_player.update_grid_fleet(coordinate, direction, fleet_player, fleet_player[shipname]['size'], shipname): # update_grid_fleet returns True
-                            print(fleet_player)
-                            board_player.print_grid()
-                            break
+                        # Check if the placement is valid before attempting to update the grid
+                        if board_player.is_valid_placement(coordinate, direction, fleet_player[shipname]['size']):
+                            if board_player.update_grid_fleet(coordinate, direction, fleet_player, fleet_player[shipname]['size'], shipname): # update_grid_fleet returns True
+                                # print(fleet_player)
+                                board_player.print_grid()
+                                break # Valid placement, break out of the inner loop.
                         else:
-                            print("Invalid ship placement, please try again.") # TODO: find another else statement
+                            print("Invalid ship placement, please try again.")
 
                     all_ships_processed = False # A ship was processed, so not all were done
                     break # Break after processing each ship to recheck the condition
 
             if all_ships_processed:
-                break # Exit the while loop if all ships have been processed 
+                break # Exit the while loop if all ships have been processed
