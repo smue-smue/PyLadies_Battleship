@@ -36,6 +36,7 @@ class Player():
                 prompt_message = f"Please enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares): "
 
             coordinate = input(prompt_message) # TODO: ValueError for inputs like "E" or only "8"
+            coordinate = coordinate.upper() # Convert to upper case for comparison
             
             column_label = coordinate[0].upper()
             try:

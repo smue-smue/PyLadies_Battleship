@@ -10,6 +10,18 @@ from hit_miss import check_hit_or_miss
 # Setup game
 
 def setup_game():
+    """
+    Initializes the game by setting up players, grids, and fleets.
+    
+    - Prompts for the player's name and creates Player instances for the human player and the computer.
+    - Initializes grids for both players.
+    - Creates fleets for both players and adds ships to them.
+    - Determines who will start the game by a coin flip.
+    
+    Returns:
+        Tuple containing player, computer, player's board, computer's board, player's fleet, computer's fleet, and the beginner.
+    """
+     
     # Create player and computer instances
     player_name = Player.prompt_for_player_name()
     player = Player(player_name)
@@ -75,8 +87,14 @@ def setup_game():
     return player, computer, board_player, board_computer, fleet_player, fleet_computer, beginner
 
 # Place ships
-
 def place_ships(player, grid, fleet):
+    """
+    Places the ships for the given player on the given grid.
+    
+    If the player is a computer, ships are placed randomly.
+    If the player is human, prompts for ship placement are displayed.
+    """
+
     print(f"Placing ships for {player.name}...")
     if player.name == "Computer":
         place_ships_randomly(fleet_computer.ships, board_computer) 
@@ -88,6 +106,13 @@ def place_ships(player, grid, fleet):
         print(f"{player.name}'s ships placed.")
 
 def is_fleet_sunk(fleet, grid):
+    """
+    Checks if all ships in a fleet are sunk.
+    
+    Returns:
+        True if all ships are sunk, False otherwise.
+    """
+    
     for shipname, shipdetails in fleet.items():
         # Check if all coordinates of the ship have been hit
         for coordinate in shipdetails['coordinates']:
@@ -98,7 +123,13 @@ def is_fleet_sunk(fleet, grid):
 
 
 def main_game_loop(player, computer, board_player, board_computer, fleet_player, fleet_computer, beginner):
+    """
+    The main loop that controls the game flow.
     
+    Alternates turns between the player and the computer, allowing each to attack the other's grid.
+    Continues until one player's fleet is completely sunk, declaring the other player the winner.
+    """
+
     game_over = False
     current_turn = player if beginner == player else computer  # Set the current turn to the beginner
 
