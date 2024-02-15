@@ -35,6 +35,13 @@ def setup_game():
 
 
     # Add ships to fleets
+    ship_classes = {
+    "Destroyer": Destroyer,
+    "Cruiser": Cruiser,
+    "Battleship": Battleship,
+    "AircraftCarrier": AircraftCarrier
+    }
+
     for name in ["Destroyer", "Cruiser", "Battleship", "AircraftCarrier"]:
         if name == "Destroyer":
             fleet_player.add_ship(Destroyer(f"{name} 1 {player_name}"))
@@ -42,8 +49,10 @@ def setup_game():
             fleet_computer.add_ship(Destroyer(f"{name} 1 Computer"))
             fleet_computer.add_ship(Destroyer(f"{name} 2 Computer"))
         else:
-            fleet_player.add_ship(eval(f"{name}('{name} {player_name}')"))
-            fleet_computer.add_ship(eval(f"{name}('{name} Computer')"))
+            ship_class = ship_classes[name]  # Look up the class constructor
+            fleet_player.add_ship(ship_class(f"{name} {player_name}"))
+            fleet_computer.add_ship(ship_class(f"{name} Computer"))
+
 
     print(f"{player.name}'s fleet: {[ship for ship in fleet_player.ships]}") #TODO: löschen, nur für Testzwecke
     print(f"{computer.name}'s fleet: {[ship for ship in fleet_computer.ships]}") #TODO: löschen, nur für Testzwecke
@@ -95,10 +104,10 @@ def main_game_loop(player, computer, board_player, board_computer, fleet_player,
 
     while not game_over:
         if current_turn == player:
-            print(f"\n{player.name}'s turn")
+            print(f"\n{player.name}'s turn") #TODO: löschen, nur für Testzwecke
             
             valid_shipname_for_input = list(fleet_player.ships.keys())[0]
-            coordinate = player.player_coordinate(fleet_player.ships, valid_shipname_for_input)
+            coordinate = player.player_coordinate(fleet_player.ships, '', attacking=True)  # Pass an empty string for 'shipname'
 
             outcome = check_hit_or_miss(coordinate, board_computer)
             print(f"Attack on {coordinate} resulted in a {outcome}.")
@@ -119,7 +128,7 @@ def main_game_loop(player, computer, board_player, board_computer, fleet_player,
             current_turn = computer  # Switch turn to computer only if the game is not over
 
         else:
-            print(f"\n{computer.name}'s turn")
+            print(f"\n{computer.name}'s turn") #TODO: löschen, nur für Testzwecke
             coordinate = random_coordinate(board_player.size)
             outcome = check_hit_or_miss(coordinate, board_player)
             print(f"Computer attacked {coordinate} and it was a {outcome}.")
