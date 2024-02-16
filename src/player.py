@@ -23,14 +23,20 @@ class Player():
 
         return input("Ready, Player? What's your name?\n")
     
-
-    def player_coordinate(self, fleet_player, shipname):
+    
+    def player_coordinate(self, fleet_player, shipname, attacking=False):
         '''
         Asks the player where to place their ships.
         '''
 
         while True: # Use a loop to keep asking until a valid input is received
-            coordinate = input(f"Please enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares). ") # TODO: ValueError for inputs like "E" or only "8"
+            if attacking:
+                prompt_message = "It's your turn for the attack, please enter the coordinate: "
+            else:
+                prompt_message = f"Please enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares): "
+
+            coordinate = input(prompt_message) # TODO: ValueError for inputs like "E" or only "8"
+            coordinate = coordinate.upper() # Convert to upper case for comparison
             
             column_label = coordinate[0].upper()
             try:

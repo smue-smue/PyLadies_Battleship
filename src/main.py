@@ -1,61 +1,198 @@
-# Entry point for the game
 from random import randrange
-
 from grid import Grid
-from ship import *
 from fleet import Fleet
+from ship import Destroyer, Cruiser, Battleship, AircraftCarrier
 from player import Player
 from computer import place_ships_randomly
+from computer import random_coordinate
+from hit_miss import check_hit_or_miss
+
+# Setup game
+
+def setup_game():
+    """
+    Initializes the game by setting up players, grids, and fleets.
+    
+    - Prompts for the player's name and creates Player instances for the human player and the computer.
+    - Initializes grids for both players.
+    - Creates fleets for both players and adds ships to them.
+    - Determines who will start the game by a coin flip.
+    
+    Returns:
+        Tuple containing player, computer, player's board, computer's board, player's fleet, computer's fleet, and the beginner.
+    """
+     
+    # Create player and computer instances
+    player_name = Player.prompt_for_player_name()
+    player = Player(player_name)
+    computer = Player("Computer")
+
+    print(f"Player name: {player.name}") #TODO: löschen, nur für Testzwecke
+    print(f"Computer name: {computer.name}") #TODO: löschen, nur für Testzwecke
 
 
-# Set up Player
-player_name = Player.prompt_for_player_name() # Calls the static method on the class
-player = Player(player_name) # Creates a new Player instance with the provided name
+    # Initialize grids
+    board_player = Grid()
+    print("Player grid initialized.")
+    board_player.print_grid() #TODO: löschen, nur für Testzwecke
+    print("Computer grid initialized.")
+    board_computer = Grid()
+    board_computer.print_grid() #TODO: löschen, nur für Testzwecke
+   
+    # Initialize fleets
+    fleet_player = Fleet(player_name)
+    fleet_computer = Fleet("Computer's Fleet")
 
-# Set up Computer?
-computer = Player("Captain Computer")
+    print("Player and computer fleets created.")
 
-# Creating ship instances
 
-destroyer_1_pl = Destroyer("Destroyer 1")
-destroyer_2_pl = Destroyer("Destroyer 2")
-cruiser_1_pl = Cruiser("Cruiser 1")
-battleship_1_pl = Battleship("Battleship 1")
-aircraft_carrier_1_pl = AircraftCarrier("Aircraft Carrier 1")
+    # Add ships to fleets
+    ship_classes = {
+    "Destroyer": Destroyer,
+    "Cruiser": Cruiser,
+    "Battleship": Battleship,
+    "AircraftCarrier": AircraftCarrier
+    }
 
-destroyer_1_pc = Destroyer("Destroyer 1")
-destroyer_2_pc = Destroyer("Destroyer 2")
-cruiser_1_pc = Cruiser("Cruiser 1")
-battleship_1_pc= Battleship("Battleship 1")
-aircraft_carrier_1_pc = AircraftCarrier("Aircraft Carrier 1")
+    for name in ["Destroyer", "Cruiser", "Battleship", "AircraftCarrier"]:
+        if name == "Destroyer":
+            fleet_player.add_ship(Destroyer(f"{name} 1 {player_name}"))
+            fleet_player.add_ship(Destroyer(f"{name} 2 {player_name}"))
+            fleet_computer.add_ship(Destroyer(f"{name} 1 Computer"))
+            fleet_computer.add_ship(Destroyer(f"{name} 2 Computer"))
+        else:
+            ship_class = ship_classes[name]  # Look up the class constructor
+            fleet_player.add_ship(ship_class(f"{name} {player_name}"))
+            fleet_computer.add_ship(ship_class(f"{name} Computer"))
 
-# Creating Fleet instances and adding the ship instances to it
-#TODO: Add a Timer, that Player has like 2 Minutes for placing the ships
 
-fleet_player = Fleet("Fleet Player", destroyer_1_pl, destroyer_2_pl, cruiser_1_pl, battleship_1_pl, aircraft_carrier_1_pl)
-print(type(fleet_player))
-fleet_computer = Fleet("Fleet Computer", destroyer_1_pc, destroyer_2_pc, cruiser_1_pc, battleship_1_pc, aircraft_carrier_1_pc)
+    print(f"{player.name}'s fleet: {[ship for ship in fleet_player.ships]}") #TODO: löschen, nur für Testzwecke
+    print(f"{computer.name}'s fleet: {[ship for ship in fleet_computer.ships]}") #TODO: löschen, nur für Testzwecke
+    
+    def coin_flip(player, computer):
+        '''
+        Coin flip to determine who starts.
+        '''
+        coin = randrange(2)
+        print(f"Coinflip was", coin) #TODO: löschen, nur für Testzwecke
+        if coin == 0:
+            beginner = player
+        else:
+            beginner = computer       
+        return beginner
 
-# Coin Flip who starts:
+    beginner = coin_flip(player, computer)
+    print(f"The game will start with {beginner.name}.")
 
-coin = randrange(2)
+    return player, computer, board_player, board_computer, fleet_player, fleet_computer, beginner
 
-if coin == 0:
-    beginner = player
-    print(beginner, "starts.")
-else:
-    beginner = "computer"
-    print("Computer starts.")
+# Place ships
+def place_ships(player, grid, fleet):
+    """
+    Places the ships for the given player on the given grid.
+    
+    If the player is a computer, ships are placed randomly.
+    If the player is human, prompts for ship placement are displayed.
+    """
 
-# Create boards by calling initialize_grid
-board_player = Grid()
-board_player.print_grid()
+    print(f"Placing ships for {player.name}...")
+    if player.name == "Computer":
+        place_ships_randomly(fleet_computer.ships, board_computer) 
+        print("Computer ships placed randomly.")
+        
+    else:
+        board_player.print_grid()
+        player.player_placing_ships(fleet_player.ships, board_player)
+        print(f"{player.name}'s ships placed.")
 
-board_computer = Grid()
-board_computer.print_grid() # TODO: löschen
+def is_fleet_sunk(fleet, grid):
+    """
+    Checks if all ships in a fleet are sunk.
+    
+    Returns:
+        True if all ships are sunk, False otherwise.
+    """
+    
+    for shipname, shipdetails in fleet.items():
+        # Check if all coordinates of the ship have been hit
+        for coordinate in shipdetails['coordinates']:
+            column_index, row_index = grid._convert_coordinate_to_indices(coordinate)
+            if grid.grid[row_index][column_index] != 'H':  # If any part of the ship is not hit ('H'), the ship is not sunk
+                return False  # Fleet is not sunk
+    return True  # All ships in the fleet are sunk
 
-# Game logic
 
-player.player_placing_ships(fleet_player.ships, board_player) # Parameter: dict ships of the instance fleet_player from the class Fleet
-place_ships_randomly(fleet_computer.ships, board_computer)  # Parameter: dict ships of the instance fleet_computer from the class Fleet
-board_computer.print_grid() # TODO: löschen, nur zum nachschauen, ob das Grid befüllt wird
+def main_game_loop(player, computer, board_player, board_computer, fleet_player, fleet_computer, beginner):
+    """
+    The main loop that controls the game flow.
+    
+    Alternates turns between the player and the computer, allowing each to attack the other's grid.
+    Continues until one player's fleet is completely sunk, declaring the other player the winner.
+    """
+
+    game_over = False
+    current_turn = player if beginner == player else computer  # Set the current turn to the beginner
+
+    while not game_over:
+        if current_turn == player:
+            print(f"\n{player.name}'s turn") #TODO: löschen, nur für Testzwecke
+            
+            valid_shipname_for_input = list(fleet_player.ships.keys())[0]
+            coordinate = player.player_coordinate(fleet_player.ships, '', attacking=True)  # Pass an empty string for 'shipname'
+
+            outcome = check_hit_or_miss(coordinate, board_computer)
+            print(f"Attack on {coordinate} resulted in a {outcome}.")
+
+            column_index, row_index = board_computer._convert_coordinate_to_indices(coordinate)
+            if outcome == 'hit':
+                board_computer.grid[row_index][column_index] = 'H'
+            else:
+                board_computer.grid[row_index][column_index] = 'M'
+
+            print("Computer's grid after player's attack:")
+            board_computer.print_grid()
+
+            if is_fleet_sunk(fleet_computer.ships, board_computer):
+                print(f"\nGame Over! {player.name} wins!")
+                break  # Break out of the loop immediately if the computer's fleet is sunk
+
+            current_turn = computer  # Switch turn to computer only if the game is not over
+
+        else:
+            print(f"\n{computer.name}'s turn") #TODO: löschen, nur für Testzwecke
+            coordinate = random_coordinate(board_player.size)
+            outcome = check_hit_or_miss(coordinate, board_player)
+            print(f"Computer attacked {coordinate} and it was a {outcome}.")
+
+            column_index, row_index = board_player._convert_coordinate_to_indices(coordinate)
+            if outcome == 'hit':
+                board_player.grid[row_index][column_index] = 'H'
+            else:
+                board_player.grid[row_index][column_index] = 'M'
+
+            print("Player's grid after computer's attack:")
+            board_player.print_grid()
+
+            if is_fleet_sunk(fleet_player.ships, board_player):
+                print(f"\nGame Over! {computer.name} wins!")
+                break  # Break out of the loop immediately if the player's fleet is sunk
+
+            current_turn = player  # Switch turn back to player only if the game is not over
+
+        if game_over:
+            print(f"\nGame Over! {current_turn.name} wins!")
+
+
+# Main execution
+if __name__ == "__main__":
+    # Setup game
+    player, computer, board_player, board_computer, fleet_player, fleet_computer, beginner = setup_game()
+
+    # Place ships for both player and computer
+    place_ships(player, board_player, fleet_player)
+    board_player.print_grid()  # Show player's grid after placing ships
+
+    place_ships(computer, board_computer, fleet_computer)
+    board_computer.print_grid()  #TODO: löschen, nur für Testzwecke
+
+    main_game_loop(player, computer, board_player, board_computer, fleet_player, fleet_computer, beginner)

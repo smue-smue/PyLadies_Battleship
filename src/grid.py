@@ -195,28 +195,44 @@ class Grid:
      
         return True
 
-    def update_grid_attacks(self, coordinate=None): # TODO: redo for different kind of attacks (hits and misses)
-        '''
-        Updates the grid to reflect the result of an attack at the given coordinate.
+    def update_grid_attacks(self, coordinate):
+        """
+        Updates the grid to reflect the result of an attack at a given coordinate.
+        Determines whether the coordinate hits a part of a ship ('S') and updates the grid with 'H' for a hit or 'M' for a miss.
 
         Parameters:
+        - coordinate (str): The grid coordinate being attacked, in the format 'A1', 'B2', etc.
 
         Returns:
-            
-        
-        '''
+        - outcome (str): A string indicating the result of the attack: 'hit' if a ship part was hit, and 'miss' if not.
+
+        Raises:
+        - ValueError: If the coordinate is None or if the coordinates are out of the grid bounds.
+
+        Example:
+        - Calling update_grid_attacks('A1') on a grid where 'A1' has a ship will mark 'A1' as 'H' (hit) and return 'hit'.
+        - Calling update_grid_attacks('B3') on a grid where 'B3' is empty water will mark 'B3' as 'M' (miss) and return 'miss'.
+        """
+
         if coordinate is None:
-            return # TODO: We should insert a raise error here
-    
+            raise ValueError("Coordinate cannot be None.")
+
         column_index, row_index = self._convert_coordinate_to_indices(coordinate)
 
-        if row_index < 0 or row_index >= len(self.grid) or column_index < 0 or column_index >= len(self.grid[0]):
-            print("Error: Coordinates are out of the grid bounds.")
-            return
-        
-        # Update the grid cell
+        # Ensure coordinates are within the grid bounds
+        if row_index < 0 or row_index >= self.size or column_index < 0 or column_index >= self.size:
+            raise ValueError("Coordinates are out of the grid bounds.")
 
-        self.grid[row_index][column_index] = "O"
+        # Check if the coordinate hits a ship ('S') or is a miss
+        if self.grid[row_index][column_index] == 'S':
+            self.grid[row_index][column_index] = 'H'  # Mark as hit
+            outcome = 'hit'
+        else:
+            self.grid[row_index][column_index] = 'M'  # Mark as miss
+            outcome = 'miss'
+
+        return outcome
+        
 
     def print_grid(self):
         '''
