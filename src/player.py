@@ -26,7 +26,7 @@ class Player():
     
     def player_coordinate(self, fleet_player, shipname, attacking=False):
         '''
-        Asks the player where to place their ships.
+        Asks the player where to place their ships. TODO: Anpassen
         '''
 
         while True: # Use a loop to keep asking until a valid input is received

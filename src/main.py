@@ -136,8 +136,7 @@ def main_game_loop(player, computer, board_player, board_computer, fleet_player,
     while not game_over:
         if current_turn == player:
             print(f"\n{player.name}'s turn") #TODO: löschen, nur für Testzwecke
-            
-            valid_shipname_for_input = list(fleet_player.ships.keys())[0]
+                        
             coordinate = player.player_coordinate(fleet_player.ships, '', attacking=True)  # Pass an empty string for 'shipname'
 
             outcome = check_hit_or_miss(coordinate, board_computer)
@@ -149,7 +148,7 @@ def main_game_loop(player, computer, board_player, board_computer, fleet_player,
             else:
                 board_computer.grid[row_index][column_index] = 'M'
 
-            print("Computer's grid after player's attack:")
+            print("Computer's grid after player's attack:") #TODO: löschen, nur für Testzwecke
             board_computer.print_grid()
 
             if is_fleet_sunk(fleet_computer.ships, board_computer):
