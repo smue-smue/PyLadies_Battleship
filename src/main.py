@@ -34,17 +34,18 @@ def setup_game():
     # Initialize grids
     board_player = Grid()
     print("Player grid initialized.")
-    board_player.print_grid() #TODO: löschen, nur für Testzwecke
+    # board_player.print_grid() #TODO: löschen, nur für Testzwecke
     print("Computer grid initialized.")
     board_computer = Grid()
-    board_computer.print_grid() #TODO: löschen, nur für Testzwecke
-   
+    # board_computer.print_grid() #TODO: löschen, nur für Testzwecke
+    board_computer_players_view = Grid()
+    # board_computer_players_view.print_grid()
+
     # Initialize fleets
     fleet_player = Fleet(player_name)
     fleet_computer = Fleet("Computer's Fleet")
 
     print("Player and computer fleets created.")
-
 
     # Add ships to fleets
     ship_classes = {
@@ -66,8 +67,8 @@ def setup_game():
             fleet_computer.add_ship(ship_class(f"{name} Computer"))
 
 
-    print(f"{player.name}'s fleet: {[ship for ship in fleet_player.ships]}") #TODO: löschen, nur für Testzwecke
-    print(f"{computer.name}'s fleet: {[ship for ship in fleet_computer.ships]}") #TODO: löschen, nur für Testzwecke
+    # print(f"{player.name}'s fleet: {[ship for ship in fleet_player.ships]}") #TODO: löschen, nur für Testzwecke
+    # print(f"{computer.name}'s fleet: {[ship for ship in fleet_computer.ships]}") #TODO: löschen, nur für Testzwecke
     
     def coin_flip(player, computer):
         '''
@@ -84,7 +85,7 @@ def setup_game():
     beginner = coin_flip(player, computer)
     print(f"The game will start with {beginner.name}.")
 
-    return player, computer, board_player, board_computer, fleet_player, fleet_computer, beginner
+    return player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner
 
 # Place ships
 def place_ships(player, grid, fleet):
@@ -122,7 +123,7 @@ def is_fleet_sunk(fleet, grid):
     return True  # All ships in the fleet are sunk
 
 
-def main_game_loop(player, computer, board_player, board_computer, fleet_player, fleet_computer, beginner):
+def main_game_loop(player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner):
     """
     The main loop that controls the game flow.
     
@@ -135,7 +136,7 @@ def main_game_loop(player, computer, board_player, board_computer, fleet_player,
 
     while not game_over:
         if current_turn == player:
-            print(f"\n{player.name}'s turn") #TODO: löschen, nur für Testzwecke
+            # print(f"\n{player.name}'s turn") #TODO: löschen, nur für Testzwecke
                         
             coordinate = player.player_coordinate(fleet_player.ships, '', attacking=True)  # Pass an empty string for 'shipname'
 
@@ -145,11 +146,14 @@ def main_game_loop(player, computer, board_player, board_computer, fleet_player,
             column_index, row_index = board_computer._convert_coordinate_to_indices(coordinate)
             if outcome == 'hit':
                 board_computer.grid[row_index][column_index] = 'H'
+                board_computer_players_view.grid[row_index][column_index] = 'H'
             else:
                 board_computer.grid[row_index][column_index] = 'M'
+                board_computer_players_view.grid[row_index][column_index] = 'M'
 
             print("Computer's grid after player's attack:") #TODO: löschen, nur für Testzwecke
-            board_computer.print_grid()
+            # board_computer.print_grid()
+            board_computer_players_view.print_grid()
 
             if is_fleet_sunk(fleet_computer.ships, board_computer):
                 print(f"\nGame Over! {player.name} wins!")
@@ -158,7 +162,7 @@ def main_game_loop(player, computer, board_player, board_computer, fleet_player,
             current_turn = computer  # Switch turn to computer only if the game is not over
 
         else:
-            print(f"\n{computer.name}'s turn") #TODO: löschen, nur für Testzwecke
+            # print(f"\n{computer.name}'s turn") #TODO: löschen, nur für Testzwecke
             coordinate = random_coordinate(board_player.size)
             outcome = check_hit_or_miss(coordinate, board_player)
             print(f"Computer attacked {coordinate} and it was a {outcome}.")
@@ -185,13 +189,13 @@ def main_game_loop(player, computer, board_player, board_computer, fleet_player,
 # Main execution
 if __name__ == "__main__":
     # Setup game
-    player, computer, board_player, board_computer, fleet_player, fleet_computer, beginner = setup_game()
+    player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner = setup_game()
 
     # Place ships for both player and computer
     place_ships(player, board_player, fleet_player)
     board_player.print_grid()  # Show player's grid after placing ships
 
     place_ships(computer, board_computer, fleet_computer)
-    board_computer.print_grid()  #TODO: löschen, nur für Testzwecke
+    # board_computer.print_grid()  #TODO: löschen, nur für Testzwecke
 
-    main_game_loop(player, computer, board_player, board_computer, fleet_player, fleet_computer, beginner)
+    main_game_loop(player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner)
