@@ -182,9 +182,9 @@ if __name__ == "__main__":
     player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner = setup_game()
 
     # Place ships for both player and computer
-    place_ships(player, board_player, fleet_player)
+    place_ships(player)
     board_player.print_grid()  # Show player's grid after placing ships
 
-    place_ships(computer, board_computer, fleet_computer)
+    place_ships(computer)
 
     main_game_loop(player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner)
