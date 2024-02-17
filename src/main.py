@@ -34,12 +34,9 @@ def setup_game():
     # Initialize grids
     board_player = Grid()
     print("Player grid initialized.")
-    # board_player.print_grid() #TODO: löschen, nur für Testzwecke
     print("Computer grid initialized.")
     board_computer = Grid()
-    # board_computer.print_grid() #TODO: löschen, nur für Testzwecke
     board_computer_players_view = Grid()
-    # board_computer_players_view.print_grid()
 
     # Initialize fleets
     fleet_player = Fleet(player_name)
@@ -65,17 +62,12 @@ def setup_game():
             ship_class = ship_classes[name]  # Look up the class constructor
             fleet_player.add_ship(ship_class(f"{name} {player_name}"))
             fleet_computer.add_ship(ship_class(f"{name} Computer"))
-
-
-    # print(f"{player.name}'s fleet: {[ship for ship in fleet_player.ships]}") #TODO: löschen, nur für Testzwecke
-    # print(f"{computer.name}'s fleet: {[ship for ship in fleet_computer.ships]}") #TODO: löschen, nur für Testzwecke
     
     def coin_flip(player, computer):
         '''
         Coin flip to determine who starts.
         '''
         coin = randrange(2)
-        print(f"Coinflip was", coin) #TODO: löschen, nur für Testzwecke
         if coin == 0:
             beginner = player
         else:
@@ -88,7 +80,7 @@ def setup_game():
     return player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner
 
 # Place ships
-def place_ships(player, grid, fleet):
+def place_ships(player):
     """
     Places the ships for the given player on the given grid.
     
@@ -114,7 +106,8 @@ def is_fleet_sunk(fleet, grid):
         True if all ships are sunk, False otherwise.
     """
     
-    for shipname, shipdetails in fleet.items():
+    # for shipname, shipdetails in fleet.items(): # TODO: Testing new one
+    for shipdetails in fleet.values():
         # Check if all coordinates of the ship have been hit
         for coordinate in shipdetails['coordinates']:
             column_index, row_index = grid._convert_coordinate_to_indices(coordinate)
@@ -136,7 +129,6 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
 
     while not game_over:
         if current_turn == player:
-            # print(f"\n{player.name}'s turn") #TODO: löschen, nur für Testzwecke
                         
             coordinate = player.player_coordinate(fleet_player.ships, '', attacking=True)  # Pass an empty string for 'shipname'
 
@@ -151,8 +143,7 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
                 board_computer.grid[row_index][column_index] = 'M'
                 board_computer_players_view.grid[row_index][column_index] = 'M'
 
-            print("Computer's grid after player's attack:") #TODO: löschen, nur für Testzwecke
-            # board_computer.print_grid()
+            print("Computer's grid after player's attack:")
             board_computer_players_view.print_grid()
 
             if is_fleet_sunk(fleet_computer.ships, board_computer):
@@ -162,7 +153,6 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
             current_turn = computer  # Switch turn to computer only if the game is not over
 
         else:
-            # print(f"\n{computer.name}'s turn") #TODO: löschen, nur für Testzwecke
             coordinate = random_coordinate(board_player.size)
             outcome = check_hit_or_miss(coordinate, board_player)
             print(f"Computer attacked {coordinate} and it was a {outcome}.")
@@ -196,6 +186,5 @@ if __name__ == "__main__":
     board_player.print_grid()  # Show player's grid after placing ships
 
     place_ships(computer, board_computer, fleet_computer)
-    # board_computer.print_grid()  #TODO: löschen, nur für Testzwecke
 
     main_game_loop(player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner)
