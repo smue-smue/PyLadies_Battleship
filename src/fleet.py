@@ -1,4 +1,5 @@
 from ship import Destroyer, Cruiser, Battleship, AircraftCarrier
+from grid import Grid
 
 class Fleet:
     '''
@@ -69,6 +70,19 @@ class Fleet:
         '''
 
         return len(self.ships)
+    
+    def record_hit(self, fleet, shipname, coordinate, grid): #TODO: HIER WEITERARBEITEN
+
+        column_index, row_index = grid._convert_coordinate_to_indices(coordinate)
+        cell = grid.grid[row_index][column_index]
+        if cell == 'S':
+            hit_coordinate = coordinate
+        
+        fleet[shipname]['hits'].append(hit_coordinate)
+
+        
+
+
 
 
 

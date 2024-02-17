@@ -116,7 +116,7 @@ def is_fleet_sunk(fleet, grid):
     return True  # All ships in the fleet are sunk
 
 
-def main_game_loop(player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner):
+def main_game_loop(player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner, record_hit):
     """
     The main loop that controls the game flow.
     
@@ -139,6 +139,7 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
             if outcome == 'hit':
                 board_computer.grid[row_index][column_index] = 'X'
                 board_computer_players_view.grid[row_index][column_index] = 'X'
+                record_hit(self, fleet, shipname, coordinate, grid) #TODO: einbauen, dass wenn Hit, dann wird es in der fleet beim ship aufgezeichnet
             else:
                 board_computer.grid[row_index][column_index] = '~'
                 board_computer_players_view.grid[row_index][column_index] = '~'

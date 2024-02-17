@@ -157,7 +157,7 @@ class Grid:
 
         return True  # Valid placement
 
-    def update_grid_fleet(self, start_coordinate, direction, fleet, size, shipname, show_errors=True):
+    def update_grid_fleet(self, start_coordinate, direction, fleet, size, shipname, show_errors=True): #TODO: Docstring überarbetiten
         '''
         Updates the grid with a new ship placement based on the given parameters.
 
@@ -195,7 +195,7 @@ class Grid:
      
         return True
 
-    def update_grid_attacks(self, coordinate):
+    def update_grid_attacks(self, coordinate): #TODO: ist das jetzt nicht in hit_miss.py?
         """
         Updates the grid to reflect the result of an attack at a given coordinate.
         Determines whether the coordinate hits a part of a ship ('S') and updates the grid with 'H' for a hit or 'M' for a miss.
