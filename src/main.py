@@ -111,7 +111,7 @@ def is_fleet_sunk(fleet, grid):
         # Check if all coordinates of the ship have been hit
         for coordinate in shipdetails['coordinates']:
             column_index, row_index = grid._convert_coordinate_to_indices(coordinate)
-            if grid.grid[row_index][column_index] != 'H':  # If any part of the ship is not hit ('H'), the ship is not sunk
+            if grid.grid[row_index][column_index] != 'X':  # If any part of the ship is not hit ('X'), the ship is not sunk
                 return False  # Fleet is not sunk
     return True  # All ships in the fleet are sunk
 
@@ -137,11 +137,11 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
 
             column_index, row_index = board_computer._convert_coordinate_to_indices(coordinate)
             if outcome == 'hit':
-                board_computer.grid[row_index][column_index] = 'H'
-                board_computer_players_view.grid[row_index][column_index] = 'H'
+                board_computer.grid[row_index][column_index] = 'X'
+                board_computer_players_view.grid[row_index][column_index] = 'X'
             else:
-                board_computer.grid[row_index][column_index] = 'M'
-                board_computer_players_view.grid[row_index][column_index] = 'M'
+                board_computer.grid[row_index][column_index] = '~'
+                board_computer_players_view.grid[row_index][column_index] = '~'
 
             print("Computer's grid after player's attack:")
             board_computer_players_view.print_grid()
@@ -159,9 +159,9 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
 
             column_index, row_index = board_player._convert_coordinate_to_indices(coordinate)
             if outcome == 'hit':
-                board_player.grid[row_index][column_index] = 'H'
+                board_player.grid[row_index][column_index] = 'X'
             else:
-                board_player.grid[row_index][column_index] = 'M'
+                board_player.grid[row_index][column_index] = '~'
 
             print("Player's grid after computer's attack:")
             board_player.print_grid()

@@ -225,10 +225,8 @@ class Grid:
 
         # Check if the coordinate hits a ship ('S') or is a miss
         if self.grid[row_index][column_index] == 'S':
-            self.grid[row_index][column_index] = 'X'  # Mark as hit
             outcome = 'hit'
         else:
-            self.grid[row_index][column_index] = '~'  # Mark as miss
             outcome = 'miss'
 
         return outcome
