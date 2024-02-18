@@ -17,6 +17,7 @@ class Fleet:
         __init__(self, name, *ships): Constructor for Fleet class.
         add_ship(self, ship): Adds a ship instance to the fleet.
         get_fleet_size(self): Returns the current size of the fleet.
+        is_fleet_sunk(self): Checks if all ships in a fleet are sunk.
 
     Example:
         >>> fleet_player = Fleet("Fleet Player", destroyer_1_pl, destroyer_2_pl, cruiser_1_pl, battleship_1_pl, aircraft_carrier_1_pl)
@@ -71,6 +72,22 @@ class Fleet:
         '''
 
         return len(self.ships)
+    
+    def is_fleet_sunk(self, grid):
+        '''
+        Checks if all ships in a fleet are sunk.
+        
+        Returns:
+            True if all ships are sunk, False otherwise.
+        '''
+
+        for ship_details in self.ships.values():
+            # Check if all coordinates of the ship have been hit
+            for coordinate in ship_details['coordinates']:
+                column_index, row_index = grid._convert_coordinate_to_indices(coordinate)
+                if grid.grid[row_index][column_index] != 'X':  # If any part of the ship is not hit ('X'), the ship is not sunk
+                    return False  # Fleet is not sunk
+        return True  # All ships in the fleet are sunk
     
 
         
