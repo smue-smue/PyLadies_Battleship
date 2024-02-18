@@ -6,22 +6,23 @@ from player import Player
 from computer import place_ships_randomly
 from computer import random_coordinate
 from hit_miss import check_hit_or_miss, get_hit_ship, record_hit
+import time
 
 # Setup game
 
 def setup_game():
     """
-    Initializes the game by setting up players, grids, and fleets.
-    
-    - Prompts for the player's name and creates Player instances for the human player and the computer.
-    - Initializes grids for both players.
-    - Creates fleets for both players and adds ships to them.
-    - Determines who will start the game by a coin flip.
-    
+    Initializes the game setup including players, grids, and fleets.
+
+    - Prompts for the human player's name and initializes Player instances for both the human and the computer.
+    - Sets up separate Grid instances for the human player, the computer, and the human player's view of the computer's grid.
+    - Initializes Fleet instances for both players and populates them with ships.
+    - Determines the starting player with a coin flip.
+
     Returns:
-        Tuple containing player, computer, player's board, computer's board, player's fleet, computer's fleet, and the beginner.
+        A collection of game setup components comprising the human player instance, the computer player instance, the human player's grid, the computer's grid, the human player's view of the computer's grid, the human player's fleet, the computer's fleet, and the player who will start the game. Although not explicitly returned as a tuple, Python packages these multiple return values into a tuple automatically.
     """
-     
+         
     # Create player and computer instances
     player_name = Player.prompt_for_player_name()
     player = Player(player_name)
@@ -158,6 +159,7 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
                 break  # Break out of the loop immediately if the computer's fleet is sunk
 
             current_turn = computer  # Switch turn to computer only if the game is not over
+            time.sleep(2)
 
         else:
             coordinate = random_coordinate(board_player.size)
@@ -178,6 +180,7 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
                 break  # Break out of the loop immediately if the player's fleet is sunk
 
             current_turn = player  # Switch turn back to player only if the game is not over
+            time.sleep(2)
 
         if game_over:
             print(f"\nGame Over! {current_turn.name} wins!")
