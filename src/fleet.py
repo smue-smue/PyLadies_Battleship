@@ -15,9 +15,10 @@ class Fleet:
 
     Methods:
         __init__(self, name, *ships): Constructor for Fleet class.
+        __str__(self): Prints fleet readable
         add_ship(self, ship): Adds a ship instance to the fleet.
         get_fleet_size(self): Returns the current size of the fleet.
-        is_fleet_sunk(self): Checks if all ships in a fleet are sunk.
+        update_ship_statuses(self): Updates the status ('active' or 'sunk') of each ship in the fleet based on the hits received and returns True if all ships are sunk, otherwise False.
 
     Example:
         >>> fleet_player = Fleet("Fleet Player", destroyer_1_pl, destroyer_2_pl, cruiser_1_pl, battleship_1_pl, aircraft_carrier_1_pl)
@@ -34,19 +35,39 @@ class Fleet:
             *ships  (Ship):     Variable number of ship instances to be added to the fleet.
         '''
 
-        # TODO: Raise ValueError: If the number of ships provided exceeds the max_size.
-
         self.name = name
         self.ships = {}
         for ship in ships:
             self.add_ship(ship)
+    
+    def __str__(self):
+        '''
+        Returns a human-readable string representation of the fleet.
+
+        Returns:
+            str: A string representation of the fleet, including the name, size, and hit count
+                for each ship in the fleet.
+
+        Example output:
+            Fleet 'Fleet Player' with ships:
+            Destroyer 1: (Hits: 2, Size: 3)
+            Cruiser 1: (Hits: 0, Size: 4)
+        '''
+
+        fleet_str = f"Fleet '{self.name}' with ships:\n"
+        for ship_name, details in self.ships.items():
+            hits = len(details['hits'])
+            size = details['size']
+            status = details['status']
+            fleet_str += f"  {ship_name}: (Hits: {hits}, Size: {size}, Status: {status})\n"
+        return fleet_str
 
     def add_ship(self, ship): # Attribute ship is an instance of an Ship object
         '''
-        Adds a ship instance to the fleet. If a ship with the same name already exists, its details are updated.
+        Adds a Ship instance to the fleet, or updates an existing ship's details.
 
         Parameters:
-            ship    (Ship):     Instance of Ship object to be added to the fleet. 
+            ship    (Ship):     The Ship instance to be added or updated in the fleet.
                                 The ship must have 'name' and 'size' attributes. 
         
         Updates:
@@ -58,10 +79,9 @@ class Fleet:
             None        
         '''
 
-        # TODO: Raises: ValueError: If adding the ship would exceed the fleet's max_size.
-        
-        self.ships[ship.name] = {'size': ship.size, 'coordinates': [], 'hits': []} # Adds instance of Ship object to the fleet where it is called on
-        # TODO: Too late: this should have been done via the Ship Class. Refactoring now would mean changes to nearly every bit of code.
+        # === This should have been done via the Ship Class. Refactoring now would mean changes to nearly every bit of code. ===
+       
+        self.ships[ship.name] = {'size': ship.size, 'coordinates': [], 'hits': [], 'status': "active"} # Adds instance of Ship object to the fleet where it is called on
 
     def get_fleet_size(self):
         '''
@@ -72,22 +92,33 @@ class Fleet:
         '''
 
         return len(self.ships)
-    
-    def is_fleet_sunk(self, grid):
+
+    def update_ship_statuses(self):
         '''
-        Checks if all ships in a fleet are sunk.
-        
+        Updates the status of each ship in the fleet based on the hits it has received.
+        Marks a ship as 'sunk' if the number of hits equals or exceeds its size. Prints a
+        message for each ship that is newly marked as sunk. Determines if the entire fleet
+        is sunk.
+
         Returns:
-            True if all ships are sunk, False otherwise.
+            bool: True if all ships in the fleet are sunk, False otherwise.
         '''
 
-        for ship_details in self.ships.values():
-            # Check if all coordinates of the ship have been hit
-            for coordinate in ship_details['coordinates']:
-                column_index, row_index = grid._convert_coordinate_to_indices(coordinate)
-                if grid.grid[row_index][column_index] != 'X':  # If any part of the ship is not hit ('X'), the ship is not sunk
-                    return False  # Fleet is not sunk
-        return True  # All ships in the fleet are sunk
+        # === This should have been done via the Ship Class. ===
+
+        all_sunk = True
+        for ship_name, ship_details in self.ships.items():
+            # Determine if the ship is sunk based on hits vs. size
+            if len(ship_details['hits']) >= ship_details['size']:
+                # Check if this is a new update to the ship's status
+                if ship_details['status'] != "sunk":
+                    ship_details['status'] = "sunk"
+                    print(f"*** {ship_name} is sunk! ***")
+            else:
+                ship_details['status'] = "active"
+                all_sunk = False  # If any ship is not sunk, the entire fleet isn't sunk
+        return all_sunk  # Indicates if the entire fleet is sunk
+
     
 
         
