@@ -1,13 +1,11 @@
 from random import randrange
 from grid import Grid
 from fleet import Fleet
-# from fleet import Fleet.record_hit
-#from fleet import shipname
 from ship import Destroyer, Cruiser, Battleship, AircraftCarrier
 from player import Player
 from computer import place_ships_randomly
 from computer import random_coordinate
-from hit_miss import check_hit_or_miss
+from hit_miss import check_hit_or_miss, get_hit_ship, record_hit
 
 # Setup game
 
@@ -107,8 +105,7 @@ def is_fleet_sunk(fleet, grid):
     Returns:
         True if all ships are sunk, False otherwise.
     """
-    
-    # for shipname, shipdetails in fleet.items(): # TODO: Testing new one
+
     for shipdetails in fleet.values():
         # Check if all coordinates of the ship have been hit
         for coordinate in shipdetails['coordinates']:
@@ -138,15 +135,22 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
             print(f"Attack on {coordinate} resulted in a {outcome}.")
 
             column_index, row_index = board_computer._convert_coordinate_to_indices(coordinate)
+            
             if outcome == 'hit':
                 board_computer.grid[row_index][column_index] = 'X'
                 board_computer_players_view.grid[row_index][column_index] = 'X'
-                Fleet.record_hit(fleet_computer, fleet_computer[shipname], coordinate, board_computer) #TODO: ausbessern, er weiß noch nicht welches Ship er trifft
-            else:
+                hit_ship_name = get_hit_ship(fleet_computer, coordinate)
+
+                if hit_ship_name is not None:
+                    record_hit(fleet_computer, hit_ship_name, coordinate)
+                    print(f"*** Hit registered on {hit_ship_name}! ***")
+
+            else: # Mark the miss on the grid
                 board_computer.grid[row_index][column_index] = '~'
                 board_computer_players_view.grid[row_index][column_index] = '~'
 
             print("Computer's grid after player's attack:")
+            board_computer.print_grid() # TODO: Delete, only for debugging
             board_computer_players_view.print_grid()
 
             if is_fleet_sunk(fleet_computer.ships, board_computer):
