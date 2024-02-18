@@ -99,23 +99,6 @@ def place_ships(player):
         player.player_placing_ships(fleet_player.ships, board_player)
         print(f"{player.name}'s ships placed.")
 
-def is_fleet_sunk(fleet, grid):
-    """
-    Checks if all ships in a fleet are sunk.
-    
-    Returns:
-        True if all ships are sunk, False otherwise.
-    """
-
-    for shipdetails in fleet.values():
-        # Check if all coordinates of the ship have been hit
-        for coordinate in shipdetails['coordinates']:
-            column_index, row_index = grid._convert_coordinate_to_indices(coordinate)
-            if grid.grid[row_index][column_index] != 'X':  # If any part of the ship is not hit ('X'), the ship is not sunk
-                return False  # Fleet is not sunk
-    return True  # All ships in the fleet are sunk
-
-
 def main_game_loop(player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner):
     """
     The main loop that controls the game flow.
@@ -151,10 +134,9 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
                 board_computer_players_view.grid[row_index][column_index] = '~'
 
             print("Computer's grid after player's attack:")
-            board_computer.print_grid() # TODO: Delete, only for debugging
             board_computer_players_view.print_grid()
 
-            if is_fleet_sunk(fleet_computer.ships, board_computer):
+            if fleet_computer.is_fleet_sunk(board_computer):
                 print(f"\nGame Over! {player.name} wins!")
                 break  # Break out of the loop immediately if the computer's fleet is sunk
 
@@ -175,7 +157,7 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
             print("Player's grid after computer's attack:")
             board_player.print_grid()
 
-            if is_fleet_sunk(fleet_player.ships, board_player):
+            if fleet_player.is_fleet_sunk(board_player):
                 print(f"\nGame Over! {computer.name} wins!")
                 break  # Break out of the loop immediately if the player's fleet is sunk
 
