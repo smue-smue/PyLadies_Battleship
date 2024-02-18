@@ -9,13 +9,6 @@ def check_hit_or_miss(coordinate, grid):
     else:
         return 'miss'
     
-# def get_hit_coordinate(coordinate, grid): # not really needed, but for easier reading
-#     column_index, row_index = grid._convert_coordinate_to_indices(coordinate)
-#     cell = grid.grid[row_index][column_index]
-#     if cell == 'S':
-#         hit_coordinate = coordinate
-#         return hit_coordinate
-    
 def get_hit_ship(fleet, hit_coordinate):
     for ship_name, ship_details in fleet.ships.items(): # Iterates over ship keys and values
         if hit_coordinate in ship_details['coordinates']:
