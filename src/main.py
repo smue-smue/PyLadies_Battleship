@@ -1,6 +1,8 @@
 from random import randrange
 from grid import Grid
 from fleet import Fleet
+# from fleet import Fleet.record_hit
+#from fleet import shipname
 from ship import Destroyer, Cruiser, Battleship, AircraftCarrier
 from player import Player
 from computer import place_ships_randomly
@@ -116,7 +118,7 @@ def is_fleet_sunk(fleet, grid):
     return True  # All ships in the fleet are sunk
 
 
-def main_game_loop(player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner, record_hit):
+def main_game_loop(player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner):
     """
     The main loop that controls the game flow.
     
@@ -139,7 +141,7 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
             if outcome == 'hit':
                 board_computer.grid[row_index][column_index] = 'X'
                 board_computer_players_view.grid[row_index][column_index] = 'X'
-                record_hit(self, fleet, shipname, coordinate, grid) #TODO: einbauen, dass wenn Hit, dann wird es in der fleet beim ship aufgezeichnet
+                Fleet.record_hit(fleet_computer, fleet_computer[shipname], coordinate, board_computer) #TODO: ausbessern, er weiß noch nicht welches Ship er trifft
             else:
                 board_computer.grid[row_index][column_index] = '~'
                 board_computer_players_view.grid[row_index][column_index] = '~'

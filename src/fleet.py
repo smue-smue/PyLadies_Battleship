@@ -77,8 +77,12 @@ class Fleet:
         cell = grid.grid[row_index][column_index]
         if cell == 'S':
             hit_coordinate = coordinate
+
+        #TODO: Rausfinden, welches ship getroffen wurd
         
         fleet[shipname]['hits'].append(hit_coordinate)
+
+        return None
 
         
 
