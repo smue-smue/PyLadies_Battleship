@@ -1,4 +1,5 @@
 from ship import Destroyer, Cruiser, Battleship, AircraftCarrier
+from grid import Grid
 
 class Fleet:
     '''
@@ -58,7 +59,7 @@ class Fleet:
 
         # TODO: Raises: ValueError: If adding the ship would exceed the fleet's max_size.
         
-        self.ships[ship.name] = {'size': ship.size, 'coordinates': []} # Adds instance of Ship object to the fleet where it is called on
+        self.ships[ship.name] = {'size': ship.size, 'coordinates': [], 'hits': []} # Adds instance of Ship object to the fleet where it is called on
 
     def get_fleet_size(self):
         '''
@@ -69,3 +70,11 @@ class Fleet:
         '''
 
         return len(self.ships)
+    
+
+        
+
+
+
+
+
