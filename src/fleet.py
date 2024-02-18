@@ -60,6 +60,7 @@ class Fleet:
         # TODO: Raises: ValueError: If adding the ship would exceed the fleet's max_size.
         
         self.ships[ship.name] = {'size': ship.size, 'coordinates': [], 'hits': []} # Adds instance of Ship object to the fleet where it is called on
+        # TODO: Too late: this should have been done via the Ship Class. Refactoring now would mean changes to nearly every bit of code.
 
     def get_fleet_size(self):
         '''
