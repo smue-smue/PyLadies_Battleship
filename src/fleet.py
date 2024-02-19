@@ -1,5 +1,9 @@
+import colorama
+from colorama import Fore, Style
 from ship import Destroyer, Cruiser, Battleship, AircraftCarrier
 from grid import Grid
+
+colorama.init(autoreset=True)
 
 class Fleet:
     '''
@@ -117,7 +121,7 @@ class Fleet:
                 # Check if this is a new update to the ship's status
                 if ship_details['status'] != "sunk":
                     ship_details['status'] = "sunk"
-                    print(f"*** {ship_name} is destroyed! ***")
+                    print(f"{Fore.RED}{Style.BRIGHT}*** {ship_name} is destroyed! ***")
             else:
                 ship_details['status'] = "active"
                 all_sunk = False  # If any ship is not sunk, the entire fleet isn't sunk
