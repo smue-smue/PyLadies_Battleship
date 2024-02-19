@@ -1,5 +1,5 @@
-from grid import Grid
-from fleet import Fleet
+#from grid import Grid
+#from fleet import Fleet
 
 def check_hit_or_miss(coordinate, grid):
     column_index, row_index = grid._convert_coordinate_to_indices(coordinate)

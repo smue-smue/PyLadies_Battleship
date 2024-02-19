@@ -1,10 +1,17 @@
-# Description: This file contains the computer's logic for placing ships on the grid.
+# Contains the computer's logic for placing ships on the grid.
 
 import random
 
 def random_coordinate(grid_size):
     '''
-    Returns a random coordinate within the grid bounds.
+    Generates a random coordinate within the specified grid size.
+
+    Parameters:
+        grid_size   (int): The size of the grid (number of rows/columns).
+
+    Returns:
+        str: A string representing a random coordinate within the grid, 
+             combining a column letter and a row number.
     '''
     
     column_label = random.choice('ABCDEFGHIJ'[0:grid_size]) 
@@ -13,14 +20,28 @@ def random_coordinate(grid_size):
 
 def random_direction():
     '''
-    Returns a random direction: 'H' for horizontal or 'V' for vertical.
+    Selects a random direction.
+
+    Returns:
+        str: A single character 'H' or 'V', representing horizontal or vertical direction, respectively.
     '''
     
     return random.choice(['H', 'V'])
 
 def place_ships_randomly(fleet, grid):
     '''
-    Places the ships in the fleet randomly on the grid.
+    Places each ship in the fleet at a random location on the grid.
+
+    This function iterates through all ships in the fleet and attempts to place them
+    randomly on the grid. It repeats the process for a ship until a valid placement
+    is found.
+
+    Parameters:
+        fleet   (dict):     A dictionary representing the fleet, with ship names as keys and ship details (including size) as values.
+        grid    (object):   An object representing the game grid.
+
+    Notes:
+        The function does not return a value but updates the `fleet` and `grid` objects directly to reflect the placement of ships.
     '''
     
     for shipname, shipdetails in fleet.items():

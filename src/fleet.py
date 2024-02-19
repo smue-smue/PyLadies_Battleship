@@ -6,14 +6,17 @@ class Fleet:
     A class to represent a fleet of ships.
 
     Class Attributes:
+    -----------------
         max_size    (int):  Class attribute to define the maximum size of the fleet. Default is 16.
 
     Attributes:
+    -----------
         name        (str):      Name of the fleet.
         ships       (dict):     Dictionary to store ship instances, with ship names as keys and
                                 nested dictionaries containing 'size' and 'coordinates' as values.
 
     Methods:
+    --------
         __init__(self, name, *ships): Constructor for Fleet class.
         __str__(self): Prints fleet readable
         add_ship(self, ship): Adds a ship instance to the fleet.
@@ -21,6 +24,7 @@ class Fleet:
         update_ship_statuses(self): Updates the status ('active' or 'sunk') of each ship in the fleet based on the hits received and returns True if all ships are sunk, otherwise False.
 
     Example:
+    --------
         >>> fleet_player = Fleet("Fleet Player", destroyer_1_pl, destroyer_2_pl, cruiser_1_pl, battleship_1_pl, aircraft_carrier_1_pl)
     '''
 
@@ -75,7 +79,7 @@ class Fleet:
                         and a dictionary containing 'size' and 'coordinates'
                         (initially empty) as value.
         
-        Return:
+        Returns:
             None        
         '''
 
@@ -113,17 +117,8 @@ class Fleet:
                 # Check if this is a new update to the ship's status
                 if ship_details['status'] != "sunk":
                     ship_details['status'] = "sunk"
-                    print(f"*** {ship_name} is sunk! ***")
+                    print(f"*** {ship_name} is destroyed! ***")
             else:
                 ship_details['status'] = "active"
                 all_sunk = False  # If any ship is not sunk, the entire fleet isn't sunk
         return all_sunk  # Indicates if the entire fleet is sunk
-
-    
-
-        
-
-
-
-
-
