@@ -1,4 +1,7 @@
+import time
 from random import randrange
+import colorama
+from colorama import Fore, Style
 from grid import Grid
 from fleet import Fleet
 from ship import Destroyer, Cruiser, Battleship, AircraftCarrier
@@ -6,9 +9,10 @@ from player import Player
 from computer import place_ships_randomly
 from computer import random_coordinate
 from hit_miss import check_hit_or_miss, get_hit_ship, record_hit
-import time
 
 # Setup game
+
+colorama.init(autoreset=True)
 
 def setup_game():
     """
@@ -127,25 +131,24 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
 
                 if hit_ship_name is not None:
                     record_hit(fleet_computer, hit_ship_name, coordinate)
-                    print(f"*** Hit registered on {hit_ship_name}! ***")
+                    print(f"{Fore.MAGENTA}*** Hit registered on {hit_ship_name}! ***")
 
             else: # Mark the miss on the grid
                 board_computer.grid[row_index][column_index] = '~'
                 board_computer_players_view.grid[row_index][column_index] = '~'
 
-            print("Computer's grid after player's attack:")
+            print("\nComputer's grid after player's attack:")
             board_computer_players_view.print_grid()
             board_computer.print_grid() # TODO: only for WINNING :D
-            # print(fleet_computer) # debugging
+            print(fleet_computer) # debugging
 
             if fleet_computer.update_ship_statuses():
-                print(f"\nGame Over! {player.name} wins!")
+                print(f"{Fore.MAGENTA}{Style.BRIGHT}\nGame Over! {player.name} wins!\n")
                 break  # Break out of the loop immediately if the computer's fleet is sunk
             
             time.sleep(2)
 
             current_turn = computer  # Switch turn to computer only if the game is not over
-            # time.sleep(2)
 
         else:
             coordinate = random_coordinate(board_player.size)
@@ -155,22 +158,27 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
             column_index, row_index = board_player._convert_coordinate_to_indices(coordinate)
             if outcome == 'hit':
                 board_player.grid[row_index][column_index] = 'X'
+                hit_ship_name = get_hit_ship(fleet_player, coordinate)
+
+                if hit_ship_name is not None:
+                    record_hit(fleet_player, hit_ship_name, coordinate)
+                    print(f"{Fore.CYAN}*** Hit registered on {hit_ship_name}! ***")
             else:
                 board_player.grid[row_index][column_index] = '~'
 
-            print("Player's grid after computer's attack:")
+            print("\nPlayer's grid after computer's attack:")
             board_player.print_grid()
-            # print(fleet_player) # debugging
+            print(fleet_player) # debugging
 
             if fleet_player.update_ship_statuses():
-                print(f"\nGame Over! {computer.name} wins!")
+                print(f"{Fore.CYAN}{Style.BRIGHT}\nGame Over! {computer.name} wins!\n")
                 break  # Break out of the loop immediately if the player's fleet is sunk
 
             current_turn = player  # Switch turn back to player only if the game is not over
-            time.sleep(2)
+            time.sleep(1)
 
         if game_over:
-            print(f"\nGame Over! {current_turn.name} wins!")
+            print(f"\nGame Over! {current_turn.name} wins!\n")
 
 
 # Main execution
