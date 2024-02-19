@@ -2,34 +2,27 @@
 
 class Grid:
     '''
-    A class used to represent a grid for grid-based games, such as battleship.
+    A class used to represent a 2D grid for grid-based games, such as battleship.
 
     Parameters:
     -----------
-    size    (int, optional):    The size of the grid (default is 10). This size is used to determine the grid's dimensions (size x size).
+        size    (int, optional):    The size of the grid (default is 10). This size is used to determine the grid's dimensions (size x size).
     
     Attributes:
-    -----------
-    grid            (list):     A matrix representing the game grid, where each cell can hold a value indicating a ship part, a hit, a miss, or empty.
-    coordinates_x   (dict):     A dictionary mapping column labels (A, B, C, ...) to their respective 1-based numerical indices.
-    coordinates_y   (dict):     A dictionary mapping row labels ('1', '2', '3', ...) to their respective 1-based numerical indices.
+    ----------- 
+        grid            (list):     A matrix representing the game grid, where each cell can hold a value indicating a ship part, a hit, a miss, or empty.
+        coordinates_x   (dict):     A dictionary mapping column labels (A, B, C, ...) to their respective 1-based numerical indices.
+        coordinates_y   (dict):     A dictionary mapping row labels ('1', '2', '3', ...) to their respective 1-based numerical indices.
 
     Methods:
-    --------
-    initialize_grid(size=10)      
-    _convert_coordinate_to_indices(coordinate) 
-    _convert_indices_to_coordinate(column_index, row_index)
-    _mark_water_around_ship(self, row_index, column_index)
-    update_grid_fleet(start_coordinate, direction, fleet, size, shipname)   
-    update_grid_attacks(coordinate=None)
-    print_grid()
-    
-    Notes:
-    ------
-    This class is designed for grid-based games where tracking positions on a 2D grid is necessary. 
-    It includes methods for initializing the grid, updating it with ship placements or attack results, and converting 
-    between different coordinate systems. The class requires further implementation to fully handle game logic, such as 
-    checking for overlapping ships, handling different attack types, and fixing coordinate conversion methods.
+    --------    
+        initialize_grid(size=10): Initializes the grid as a list of lists (matrix)
+        _convert_coordinate_to_indices(coordinate): Converts a coordinate (e.g., 'A1') into 0-based grid indices.
+        _convert_indices_to_coordinate(column_index, row_index): Converts 0-based grid indices back into a coordinate (e.g., 'A1').
+        _mark_water_around_ship(self, row_index, column_index): Marking adjacent cells around the specified ship part as water ("~").
+        is_valid_placement(grid, start_coordinate, direction, size): Determines the validity of a proposed ship placement.
+        update_grid_fleet(start_coordinate, direction, fleet, size, shipname): Updates the grid with a new ship placement based on the given parameters.
+        print_grid(): Prints the current state of the grid to the console, showing all ships, hits, misses, and empty spaces.
    ''' 
     
     coordinates_x = {
@@ -157,7 +150,7 @@ class Grid:
 
         return True  # Valid placement
 
-    def update_grid_fleet(self, start_coordinate, direction, fleet, size, shipname, show_errors=True): #TODO: Docstring überarbetiten
+    def update_grid_fleet(self, start_coordinate, direction, fleet, size, shipname, show_errors=True):
         '''
         Updates the grid with a new ship placement based on the given parameters.
 
@@ -174,7 +167,7 @@ class Grid:
                     False otherwise.
         '''
         
-        if start_coordinate is None:
+        if start_coordinate is None and show_errors:
             print("Error: Coordinate cannot be None.")
             return False
         
@@ -194,44 +187,7 @@ class Grid:
                 self._mark_water_around_ship(row_index, column_index + i)
      
         return True
-
-    def update_grid_attacks(self, coordinate): #TODO: ist das jetzt nicht in hit_miss.py?
-        """
-        Updates the grid to reflect the result of an attack at a given coordinate.
-        Determines whether the coordinate hits a part of a ship ('S') and updates the grid with 'H' for a hit or 'M' for a miss.
-
-        Parameters:
-        - coordinate (str): The grid coordinate being attacked, in the format 'A1', 'B2', etc.
-
-        Returns:
-        - outcome (str): A string indicating the result of the attack: 'hit' if a ship part was hit, and 'miss' if not.
-
-        Raises:
-        - ValueError: If the coordinate is None or if the coordinates are out of the grid bounds.
-
-        Example:
-        - Calling update_grid_attacks('A1') on a grid where 'A1' has a ship will mark 'A1' as 'H' (hit) and return 'hit'.
-        - Calling update_grid_attacks('B3') on a grid where 'B3' is empty water will mark 'B3' as 'M' (miss) and return 'miss'.
-        """
-
-        if coordinate is None:
-            raise ValueError("Coordinate cannot be None.")
-
-        column_index, row_index = self._convert_coordinate_to_indices(coordinate)
-
-        # Ensure coordinates are within the grid bounds
-        if row_index < 0 or row_index >= self.size or column_index < 0 or column_index >= self.size:
-            raise ValueError("Coordinates are out of the grid bounds.")
-
-        # Check if the coordinate hits a ship ('S') or is a miss
-        if self.grid[row_index][column_index] == 'S':
-            outcome = 'hit'
-        else:
-            outcome = 'miss'
-
-        return outcome
         
-
     def print_grid(self):
         '''
         Prints the current state of the grid to the console, showing all ships, hits, 

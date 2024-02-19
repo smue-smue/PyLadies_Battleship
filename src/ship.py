@@ -4,23 +4,23 @@ class Ship:
 
     Attributes:
     -----------
-    name    (str):  Name of the ship. Unique identifier for the ship instance.
-    type    (str):  Type of the ship (e.g., "Destroyer", "Cruiser"). Defines the ship's role and capabilities.
-    size    (int):  Size of the ship, representing how many grid spaces it occupies. Influences the ship's placement on the game board.
+        name    (str):  Name of the ship. Unique identifier for the ship instance.
+        type    (str):  Type of the ship (e.g., "Destroyer", "Cruiser"). Defines the ship's role and capabilities.
+        size    (int):  Size of the ship, representing how many grid spaces it occupies. Influences the ship's placement on the game board.
 
 
     Parameters:
     -----------
-    name    (str):  Name of the ship.
-    type    (str):  Type of the ship (e.g., Destroyer)
-    size    (int):  Size of the ship, representing how many spaces of the grid it takes up.
+        name    (str):  Name of the ship.
+        type    (str):  Type of the ship (e.g., Destroyer)
+        size    (int):  Size of the ship, representing how many spaces of the grid it takes up.
 
     Example:
     --------
         >>> destroyer_2_pl = Destroyer("Destroyer 2")
         >>> cruiser_1_pl = Cruiser("Cruiser 1")
-
     '''
+
     def __init__(self, name, type, size):
         self.name = name # Attribute: Name of the ship
         self.type = type # Attribute: Type of the ship

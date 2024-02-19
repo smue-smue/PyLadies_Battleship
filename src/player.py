@@ -5,17 +5,36 @@ from grid import Grid
 
 class Player():
     '''
+    Represents a player in a game, handling player interactions such as name input,
+    ship placement, and direction choices.
 
+    Attributes:
+    -----------
+        name    (str):  The name of the player.
+
+    Methods:
+    --------
+        prompt_for_player_name(): Static method to prompt the user for their name.
+        player_coordinate(self, fleet_player, shipname, attacking=False): Asks the player for coordinates to place their ships or to perform attacks.
+        player_direction(self): Asks the player in which direction to place their ships on the grid.
+        player_placing_ships(self, fleet_player, board_player): Guides the player through placing all their ships on the game board.
     '''
     def __init__(self, name=None):
-         self.name = name
+        '''
+        Initializes a new player instance.
+
+        Parameters:
+            name    (str, optional): The name of the player. Defaults to None.
+
+        '''
+
+        self.name = name
 
     @staticmethod
     def prompt_for_player_name():
         '''
         Static method to prompt the user for their name.
-        This method does not require access to the instance (self)
-        or the class (cls).
+        This method does not require access to the instance (self) or the class (cls).
 
         Returns:
             str: The name entered by the user.
@@ -26,7 +45,19 @@ class Player():
     
     def player_coordinate(self, fleet_player, shipname, attacking=False):
         '''
-        Asks the player where to place their ships. TODO: Anpassen
+        Asks the player for coordinates to place their ships or to perform attacks.
+
+        Parameters:
+            fleet_player    (dict): The player's fleet, containing ship names and properties.
+            shipname        (str):  The name of the ship to place.
+            attacking       (bool): Flag indicating whether the player is attacking.
+
+        Returns:
+            str: The valid coordinate entered by the player.
+
+        Notes:
+            This method loops until a valid coordinate is input by the user. It checks for
+            valid row and column inputs based on predefined grid coordinates.
         '''
 
         while True: # Use a loop to keep asking until a valid input is received
@@ -36,7 +67,6 @@ class Player():
                 prompt_message = f"Please enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares): "
 
             coordinate = input(prompt_message) # TODO: ValueError for inputs like "E" or only "8"
-            coordinate = coordinate.upper() # Convert to upper case for comparison
             
             column_label = coordinate[0].upper()
             try:
@@ -53,8 +83,15 @@ class Player():
     
     def player_direction(self):
         '''
-        Asks the player in which direction to place their ships.
+        Asks the player in which direction to place their ships on the grid.
+
+        Returns:
+            str: The direction ('H' for horizontal or 'V' for vertical) for ship placement.
+
+        Notes:
+            This method loops until a valid direction is input by the user.
         '''
+
         while True:  # Use a loop to keep asking until a valid input is received
             direction = input("Please enter the direction (H for horizontal, V for vertical). ").upper()  # Convert to upper case
             if direction in ['H', 'V']:
@@ -66,7 +103,16 @@ class Player():
 
     def player_placing_ships(self, fleet_player, board_player):
         '''
-        Asks the player where to place their ships. Repeats for invalid placements.
+        Guides the player through placing all their ships on the game board.
+
+        Parameters:
+            fleet_player (dict): The player's fleet, containing ship names and properties.
+            board_player (Board): The game board on which ships will be placed.
+
+        Notes:
+            This method iterates over each ship in the player's fleet, prompting for
+            placement until all ships are validly placed. It checks for valid placements
+            and updates the game board accordingly.
         '''
 
         while True:
