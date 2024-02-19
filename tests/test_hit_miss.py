@@ -4,9 +4,9 @@ from grid import Grid
 
 @pytest.fixture
 def setup_grid():
-    grid = Grid()  # Assuming Grid has a default constructor
+    grid = Grid() 
     # Setup grid with a ship at certain location, 'S' represents a ship
-    grid.grid[1][1] = 'S'  # Assuming grid is a 2D list and [1][1] is within bounds
+    grid.grid[1][1] = 'S' # 'B2' is the location of the ship
     return grid
 
 def test_hit_detection(setup_grid):
