@@ -21,7 +21,6 @@ class Grid:
     _convert_indices_to_coordinate(column_index, row_index)
     _mark_water_around_ship(self, row_index, column_index)
     update_grid_fleet(start_coordinate, direction, fleet, size, shipname)   
-    update_grid_attacks(coordinate=None)
     print_grid()
     
     Notes:
@@ -194,44 +193,7 @@ class Grid:
                 self._mark_water_around_ship(row_index, column_index + i)
      
         return True
-
-    def update_grid_attacks(self, coordinate): #TODO: ist das jetzt nicht in hit_miss.py?
-        """
-        Updates the grid to reflect the result of an attack at a given coordinate.
-        Determines whether the coordinate hits a part of a ship ('S') and updates the grid with 'H' for a hit or 'M' for a miss.
-
-        Parameters:
-        - coordinate (str): The grid coordinate being attacked, in the format 'A1', 'B2', etc.
-
-        Returns:
-        - outcome (str): A string indicating the result of the attack: 'hit' if a ship part was hit, and 'miss' if not.
-
-        Raises:
-        - ValueError: If the coordinate is None or if the coordinates are out of the grid bounds.
-
-        Example:
-        - Calling update_grid_attacks('A1') on a grid where 'A1' has a ship will mark 'A1' as 'H' (hit) and return 'hit'.
-        - Calling update_grid_attacks('B3') on a grid where 'B3' is empty water will mark 'B3' as 'M' (miss) and return 'miss'.
-        """
-
-        if coordinate is None:
-            raise ValueError("Coordinate cannot be None.")
-
-        column_index, row_index = self._convert_coordinate_to_indices(coordinate)
-
-        # Ensure coordinates are within the grid bounds
-        if row_index < 0 or row_index >= self.size or column_index < 0 or column_index >= self.size:
-            raise ValueError("Coordinates are out of the grid bounds.")
-
-        # Check if the coordinate hits a ship ('S') or is a miss
-        if self.grid[row_index][column_index] == 'S':
-            outcome = 'hit'
-        else:
-            outcome = 'miss'
-
-        return outcome
         
-
     def print_grid(self):
         '''
         Prints the current state of the grid to the console, showing all ships, hits, 
