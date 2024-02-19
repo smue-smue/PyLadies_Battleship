@@ -66,20 +66,24 @@ class Player():
             else:
                 prompt_message = f"Please enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares): "
 
-            coordinate = input(prompt_message) # TODO: ValueError for inputs like "E" or only "8"
+            coordinate = input(prompt_message)
             
-            column_label = coordinate[0].upper()
+            if len(coordinate) <2:
+                print("Invalid input. please enter a valid coordinate (e.g. 'B1').")
+                continue
+
+            coordinate_upper = coordinate[0].upper()
+            row_part = coordinate[1:]
+
             try:
-                row_number = int(coordinate[1:])
+                row_number = int(row_part)
                 row_key = str(row_number) # Convert row_number back to string for comparison
+                if coordinate_upper in Grid.coordinates_x and row_key in Grid.coordinates_y:
+                    return coordinate_upper + row_key
+                else:
+                    print("Invalid input. please enter a valid coordinate (e.g. 'B1').")
             except ValueError:
                 print("Invalid row number. Please enter a valid coordinate (e.g. 'B1').")
-                continue # Ensure the loop continues without attempting to check invalid input
-
-            if column_label in Grid.coordinates_x and row_key in Grid.coordinates_y:
-                return coordinate  # Return the coordinate if it's valid
-            else:
-                print("Invalid coordinate. Please enter a valid coordinate (e.g. 'A1').")
     
     def player_direction(self):
         '''

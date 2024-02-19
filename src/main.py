@@ -128,9 +128,10 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
                 board_computer.grid[row_index][column_index] = 'X'
                 board_computer_players_view.grid[row_index][column_index] = 'X'
                 hit_ship_name = get_hit_ship(fleet_computer, coordinate)
-
+                
                 if hit_ship_name is not None:
                     record_hit(fleet_computer, hit_ship_name, coordinate)
+                    fleet_computer.update_ship_statuses()
                     print(f"{Fore.MAGENTA}*** Hit registered on {hit_ship_name}! ***")
 
             else: # Mark the miss on the grid
@@ -140,7 +141,7 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
             print("\nComputer's grid after player's attack:")
             board_computer_players_view.print_grid()
             board_computer.print_grid() # TODO: only for WINNING :D
-            print(fleet_computer) # debugging
+            # print(fleet_computer) # debugging
 
             if fleet_computer.update_ship_statuses():
                 print(f"{Fore.MAGENTA}{Style.BRIGHT}\nGame Over! {player.name} wins!\n")
@@ -159,16 +160,18 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
             if outcome == 'hit':
                 board_player.grid[row_index][column_index] = 'X'
                 hit_ship_name = get_hit_ship(fleet_player, coordinate)
+                
 
                 if hit_ship_name is not None:
                     record_hit(fleet_player, hit_ship_name, coordinate)
+                    fleet_player.update_ship_statuses()
                     print(f"{Fore.CYAN}*** Hit registered on {hit_ship_name}! ***")
             else:
                 board_player.grid[row_index][column_index] = '~'
 
             print("\nPlayer's grid after computer's attack:")
             board_player.print_grid()
-            print(fleet_player) # debugging
+            # print(fleet_player) # debugging
 
             if fleet_player.update_ship_statuses():
                 print(f"{Fore.CYAN}{Style.BRIGHT}\nGame Over! {computer.name} wins!\n")
