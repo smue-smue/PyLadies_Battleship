@@ -1,4 +1,6 @@
-# Grid setup - manages the state and rules of the game board.
+'''
+This module manages the Grid setup, the state and rules of the game board.
+'''
 
 class Grid:
     '''
@@ -6,25 +8,29 @@ class Grid:
 
     Parameters:
     -----------
-        size    (int, optional):    The size of the grid (default is 10). This size is used to determine the grid's dimensions (size x size).
+        size    (int, optional):    The size of the grid (default is 10). 
+                                    This size is used to determine the grid's dimensions.
     
     Attributes:
     ----------- 
-        grid            (list):     A matrix representing the game grid, where each cell can hold a value indicating a ship part, a hit, a miss, or empty.
-        coordinates_x   (dict):     A dictionary mapping column labels (A, B, C, ...) to their respective 1-based numerical indices.
-        coordinates_y   (dict):     A dictionary mapping row labels ('1', '2', '3', ...) to their respective 1-based numerical indices.
+        grid            (list):     Matrix representing the game grid, where each cell can 
+                                    hold a value indicating a ship part, hit/miss, or empty.
+        coordinates_x   (dict):     Dictionary mapping column labels (A, B, C, ...) 
+                                    to their respective 1-based numerical indices.
+        coordinates_y   (dict):     Dictionary mapping row labels ('1', '2', '3', ...) 
+                                    to their respective 1-based numerical indices.
 
     Methods:
     --------    
-        initialize_grid(size=10): Initializes the grid as a list of lists (matrix)
-        _convert_coordinate_to_indices(coordinate): Converts a coordinate (e.g., 'A1') into 0-based grid indices.
-        _convert_indices_to_coordinate(column_index, row_index): Converts 0-based grid indices back into a coordinate (e.g., 'A1').
-        _mark_water_around_ship(self, row_index, column_index): Marking adjacent cells around the specified ship part as water ("~").
-        is_valid_placement(grid, start_coordinate, direction, size): Determines the validity of a proposed ship placement.
-        update_grid_fleet(start_coordinate, direction, fleet, size, shipname): Updates the grid with a new ship placement based on the given parameters.
-        print_grid(): Prints the current state of the grid to the console, showing all ships, hits, misses, and empty spaces.
-   ''' 
-    
+        initialize_grid(size=10)
+        _convert_coordinate_to_indices(coordinate)
+        _convert_indices_to_coordinate(column_index, row_index)
+        _mark_water_around_ship(self, row_index, column_index)
+        is_valid_placement(grid, start_coordinate, direction, size)
+        update_grid_fleet(start_coordinate, direction, fleet, size, shipname)
+        print_grid()
+   '''
+
     coordinates_x = {
         'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4,
         'F': 5, 'G': 6, 'H': 7, 'I': 8, 'J': 9,
@@ -42,7 +48,7 @@ class Grid:
     def __init__(self, size=10):
         self.size = size
         self.grid = self.initialize_grid(size)
-    
+
     def initialize_grid(self, size=10):
         '''
         Initializes the grid as a list of lists (matrix) to a specified size, 
@@ -56,13 +62,13 @@ class Grid:
             list:   A 2D list (matrix) representing the initialized game grid.
         '''
         grid = []
-        for _ in range(size): 
+        for _ in range(size):
             row = ['.'] * (size)
-            grid.append(row) 
-        
+            grid.append(row)
+
         return grid
-    
-    def _convert_coordinate_to_indices(self, coordinate):
+
+    def convert_coordinate_to_indices(self, coordinate):
         '''
         Converts a coordinate (e.g., 'A1') into 0-based grid indices.
 
@@ -83,7 +89,7 @@ class Grid:
         row_index = int(row_number) - 1 # Convert row to 0-based
 
         return column_index, row_index
-    
+
     def _convert_indices_to_coordinate(self, column_index, row_index):
         '''
         Converts 0-based grid indices back into a coordinate (e.g., 'A1').
@@ -99,11 +105,11 @@ class Grid:
 
         # Find the letter corresponding to the 0-based column index
         column_letter = [key for key, value in self.coordinates_x.items() if value == column_index][0]
-        
+
         # Adjust row_index to 1-based for display
         coordinate = f"{column_letter}{row_index + 1}"
         return coordinate
-    
+
     def _mark_water_around_ship(self, row_index, column_index):
         '''
         Modifies the grid attribute of the Grid class instance by marking adjacent cells 
@@ -121,10 +127,12 @@ class Grid:
             for c in range(-1, 2):  # From -1 to 1, covering left, same, and right columns
                 new_row, new_col = row_index + r, column_index + c
                 # Check boundaries and avoid marking the ship cell itself as water
-                if 0 <= new_row < len(self.grid) and 0 <= new_col < len(self.grid[0]) and self.grid[new_row][new_col] == ".":
+                if (0 <= new_row < len(self.grid) and
+                    0 <= new_col < len(self.grid[0]) and
+                    self.grid[new_row][new_col] == "."):
                     self.grid[new_row][new_col] = "~"
-    
-    def is_valid_placement(grid, start_coordinate, direction, size):
+
+    def is_valid_placement(self, grid, start_coordinate, direction, size):
         '''
         Determines the validity of a proposed ship placement.
         Firstly, if the placement exceeds grid bounds based on the direction and size of the ship.
@@ -156,21 +164,23 @@ class Grid:
 
         Parameters:
             start_coordinate    (str):  The starting coordinate of the ship placement, e.g., 'A1'.
-            direction           (str):  The direction of the ship placement, 'V' for vertical or 'H' for horizontal.
-            fleet               (dict): A dictionary containing the fleet information, updated with the ship's coordinates.
+            direction           (str):  The direction of the ship placement, 
+                                        'V' for vertical or 'H' for horizontal.
+            fleet               (dict): A dictionary containing the fleet information, 
+                                        updated with the ship's coordinates.
             size                (int):  The size (length) of the ship being placed.
             shipname            (str):  The name of the ship being placed.
-            show_errors         (bool): If True, prints error messages to the console when placement fails.
+            show_errors         (bool): If True, prints error messages when placement fails.
 
         Returns:
             bool:   True if the ship was successfully placed, 
                     False otherwise.
         '''
-        
+
         if start_coordinate is None and show_errors:
             print("Error: Coordinate cannot be None.")
             return False
-        
+
         column_index, row_index = self._convert_coordinate_to_indices(start_coordinate)
 
         for i in range(size):
@@ -185,9 +195,9 @@ class Grid:
                 coordinate = self._convert_indices_to_coordinate(column_index + i, row_index)
                 fleet[shipname]['coordinates'].append(coordinate)
                 self._mark_water_around_ship(row_index, column_index + i)
-     
+
         return True
-        
+
     def print_grid(self):
         '''
         Prints the current state of the grid to the console, showing all ships, hits, 
@@ -204,4 +214,3 @@ class Grid:
         for index, row in enumerate(self.grid, start=1):
             print(f"{index:<2} {' '.join(row)}")
         print()
-

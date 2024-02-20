@@ -1,7 +1,11 @@
+'''
+This module contains a class for fleets and methods for handling the fleets.
+Unfortunately it also contains methods for updating ships, which should have 
+been done at the ship module.
+'''
+
 import colorama
 from colorama import Fore, Style
-from ship import Destroyer, Cruiser, Battleship, AircraftCarrier
-from grid import Grid
 
 colorama.init(autoreset=True)
 
@@ -25,11 +29,14 @@ class Fleet:
         __str__(self): Prints fleet readable
         add_ship(self, ship): Adds a ship instance to the fleet.
         get_fleet_size(self): Returns the current size of the fleet.
-        update_ship_statuses(self): Updates the status ('active' or 'sunk') of each ship in the fleet based on the hits received and returns True if all ships are sunk, otherwise False.
+        update_ship_statuses(self): Updates the status ('active' or 'sunk') of each ship in the 
+                                    fleet based on the hits received and returns True if all 
+                                    ships are sunk, otherwise False.
 
     Example:
     --------
-        >>> fleet_player = Fleet("Fleet Player", destroyer_1_pl, destroyer_2_pl, cruiser_1_pl, battleship_1_pl, aircraft_carrier_1_pl)
+        >>> fleet_player = Fleet("Fleet Player", destroyer_1_pl, destroyer_2_pl, cruiser_1_pl, 
+                                battleship_1_pl, aircraft_carrier_1_pl)
     '''
 
     max_size = 16
@@ -47,14 +54,14 @@ class Fleet:
         self.ships = {}
         for ship in ships:
             self.add_ship(ship)
-    
+
     def __str__(self):
         '''
         Returns a human-readable string representation of the fleet.
 
         Returns:
             str: A string representation of the fleet, including the name, size, and hit count
-                for each ship in the fleet.
+            for each ship in the fleet.
 
         Example output:
             Fleet 'Fleet Player' with ships:
@@ -87,9 +94,16 @@ class Fleet:
             None        
         '''
 
-        # === This should have been done via the Ship Class. Refactoring now would mean changes to nearly every bit of code. ===
-       
-        self.ships[ship.name] = {'size': ship.size, 'coordinates': [], 'hits': [], 'status': "active"} # Adds instance of Ship object to the fleet where it is called on
+        # === This should have been done via the Ship Class.
+        # Refactoring now would mean changes to nearly every bit of code. ===
+
+        # Adds instance of Ship object to the fleet where it is called on
+        self.ships[ship.name] = {
+            'size': ship.size,
+            'coordinates': [],
+            'hits': [],
+            'status': "active"
+            }
 
     def get_fleet_size(self):
         '''
