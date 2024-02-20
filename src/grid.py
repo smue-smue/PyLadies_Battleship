@@ -132,7 +132,7 @@ class Grid:
                     self.grid[new_row][new_col] == "."):
                     self.grid[new_row][new_col] = "~"
 
-    def is_valid_placement(self, grid, start_coordinate, direction, size):
+    def is_valid_placement(grid, start_coordinate, direction, size):
         '''
         Determines the validity of a proposed ship placement.
         Firstly, if the placement exceeds grid bounds based on the direction and size of the ship.
@@ -181,7 +181,7 @@ class Grid:
             print("Error: Coordinate cannot be None.")
             return False
 
-        column_index, row_index = self._convert_coordinate_to_indices(start_coordinate)
+        column_index, row_index = self.convert_coordinate_to_indices(start_coordinate)
 
         for i in range(size):
 
