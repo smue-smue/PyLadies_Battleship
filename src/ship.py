@@ -1,3 +1,5 @@
+'''This module contains classes for warships.'''
+
 class Ship:
     '''
     A Class to represent a general ship.
@@ -5,8 +7,8 @@ class Ship:
     Attributes:
     -----------
         name    (str):  Name of the ship. Unique identifier for the ship instance.
-        type    (str):  Type of the ship (e.g., "Destroyer", "Cruiser"). Defines the ship's role and capabilities.
-        size    (int):  Size of the ship, representing how many grid spaces it occupies. Influences the ship's placement on the game board.
+        type    (str):  Type of the ship. Defines the ship's role and capabilities.
+        size    (int):  Size of the ship, representing how many grid spaces it occupies.
 
 
     Parameters:
@@ -35,7 +37,7 @@ class Destroyer(Ship):
 
     Inherits from Ship with a fixed type "Destroyer" and size 2.
 
-    ''' 
+    '''
     def __init__(self, name):
         super().__init__(name, "Destroyer", 2)
 
@@ -74,4 +76,3 @@ class AircraftCarrier(Ship):
     '''
     def __init__(self, name):
         super().__init__(name, "Aircraft Carrier", 5)
-
