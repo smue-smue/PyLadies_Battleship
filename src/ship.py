@@ -7,14 +7,14 @@ class Ship:
     Attributes:
     -----------
         name    (str):  Name of the ship. Unique identifier for the ship instance.
-        type    (str):  Type of the ship. Defines the ship's role and capabilities.
+        style   (str):  Type of the ship. Defines the ship's role and capabilities.
         size    (int):  Size of the ship, representing how many grid spaces it occupies.
 
 
     Parameters:
     -----------
         name    (str):  Name of the ship.
-        type    (str):  Type of the ship (e.g., Destroyer)
+        style   (str):  Type of the ship (e.g., Destroyer)
         size    (int):  Size of the ship, representing how many spaces of the grid it takes up.
 
     Example:
@@ -23,9 +23,9 @@ class Ship:
         >>> cruiser_1_pl = Cruiser("Cruiser 1")
     '''
 
-    def __init__(self, name, type, size):
+    def __init__(self, name, style, size):
         self.name = name # Attribute: Name of the ship
-        self.type = type # Attribute: Type of the ship
+        self.style = style # Attribute: Type of the ship
         self.size = size # Attribute: Size of the ship
 
 class Destroyer(Ship):
