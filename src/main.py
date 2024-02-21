@@ -152,11 +152,18 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
             current_turn = computer  # Switch turn to computer only if the game is not over
 
         else:
-            coordinate = random_coordinate(board_player.size)
+            if computer.hunt_mode and computer.potential_targets:
+                # If in hunt mode, choose the next target from the list of potential targets.
+                coordinate = computer.potential_targets.pop(0)
+            else:
+                # Otherwise, select a random coordinate to attack.
+                coordinate = random_coordinate(board_player.size)
+
             outcome = check_hit_or_miss(coordinate, board_player)
             print(f"\nComputer attacked {coordinate} and it was a {outcome}.")
 
             column_index, row_index = board_player.convert_coordinate_to_indices(coordinate)
+            
             if outcome == 'hit':
                 board_player.grid[row_index][column_index] = 'X'
                 hit_ship_name = get_hit_ship(fleet_player, coordinate)
@@ -166,8 +173,17 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
                     record_hit(fleet_player, hit_ship_name, coordinate)
                     fleet_player.update_ship_statuses()
                     print(f"{Fore.CYAN}*** Hit registered on {hit_ship_name}! ***")
+
+                if not computer.hunt_mode:
+                    computer.hunt_mode = True
+                    computer.last_hit = coordinate
+                    computer.potential_targets = board_player.get_adjacent_cells(coordinate)
+                    print(f"{Fore.CYAN}*** Switching to hunt mode! ***")
             else:
                 board_player.grid[row_index][column_index] = '~'
+                if not computer.potential_targets:
+                    computer.hunt_mode = False
+                    computer.last_hit = None
 
             print("\nPlayer's grid after computer's attack:")
             board_player.print_grid()
