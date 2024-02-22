@@ -6,8 +6,7 @@ from grid import Grid
 from fleet import Fleet
 from ship import Destroyer, Cruiser, Battleship, AircraftCarrier
 from player import Player
-from computer import place_ships_randomly
-from computer import random_coordinate
+from computer import place_ships_randomly, random_coordinate, get_adjacent_cells
 from hit_miss import check_hit_or_miss, get_hit_ship, record_hit
 
 # Setup game
@@ -181,7 +180,7 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
                 if not computer.hunt_mode:
                     computer.hunt_mode = True
                     computer.last_hit = coordinate
-                    computer.potential_targets = board_player.get_adjacent_cells(coordinate)
+                    computer.potential_targets = get_adjacent_cells(coordinate, board_player.size)
                     print(f"{Fore.CYAN}*** Switching to hunt mode! ***")
             else:
                 board_player.grid[row_index][column_index] = '~'
