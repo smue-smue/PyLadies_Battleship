@@ -54,3 +54,36 @@ def place_ships_randomly(fleet, grid):
             if grid.is_valid_placement(start_coordinate, direction, shipdetails['size']):
                 if grid.update_grid_fleet(start_coordinate, direction, fleet, shipdetails['size'], shipname, show_errors=False):
                     placed = True  # Ship placed successfully
+
+def get_adjacent_cells(coordinate, grid_size):
+    """
+    Generates a list of valid adjacent cells around a given coordinate on the grid.
+
+    Parameters:
+    - coordinate (str): The current grid coordinate in the format 'LetterNumber' (e.g., 'A1').
+    - grid_size (int): The size of the grid (the number of rows/columns).
+
+    Returns:
+    - list: A list of strings representing valid adjacent coordinates on the grid.
+
+    The function calculates adjacent cells in all four cardinal directions (left, right, up, down)
+    from the given coordinate, ensuring they fall within the grid boundaries defined by grid_size.
+    """
+    adjacent_cells = []
+    letters = 'ABCDEFGHIJ'[:grid_size]  # Adjust the string based on grid size
+    column, row = coordinate[0], int(coordinate[1:])
+
+    index = letters.find(column)  # Find the index of the column letter to navigate left and right
+
+    if index > 0:  # Left
+        adjacent_cells.append(f"{letters[index - 1]}{row}")
+    if index < grid_size - 1:  # Right
+        adjacent_cells.append(f"{letters[index + 1]}{row}")
+    if row > 1:  # Up
+        adjacent_cells.append(f"{column}{row - 1}")
+    if row < grid_size:  # Down
+        adjacent_cells.append(f"{column}{row + 1}")
+
+    print("Potential targets:", adjacent_cells)
+    return adjacent_cells
+    
