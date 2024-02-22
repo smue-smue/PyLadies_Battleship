@@ -13,8 +13,8 @@ def random_coordinate(grid_size):
         str: A string representing a random coordinate within the grid, 
              combining a column letter and a row number.
     '''
-    
-    column_label = random.choice('ABCDEFGHIJ'[0:grid_size]) 
+
+    column_label = random.choice('ABCDEFGHIJ'[0:grid_size])
     row_number = str(random.randint(1, grid_size))
     return column_label + row_number
 
@@ -23,9 +23,10 @@ def random_direction():
     Selects a random direction.
 
     Returns:
-        str: A single character 'H' or 'V', representing horizontal or vertical direction, respectively.
+        str: A single character 'H' or 'V', representing horizontal or
+             vertical direction, respectively.
     '''
-    
+
     return random.choice(['H', 'V'])
 
 def place_ships_randomly(fleet, grid):
@@ -37,13 +38,15 @@ def place_ships_randomly(fleet, grid):
     is found.
 
     Parameters:
-        fleet   (dict):     A dictionary representing the fleet, with ship names as keys and ship details (including size) as values.
+        fleet   (dict):     A dictionary representing the fleet, with ship names as keys
+                            and ship details (including size) as values.
         grid    (object):   An object representing the game grid.
 
     Notes:
-        The function does not return a value but updates the `fleet` and `grid` objects directly to reflect the placement of ships.
+        The function does not return a value but updates the `fleet` and
+        `grid` objects directly to reflect the placement of ships.
     '''
-    
+
     for shipname, shipdetails in fleet.items():
         placed = False
         while not placed:
@@ -86,4 +89,3 @@ def get_adjacent_cells(coordinate, grid_size):
 
     print("Potential targets:", adjacent_cells)
     return adjacent_cells
-    

@@ -18,14 +18,13 @@ def check_hit_or_miss(coordinate, grid):
 
     column_index, row_index = grid.convert_coordinate_to_indices(coordinate)
     cell = grid.grid[row_index][column_index]
-    
+
     if cell == 'S':  # Ship part
         return 'hit'
-    elif cell == 'X':  # Already hit
+    if cell == 'X':  # Already hit
         return 'repeat'
-    else:  # Water or missed shot
-        return 'miss'
-
+    #else: Water or missed shot
+    return 'miss'
 
 def get_hit_ship(fleet, hit_coordinate):
     '''
