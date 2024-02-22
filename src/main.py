@@ -134,6 +134,10 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
                     fleet_computer.update_ship_statuses()
                     print(f"{Fore.MAGENTA}*** Hit registered on {hit_ship_name}! ***")
 
+            elif outcome == 'repeat':
+                print(f"You've already hit this coordinate. Try another one.")
+                continue  # Skip the rest of the loop and let the player choose another coordinate
+            
             else: # Mark the miss on the grid
                 board_computer.grid[row_index][column_index] = '~'
                 board_computer_players_view.grid[row_index][column_index] = '~'

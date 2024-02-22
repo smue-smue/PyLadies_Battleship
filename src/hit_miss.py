@@ -5,21 +5,27 @@ computer and player.
 
 def check_hit_or_miss(coordinate, grid):
     '''
-    Determines if the given coordinate on the grid is a hit ('S') or a miss ('.').
+    Determines if the given coordinate on the grid is a hit, a miss, or a repeated hit.
     
     Arguments:
-        coordinate: A string or tuple representing the grid coordinate to check.
+        coordinate: A string representing the grid coordinate to check, e.g., 'A2'.
         grid: The grid object containing the game board.
     
     Returns:
-        A string 'hit' if the coordinate hits a ship ('S'), otherwise 'miss'.
+        A string 'hit' if the coordinate hits a ship ('S'), 'repeat' if the coordinate was 
+        already hit before, otherwise 'miss'.
     '''
 
     column_index, row_index = grid.convert_coordinate_to_indices(coordinate)
     cell = grid.grid[row_index][column_index]
-    if cell == 'S':
+    
+    if cell == 'S':  # Ship part
         return 'hit'
-    return 'miss'
+    elif cell == 'X':  # Already hit
+        return 'repeat'
+    else:  # Water or missed shot
+        return 'miss'
+
 
 def get_hit_ship(fleet, hit_coordinate):
     '''
