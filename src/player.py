@@ -50,7 +50,7 @@ class Player():
         return input("Ready, Player? What's your name?\n")
     
     
-    def player_coordinate(self, fleet_player, shipname, attacking=False):
+    def player_coordinate(self, fleet_player, shipname, grid_instance, attacking=False):
         '''
         Asks the player for coordinates to place their ships or to perform attacks.
 
@@ -73,24 +73,31 @@ class Player():
             else:
                 prompt_message = f"Please enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares): "
 
-            coordinate = input(prompt_message)
+            coordinate = input(prompt_message).strip().upper()
             
             if len(coordinate) <2:
                 print("Invalid input. please enter a valid coordinate (e.g. 'B1').")
                 continue
 
-            coordinate_upper = coordinate[0].upper()
-            row_part = coordinate[1:]
+            # Check if the attack is valid within the grid bounds
+            if not grid_instance.is_valid_attack(coordinate):
+                print("Coordinate is out of grid bounds. Please try again.")
+                continue
 
-            try:
-                row_number = int(row_part)
-                row_key = str(row_number) # Convert row_number back to string for comparison
-                if coordinate_upper in Grid.coordinates_x and row_key in Grid.coordinates_y:
-                    return coordinate_upper + row_key
-                else:
-                    print("Invalid input. please enter a valid coordinate (e.g. 'B1').")
-            except ValueError:
-                print("Invalid row number. Please enter a valid coordinate (e.g. 'B1').")
+            return coordinate
+
+            # coordinate_upper = coordinate[0].upper()
+            # row_part = coordinate[1:]
+
+            # try:
+            #     row_number = int(row_part)
+            #     row_key = str(row_number) # Convert row_number back to string for comparison
+            #     if coordinate_upper in Grid.coordinates_x and row_key in Grid.coordinates_y:
+            #         return coordinate_upper + row_key
+            #     else:
+            #         print("Invalid input. please enter a valid coordinate (e.g. 'B1').")
+            # except ValueError:
+            #     print("Invalid row number. Please enter a valid coordinate (e.g. 'B1').")
     
     def player_direction(self):
         '''
@@ -112,7 +119,7 @@ class Player():
 
             return direction
 
-    def player_placing_ships(self, fleet_player, board_player):
+    def player_placing_ships(self, fleet_player, board_player, board_computer):
         '''
         Guides the player through placing all their ships on the game board.
 
@@ -132,7 +139,7 @@ class Player():
             for shipname in fleet_player.keys():
                 if not fleet_player[shipname]['coordinates']: # Check if ship lacks coordinates
                     while True:
-                        coordinate = self.player_coordinate(fleet_player, shipname)
+                        coordinate = self.player_coordinate(fleet_player, shipname, board_computer)
                         direction = self.player_direction()
 
                         # Check if the placement is valid before attempting to update the grid
@@ -162,7 +169,7 @@ class Player():
                 combining a column letter and a row number.
         '''
 
-        column_label = random.choice('ABCDEFGHIJ'[0:grid_size])
+        column_label = random.choice('ABCDEFGHIJKLMNOPQRST'[0:grid_size])
         row_number = str(random.randint(1, grid_size))
         return column_label + row_number
     

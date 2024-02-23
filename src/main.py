@@ -98,7 +98,7 @@ def place_ships(player):
         
     else:
         board_player.print_grid()
-        player.player_placing_ships(fleet_player.ships, board_player)
+        player.player_placing_ships(fleet_player.ships, board_player, board_computer)
         print(f"{player.name}'s ships placed.")
 
 def main_game_loop(player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner):
@@ -115,7 +115,7 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
     while not game_over:
         if current_turn == player:
                         
-            coordinate = player.player_coordinate(fleet_player.ships, '', attacking=True)  # Pass an empty string for 'shipname'
+            coordinate = player.player_coordinate(fleet_player.ships, ' ', board_computer, attacking=True)  # Pass an empty string for 'shipname'
 
             outcome = check_hit_or_miss(coordinate, board_computer)
             print(f"Attack on {coordinate} resulted in a {outcome}.")
