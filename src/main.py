@@ -6,8 +6,7 @@ from grid import Grid
 from fleet import Fleet
 from ship import Destroyer, Cruiser, Battleship, AircraftCarrier
 from player import Player
-from computer import place_ships_randomly, random_coordinate, get_adjacent_cells
-from hit_miss import check_hit_or_miss, get_hit_ship, record_hit
+from hit_miss import check_hit_or_miss, get_hit_ship, record_hit, get_adjacent_cells
 
 # Setup game
 
@@ -94,7 +93,7 @@ def place_ships(player):
 
     print(f"Placing ships for {player.name}...")
     if player.name == "Computer":
-        place_ships_randomly(fleet_computer.ships, board_computer) 
+        player.random_placing_ships(fleet_computer.ships, board_computer) 
         print("Computer ships placed randomly.")
         
     else:
@@ -160,7 +159,7 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
                 coordinate = computer.potential_targets.pop(0)
             else:
                 # Otherwise, select a random coordinate to attack.
-                coordinate = random_coordinate(board_player.size)
+                coordinate = player.random_coordinate(board_player.size)
 
             outcome = check_hit_or_miss(coordinate, board_player)
             print(f"\nComputer attacked {coordinate} and it was a {outcome}.")
