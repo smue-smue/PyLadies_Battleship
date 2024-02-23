@@ -1,6 +1,9 @@
 '''
 This module manages the Grid setup, the state and rules of the game board.
 '''
+import colorama
+from colorama import Fore, Style
+colorama.init(autoreset=True)
 
 class Grid:
     '''
@@ -201,16 +204,25 @@ class Grid:
     def print_grid(self):
         '''
         Prints the current state of the grid to the console, showing all ships, hits, 
-        misses, and empty spaces.
+        misses, and empty spaces. Uses colorama to colorize specific characters.
 
         Returns:
             None:   This method does not return a value but outputs the grid state to the console.
         '''
         # Display column headers
         print()
-        column_labels = '   ' + ' '.join('ABCDEFGHIJKLMNOPQRSTUVWXYZ'[:self.size])
+        column_labels = '     ' + ' '.join('ABCDEFGHIJKLMNOPQRSTUVWXYZ'[:self.size])
         print(column_labels)
+
         # Display each row with its row number
         for index, row in enumerate(self.grid, start=1):
-            print(f"{index:<2} {' '.join(row)}")
+            row_str = f"{index:<2} "
+            for cell in row:
+                if cell == 'X':
+                    row_str += Fore.RED + cell + Style.RESET_ALL + ' '
+                elif cell == '~':
+                    row_str += Fore.CYAN + cell + Style.RESET_ALL + ' '
+                else:
+                    row_str += cell + ' '
+            print(' ', row_str)
         print()
