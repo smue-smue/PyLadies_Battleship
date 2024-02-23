@@ -30,6 +30,7 @@ class Grid:
         _convert_indices_to_coordinate(column_index, row_index)
         _mark_water_around_ship(self, row_index, column_index)
         is_valid_placement(grid, start_coordinate, direction, size)
+        is_valid_attack(grid, coordinate)
         update_grid_fleet(start_coordinate, direction, fleet, size, shipname)
         print_grid()
    '''
@@ -135,7 +136,7 @@ class Grid:
                     self.grid[new_row][new_col] == "."):
                     self.grid[new_row][new_col] = "~"
 
-    def is_valid_placement(grid, start_coordinate, direction, size):
+    def is_valid_placement(self, start_coordinate, direction, size):
         '''
         Determines the validity of a proposed ship placement.
         Firstly, if the placement exceeds grid bounds based on the direction and size of the ship.
@@ -143,23 +144,33 @@ class Grid:
         '''
 
         column_label, row_number = start_coordinate[0], int(start_coordinate[1:])
-        column_index = grid.coordinates_x[column_label]
+        column_index = self.coordinates_x[column_label]
         row_index = row_number -1 # Convert to 0-based indexing
 
         if direction == 'H':
-            if column_index + size > grid.size:
+            if column_index + size > self.size:
                 return False  # Exceeds grid bounds horizontally
             for i in range(size):
-                if grid.grid[row_index][column_index + i] != '.':
+                if self.grid[row_index][column_index + i] != '.':
                     return False  # Occupied cell found
         elif direction == 'V':
-            if row_index + size > grid.size:
+            if row_index + size > self.size:
                 return False  # Exceeds grid bounds vertically
             for i in range(size):
-                if grid.grid[row_index + i][column_index] != '.':
+                if self.grid[row_index + i][column_index] != '.':
                     return False  # Occupied cell found
 
         return True  # Valid placement
+    
+    def is_valid_attack(self, coordinate):
+        column_index, row_index = self.convert_coordinate_to_indices(coordinate)
+
+        if column_index >= self.size or column_index <0:
+            return False # Exceeds grid bounds horizontally
+        if row_index >= self.size or row_index < 0:
+            return False # Exceeds grid bounds vertically
+        
+        return True # Attack in bounds of grid
 
     def update_grid_fleet(self, start_coordinate, direction, fleet, size, shipname, show_errors=True):
         '''
@@ -211,7 +222,7 @@ class Grid:
         '''
         # Display column headers
         print()
-        column_labels = '     ' + ' '.join('ABCDEFGHIJKLMNOPQRSTUVWXYZ'[:self.size])
+        column_labels = '     ' + ' '.join('ABCDEFGHIJKLMNOPQRST'[:self.size])
         print(column_labels)
 
         # Display each row with its row number
