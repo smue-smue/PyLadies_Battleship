@@ -19,13 +19,10 @@ Example:
         python warship_battle_game.py
 '''
 
-# Main execution
-
 from game_setup import setup_game, place_ships
 from game_loop import main_game_loop
 
 if __name__ == "__main__":
-    # Setup game
     (
         player,
         computer,

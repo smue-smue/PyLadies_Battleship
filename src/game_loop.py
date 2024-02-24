@@ -49,8 +49,8 @@ def main_game_loop(
 
                 if hit_ship_name is not None:
                     record_hit(fleet_computer, hit_ship_name, coordinate)
-                    fleet_computer.update_ship_statuses()
                     print(f"{Fore.MAGENTA}*** Hit registered on {hit_ship_name}! ***")
+                    fleet_computer.update_ship_statuses()
 
             elif outcome == 'repeat':
                 print("You've already hit this coordinate. Try another one.")
@@ -93,8 +93,8 @@ def main_game_loop(
 
                 if hit_ship_name is not None:
                     record_hit(fleet_player, hit_ship_name, coordinate)
-                    fleet_player.update_ship_statuses()
                     print(f"{Fore.CYAN}*** Hit registered on {hit_ship_name}! ***")
+                    fleet_player.update_ship_statuses()
 
                 if not computer.hunt_mode:
                     computer.hunt_mode = True
