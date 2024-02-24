@@ -1,117 +1,16 @@
-'''This module holds the game play loop.'''
+'''
+This module holds the main loop that controls the game flow.
+    
+Alternates turns between the player and the computer, allowing each to attack the other's grid.
+Continues until one player's fleet is completely sunk, declaring the other player the winner.
+'''
 
 import time
-from random import randrange
 import colorama
 from colorama import Fore, Style
-from grid import Grid
-from fleet import Fleet
-from ship import Destroyer, Cruiser, Battleship, AircraftCarrier
-from player import Player
 from hit_miss import check_hit_or_miss, get_hit_ship, record_hit, get_adjacent_cells
 
-# Setup game
-
 colorama.init(autoreset=True)
-
-def initialize_players():
-    # Create player and computer instances
-    print("A fleet captain has been invited to the battle against the computer.")
-    time.sleep(1)
-    player_name = Player.prompt_for_player_name()
-    player = Player(player_name)
-    computer = Player("Computer")
-    time.sleep(1)
-    return player, computer
-
-def initialize_grids():
-    board_player = Grid()
-    board_computer = Grid()
-    board_computer_players_view = Grid()
-    print("Clearing the seas for an upcoming epic battle.")
-    time.sleep(2)
-    return board_player, board_computer, board_computer_players_view
-
-def initialize_fleets(player_name):
-    fleet_player = Fleet(player_name)
-    fleet_computer = Fleet("Computer's Fleet")
-    print("Summoning the fleet, captains at the ready - the time for battle is nigh.")
-    time.sleep(2)
-    populate_fleets(fleet_player, fleet_computer, player_name)
-    return fleet_player, fleet_computer
-
-def populate_fleets(fleet_player, fleet_computer, player_name):
-    ship_classes = {
-        "Destroyer": Destroyer,
-        "Cruiser": Cruiser,
-        "Battleship": Battleship,
-        "AircraftCarrier": AircraftCarrier
-    }
-
-    for name in ship_classes:
-        if name == "Destroyer":
-            fleet_player.add_ship(Destroyer(f"{name} 1 {player_name}"))
-            fleet_player.add_ship(Destroyer(f"{name} 2 {player_name}"))
-            fleet_computer.add_ship(Destroyer(f"{name} 1 Computer"))
-            fleet_computer.add_ship(Destroyer(f"{name} 2 Computer"))
-        else:
-            ship_class = ship_classes[name]
-            fleet_player.add_ship(ship_class(f"{name} {player_name}"))
-            fleet_computer.add_ship(ship_class(f"{name} Computer"))
-    time.sleep(1)
-
-def coin_flip(player, computer):
-    '''
-    Coin flip to determine who starts.
-    '''
-    coin = randrange(2)
-    if coin == 0:
-        beginner = player
-    else:
-        beginner = computer
-    return beginner
-
-def setup_game():
-    player, computer = initialize_players()
-    board_player, board_computer, board_computer_players_view = initialize_grids()
-    fleet_player, fleet_computer = initialize_fleets(player.name)
-    beginner = coin_flip(player, computer)
-    print(
-        f"The coin of destiny has been tossed, "
-        f"and the tides have chosen: {beginner.name} "
-        f"shall lead the first assault."
-        )
-    time.sleep(2)
-
-    return (
-        player,
-        computer,
-        board_player,
-        board_computer,
-        board_computer_players_view,
-        fleet_player,
-        fleet_computer,
-        beginner
-    )
-
-def place_ships(player, fleet, board, opponent_board=None):
-    """
-    Places the ships for the given player on the given grid.
-    
-    If the player is a computer, ships are placed randomly.
-    If the player is human, prompts for ship placement are displayed.
-    """
-
-    print("Captains, to your battle stations! "
-          "It's time to position your vessels for the impending maritime showdown.")
-    if player.name == "Computer":
-        player.random_placing_ships(fleet.ships, board)
-        print("Computer ships placed randomly.")
-
-    else:
-        board.print_grid()
-        player.player_placing_ships(fleet.ships, board, opponent_board)
-        print(f"{player.name}'s ships placed.")
 
 def main_game_loop(
         player,
@@ -123,12 +22,6 @@ def main_game_loop(
         fleet_computer,
         beginner
 ):
-    """
-    The main loop that controls the game flow.
-    
-    Alternates turns between the player and the computer, allowing each to attack the other's grid.
-    Continues until one player's fleet is completely sunk, declaring the other player the winner.
-    """
 
     game_over = False
     # Set the current turn to the beginner
@@ -160,7 +53,7 @@ def main_game_loop(
                     print(f"{Fore.MAGENTA}*** Hit registered on {hit_ship_name}! ***")
 
             elif outcome == 'repeat':
-                print(f"You've already hit this coordinate. Try another one.")
+                print("You've already hit this coordinate. Try another one.")
                 continue  # Skip the rest of the loop and let the player choose another coordinate
 
             else: # Mark the miss on the grid

@@ -21,7 +21,8 @@ Example:
 
 # Main execution
 
-from game_loop import setup_game, place_ships, main_game_loop
+from game_setup import setup_game, place_ships
+from game_loop import main_game_loop
 
 if __name__ == "__main__":
     # Setup game

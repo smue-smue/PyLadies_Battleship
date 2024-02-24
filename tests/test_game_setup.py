@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch
-from game_loop import setup_game, place_ships, main_game_loop
+from game_setup import setup_game, place_ships, main_game_loop
 from player import Player
 from grid import Grid
 from fleet import Fleet
