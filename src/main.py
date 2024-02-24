@@ -24,28 +24,27 @@ def setup_game():
     Returns:
         A collection of game setup components comprising the human player instance, the computer player instance, the human player's grid, the computer's grid, the human player's view of the computer's grid, the human player's fleet, the computer's fleet, and the player who will start the game. Although not explicitly returned as a tuple, Python packages these multiple return values into a tuple automatically.
     """
-         
+
     # Create player and computer instances
+    print("A fleet captain has been invited to the battle against the computer.")
+    time.sleep(1)
     player_name = Player.prompt_for_player_name()
     player = Player(player_name)
     computer = Player("Computer")
-
-    print(f"Player name: {player.name}") #TODO: löschen, nur für Testzwecke
-    print(f"Computer name: {computer.name}") #TODO: löschen, nur für Testzwecke
-
+    time.sleep(1)
 
     # Initialize grids
     board_player = Grid()
-    print("Player grid initialized.")
-    print("Computer grid initialized.")
     board_computer = Grid()
-    board_computer_players_view = Grid()
+    board_computer_players_view = Grid()    
+    print("Clearing the seas for an upcoming epic battle.")
+    time.sleep(2)
 
     # Initialize fleets
     fleet_player = Fleet(player_name)
     fleet_computer = Fleet("Computer's Fleet")
-
-    print("Player and computer fleets created.")
+    print("Summoning the fleet, captains at the ready - the time for battle is nigh.")
+    time.sleep(2)
 
     # Add ships to fleets
     ship_classes = {
@@ -66,6 +65,8 @@ def setup_game():
             fleet_player.add_ship(ship_class(f"{name} {player_name}"))
             fleet_computer.add_ship(ship_class(f"{name} Computer"))
     
+    time.sleep(1)
+
     def coin_flip(player, computer):
         '''
         Coin flip to determine who starts.
@@ -74,11 +75,12 @@ def setup_game():
         if coin == 0:
             beginner = player
         else:
-            beginner = computer       
+            beginner = computer
         return beginner
 
     beginner = coin_flip(player, computer)
-    print(f"The game will start with {beginner.name}.")
+    print(f"The coin of destiny has been tossed, and the tides have chosen: {beginner.name} shall lead the first assault.")
+    time.sleep(2)
 
     return player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner
 
@@ -91,11 +93,11 @@ def place_ships(player):
     If the player is human, prompts for ship placement are displayed.
     """
 
-    print(f"Placing ships for {player.name}...")
+    print("Captains, to your battle stations! It's time to position your vessels for the impending maritime showdown.")
     if player.name == "Computer":
-        player.random_placing_ships(fleet_computer.ships, board_computer) 
+        player.random_placing_ships(fleet_computer.ships, board_computer)
         print("Computer ships placed randomly.")
-        
+
     else:
         board_player.print_grid()
         player.player_placing_ships(fleet_player.ships, board_player, board_computer)
@@ -110,23 +112,24 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
     """
 
     game_over = False
-    current_turn = player if beginner == player else computer  # Set the current turn to the beginner
+    # Set the current turn to the beginner
+    current_turn = player if beginner == player else computer
 
     while not game_over:
         if current_turn == player:
-                        
-            coordinate = player.player_coordinate(fleet_player.ships, ' ', board_computer, attacking=True)  # Pass an empty string for 'shipname'
+            # Pass an empty string for 'shipname'
+            coordinate = player.player_coordinate(fleet_player.ships, ' ', board_computer, attacking=True)
 
             outcome = check_hit_or_miss(coordinate, board_computer)
             print(f"Attack on {coordinate} resulted in a {outcome}.")
 
             column_index, row_index = board_computer.convert_coordinate_to_indices(coordinate)
-            
+
             if outcome == 'hit':
                 board_computer.grid[row_index][column_index] = 'X'
                 board_computer_players_view.grid[row_index][column_index] = 'X'
                 hit_ship_name = get_hit_ship(fleet_computer, coordinate)
-                
+
                 if hit_ship_name is not None:
                     record_hit(fleet_computer, hit_ship_name, coordinate)
                     fleet_computer.update_ship_statuses()
@@ -135,7 +138,7 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
             elif outcome == 'repeat':
                 print(f"You've already hit this coordinate. Try another one.")
                 continue  # Skip the rest of the loop and let the player choose another coordinate
-            
+
             else: # Mark the miss on the grid
                 board_computer.grid[row_index][column_index] = '~'
                 board_computer_players_view.grid[row_index][column_index] = '~'
@@ -148,7 +151,7 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
             if fleet_computer.update_ship_statuses():
                 print(f"{Fore.MAGENTA}{Style.BRIGHT}\nGame Over! {player.name} wins!\n")
                 break  # Break out of the loop immediately if the computer's fleet is sunk
-            
+
             time.sleep(2)
 
             current_turn = computer  # Switch turn to computer only if the game is not over
@@ -165,11 +168,11 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
             print(f"\nComputer attacked {coordinate} and it was a {outcome}.")
 
             column_index, row_index = board_player.convert_coordinate_to_indices(coordinate)
-            
+
             if outcome == 'hit':
                 board_player.grid[row_index][column_index] = 'X'
                 hit_ship_name = get_hit_ship(fleet_player, coordinate)
-                
+
 
                 if hit_ship_name is not None:
                     record_hit(fleet_player, hit_ship_name, coordinate)
@@ -200,7 +203,6 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
 
         if game_over:
             print(f"\nGame Over! {current_turn.name} wins!\n")
-
 
 # Main execution
 if __name__ == "__main__":

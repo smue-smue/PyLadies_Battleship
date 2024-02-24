@@ -125,44 +125,6 @@ class Player():
 
             return direction
 
-    def player_placing_ships(self, fleet_player, board_player, board_computer):
-        '''
-        Guides the player through placing all their ships on the game board.
-
-        Parameters:
-            fleet_player (dict): The player's fleet, containing ship names and properties.
-            board_player (Board): The game board on which ships will be placed.
-
-        Notes:
-            This method iterates over each ship in the player's fleet, prompting for
-            placement until all ships are validly placed. It checks for valid placements
-            and updates the game board accordingly.
-        '''
-
-        while True:
-            all_ships_processed = True # Assume all ships are processed until proven otherwise
-
-            for shipname in fleet_player.keys():
-                if not fleet_player[shipname]['coordinates']: # Check if ship lacks coordinates
-                    while True:
-                        coordinate = self.player_coordinate(fleet_player, shipname, board_computer)
-                        direction = self.player_direction()
-
-                        # Check if the placement is valid before attempting to update the grid
-                        if board_player.is_valid_placement(coordinate, direction, fleet_player[shipname]['size']):
-                            if board_player.update_grid_fleet(coordinate, direction, fleet_player, fleet_player[shipname]['size'], shipname): # update_grid_fleet returns True
-                                # print(fleet_player)
-                                board_player.print_grid()
-                                break # Valid placement, break out of the inner loop.
-                        else:
-                            print("Invalid ship placement, please try again.")
-
-                    all_ships_processed = False # A ship was processed, so not all were done
-                    break # Break after processing each ship to recheck the condition
-
-            if all_ships_processed:
-                break # Exit the while loop if all ships have been processed
-
     def random_coordinate(self, grid_size):
         '''
         Generates a random coordinate within the specified grid size.
@@ -218,3 +180,44 @@ class Player():
                 if grid.is_valid_placement(start_coordinate, direction, shipdetails['size']):
                     if grid.update_grid_fleet(start_coordinate, direction, fleet, shipdetails['size'], shipname, show_errors=False):
                         placed = True  # Ship placed successfully
+
+    def player_placing_ships(self, fleet_player, board_player, board_computer):
+        '''
+        Guides the player through placing all their ships on the game board.
+
+        Parameters:
+            fleet_player (dict): The player's fleet, containing ship names and properties.
+            board_player (Board): The game board on which ships will be placed.
+
+        Notes:
+            This method iterates over each ship in the player's fleet, prompting for
+            placement until all ships are validly placed. It checks for valid placements
+            and updates the game board accordingly.
+        '''
+        for shipname in fleet_player.keys():
+            self.place_single_ship(fleet_player, shipname, board_player, board_computer)
+
+    def place_single_ship(self, fleet_player, shipname, board_player, board_computer):
+        '''
+        Attempts to place a single ship on the game board, prompting the player for input until
+        a valid placement is made.
+
+        Parameters:
+            fleet_player (dict): The player's fleet, containing ship names and properties.
+            shipname (str): The name of the ship to be placed.
+            board_player (Board): The player's game board.
+            board_computer (Board): The computer's game board, used for validating coordinates.
+        '''
+        if fleet_player[shipname]['coordinates']:
+            return  # Ship already has coordinates, no need to place it again.
+
+        while True:
+            coordinate = self.player_coordinate(fleet_player, shipname, board_computer)
+            direction = self.player_direction()
+
+            if board_player.is_valid_placement(coordinate, direction, fleet_player[shipname]['size']):
+                if board_player.update_grid_fleet(coordinate, direction, fleet_player, fleet_player[shipname]['size'], shipname):
+                    board_player.print_grid()
+                    return  # Ship placed successfully, exit the loop.
+            else:
+                print("Invalid ship placement, please try again.")
