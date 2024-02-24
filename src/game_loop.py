@@ -51,6 +51,12 @@ def main_game_loop(
                     record_hit(fleet_computer, hit_ship_name, coordinate)
                     print(f"{Fore.MAGENTA}*** Hit registered on {hit_ship_name}! ***")
                     fleet_computer.update_ship_statuses()
+            
+            elif outcome == 'miss':
+                if board_computer.grid[row_index][column_index] == '.':
+                    board_computer.grid[row_index][column_index] = '~'
+                if board_computer_players_view.grid[row_index][column_index] == '.':
+                    board_computer_players_view.grid[row_index][column_index] = '~'
 
             elif outcome == 'repeat':
                 print("You've already hit this coordinate. Try another one.")
@@ -90,7 +96,6 @@ def main_game_loop(
                 board_player.grid[row_index][column_index] = 'X'
                 hit_ship_name = get_hit_ship(fleet_player, coordinate)
 
-
                 if hit_ship_name is not None:
                     record_hit(fleet_player, hit_ship_name, coordinate)
                     print(f"{Fore.CYAN}*** Hit registered on {hit_ship_name}! ***")
@@ -101,8 +106,18 @@ def main_game_loop(
                     computer.last_hit = coordinate
                     computer.potential_targets = get_adjacent_cells(coordinate, board_player.size)
                     print(f"{Fore.CYAN}*** Switching to hunt mode! ***")
+
+            elif outcome == 'miss':
+                if board_player.grid[row_index][column_index] == '.':
+                    board_player.grid[row_index][column_index] = '~'
+
+            elif outcome == 'repeat':
+                continue
+            
             else:
-                board_player.grid[row_index][column_index] = '~'
+                # Mark a miss with '~' only if the cell was not previously targeted
+                if board_player.grid[row_index][column_index] == '.':
+                    board_player.grid[row_index][column_index] = '~'
                 if not computer.potential_targets:
                     computer.hunt_mode = False
                     computer.last_hit = None
