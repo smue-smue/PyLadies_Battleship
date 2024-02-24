@@ -1,8 +1,14 @@
-# Player Setup - handles Player interactions and decisions
+"""
+This module defines the Player class for a battleship game, handling interactions
+and decisions for both human and computer players. It includes functionalities
+for prompting player names, processing player inputs for ship placement and
+attack coordinates, and automating random ship placements for computer players.
 
+Classes:
+- Player: Manages ship placements, attack coordinates, and player-specific
+  attributes such as name and game state (e.g., hunt mode, last hit, potential targets).
+"""
 import random
-from fleet import *
-from grid import Grid
 
 class Player():
     '''
@@ -48,8 +54,7 @@ class Player():
         '''
 
         return input("Ready, Player? What's your name?\n")
-    
-    
+
     def player_coordinate(self, fleet_player, shipname, grid_instance, attacking=False):
         '''
         Asks the player for coordinates to place their ships or to perform attacks.
@@ -74,7 +79,7 @@ class Player():
                 prompt_message = f"Please enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares): "
 
             coordinate = input(prompt_message).strip().upper()
-            
+
             if len(coordinate) <2:
                 print("Invalid input. please enter a valid coordinate (e.g. 'B1').")
                 continue
@@ -98,7 +103,7 @@ class Player():
             #         print("Invalid input. please enter a valid coordinate (e.g. 'B1').")
             # except ValueError:
             #     print("Invalid row number. Please enter a valid coordinate (e.g. 'B1').")
-    
+
     def player_direction(self):
         '''
         Asks the player in which direction to place their ships on the grid.
@@ -111,11 +116,12 @@ class Player():
         '''
 
         while True:  # Use a loop to keep asking until a valid input is received
-            direction = input("Please enter the direction (H for horizontal, V for vertical). ").upper()  # Convert to upper case
+            # Convert to upper case
+            direction = input("Please enter the direction (H for horizontal, V for vertical). ").upper()
             if direction in ['H', 'V']:
                 return direction  # Return the direction if it's valid
-            else:
-                print("Invalid input. Please enter 'H' for horizontal or 'V' for vertical.")  # Notify the user and ask again
+            # Notify the user and ask again
+            print("Invalid input. Please enter 'H' for horizontal or 'V' for vertical.")
 
             return direction
 
@@ -135,7 +141,7 @@ class Player():
 
         while True:
             all_ships_processed = True # Assume all ships are processed until proven otherwise
-            
+
             for shipname in fleet_player.keys():
                 if not fleet_player[shipname]['coordinates']: # Check if ship lacks coordinates
                     while True:
@@ -172,7 +178,7 @@ class Player():
         column_label = random.choice('ABCDEFGHIJKLMNOPQRST'[0:grid_size])
         row_number = str(random.randint(1, grid_size))
         return column_label + row_number
-    
+
     def random_direction(self):
         '''
         Selects a random direction.
@@ -183,7 +189,7 @@ class Player():
         '''
 
         return random.choice(['H', 'V'])
-    
+
     def random_placing_ships(self, fleet, grid):
         '''
         Places each ship in the fleet at a random location on the grid.

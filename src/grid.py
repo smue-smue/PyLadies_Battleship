@@ -161,16 +161,34 @@ class Grid:
                     return False  # Occupied cell found
 
         return True  # Valid placement
-    
+
     def is_valid_attack(self, coordinate):
+        '''
+        Checks if an attack at a given coordinate is within the bounds of the grid.
+
+        The function first converts the alphanumeric coordinate (e.g., 'A1') into
+        0-based numeric indices. It then checks if these indices are within the
+        grid size defined by the `self.size` attribute. The grid is assumed to be
+        square, so the same size applies to both dimensions.
+
+        Parameters:
+            coordinate (str): The coordinate to check, in alphanumeric format (e.g., 'A1').
+
+        Returns:
+            bool: True if the attack is within the bounds of the grid, False otherwise.
+        '''
         column_index, row_index = self.convert_coordinate_to_indices(coordinate)
 
-        if column_index >= self.size or column_index <0:
-            return False # Exceeds grid bounds horizontally
+        # Check horizontal bounds
+        if column_index >= self.size or column_index < 0:
+            return False
+
+        # Check vertical bounds
         if row_index >= self.size or row_index < 0:
-            return False # Exceeds grid bounds vertically
-        
-        return True # Attack in bounds of grid
+            return False
+
+        return True  # Attack is within grid bounds
+
 
     def update_grid_fleet(self, start_coordinate, direction, fleet, size, shipname, show_errors=True):
         '''
