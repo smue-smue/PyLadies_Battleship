@@ -65,7 +65,7 @@ def record_hit(fleet, hit_ship_name, hit_coordinate):
         print(f"Ship name {hit_ship_name} not found in fleet.")
 
 def get_adjacent_cells(coordinate, grid_size):
-    """
+    '''
     Generates a list of valid adjacent cells around a given coordinate on the grid.
 
     Parameters:
@@ -77,9 +77,9 @@ def get_adjacent_cells(coordinate, grid_size):
 
     The function calculates adjacent cells in all four cardinal directions (left, right, up, down)
     from the given coordinate, ensuring they fall within the grid boundaries defined by grid_size.
-    """
+    '''
     adjacent_cells = []
-    letters = 'ABCDEFGHIJ'[:grid_size]  # Adjust the string based on grid size
+    letters = 'ABCDEFGHIJKLMNOPQRST'[:grid_size]  # Adjust the string based on grid size
     column, row = coordinate[0], int(coordinate[1:])
 
     index = letters.find(column)  # Find the index of the column letter to navigate left and right
