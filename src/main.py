@@ -1,3 +1,5 @@
+'''This module holds the game play loop.'''
+
 import time
 from random import randrange
 import colorama
@@ -13,17 +15,24 @@ from hit_miss import check_hit_or_miss, get_hit_ship, record_hit, get_adjacent_c
 colorama.init(autoreset=True)
 
 def setup_game():
-    """
+    '''
     Initializes the game setup including players, grids, and fleets.
 
-    - Prompts for the human player's name and initializes Player instances for both the human and the computer.
-    - Sets up separate Grid instances for the human player, the computer, and the human player's view of the computer's grid.
+    - Prompts for the human player's name and initializes Player instances for both 
+      the human and the computer.
+    - Sets up separate Grid instances for the human player, the computer, and the 
+      human player's view of the computer's grid.
     - Initializes Fleet instances for both players and populates them with ships.
     - Determines the starting player with a coin flip.
 
     Returns:
-        A collection of game setup components comprising the human player instance, the computer player instance, the human player's grid, the computer's grid, the human player's view of the computer's grid, the human player's fleet, the computer's fleet, and the player who will start the game. Although not explicitly returned as a tuple, Python packages these multiple return values into a tuple automatically.
-    """
+        A collection of game setup components comprising the human player instance, 
+        the computer player instance, the human player's grid, the computer's grid, 
+        the human player's view of the computer's grid, the human player's fleet, the 
+        computer's fleet, and the player who will start the game. Although not explicitly 
+        returned as a tuple, Python packages these multiple return values into a tuple 
+        automatically.
+    '''
 
     # Create player and computer instances
     print("A fleet captain has been invited to the battle against the computer.")
@@ -36,7 +45,7 @@ def setup_game():
     # Initialize grids
     board_player = Grid()
     board_computer = Grid()
-    board_computer_players_view = Grid()    
+    board_computer_players_view = Grid()
     print("Clearing the seas for an upcoming epic battle.")
     time.sleep(2)
 
@@ -64,7 +73,7 @@ def setup_game():
             ship_class = ship_classes[name]  # Look up the class constructor
             fleet_player.add_ship(ship_class(f"{name} {player_name}"))
             fleet_computer.add_ship(ship_class(f"{name} Computer"))
-    
+
     time.sleep(1)
 
     def coin_flip(player, computer):
@@ -79,10 +88,23 @@ def setup_game():
         return beginner
 
     beginner = coin_flip(player, computer)
-    print(f"The coin of destiny has been tossed, and the tides have chosen: {beginner.name} shall lead the first assault.")
+    print(
+        f"The coin of destiny has been tossed, "
+        f"and the tides have chosen: {beginner.name} "
+        f"shall lead the first assault."
+        )
     time.sleep(2)
 
-    return player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner
+    return (
+        player,
+        computer,
+        board_player,
+        board_computer,
+        board_computer_players_view,
+        fleet_player,
+        fleet_computer,
+        beginner
+    )
 
 # Place ships
 def place_ships(player):
@@ -93,7 +115,8 @@ def place_ships(player):
     If the player is human, prompts for ship placement are displayed.
     """
 
-    print("Captains, to your battle stations! It's time to position your vessels for the impending maritime showdown.")
+    print("Captains, to your battle stations! "
+          "It's time to position your vessels for the impending maritime showdown.")
     if player.name == "Computer":
         player.random_placing_ships(fleet_computer.ships, board_computer)
         print("Computer ships placed randomly.")
@@ -103,7 +126,16 @@ def place_ships(player):
         player.player_placing_ships(fleet_player.ships, board_player, board_computer)
         print(f"{player.name}'s ships placed.")
 
-def main_game_loop(player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner):
+def main_game_loop(
+        player,
+        computer,
+        board_player,
+        board_computer,
+        board_computer_players_view,
+        fleet_player,
+        fleet_computer,
+        beginner
+):
     """
     The main loop that controls the game flow.
     
@@ -118,7 +150,12 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
     while not game_over:
         if current_turn == player:
             # Pass an empty string for 'shipname'
-            coordinate = player.player_coordinate(fleet_player.ships, ' ', board_computer, attacking=True)
+            coordinate = player.player_coordinate(
+                fleet_player.ships,
+                ' ', 
+                board_computer,
+                attacking=True
+            )
 
             outcome = check_hit_or_miss(coordinate, board_computer)
             print(f"Attack on {coordinate} resulted in a {outcome}.")
@@ -145,7 +182,7 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
 
             print("\nComputer's grid after player's attack:")
             board_computer_players_view.print_grid()
-            board_computer.print_grid() # TODO: only for WINNING :D
+            board_computer.print_grid() # TODO: only for WINNING
             # print(fleet_computer) # debugging
 
             if fleet_computer.update_ship_statuses():
@@ -207,7 +244,16 @@ def main_game_loop(player, computer, board_player, board_computer, board_compute
 # Main execution
 if __name__ == "__main__":
     # Setup game
-    player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner = setup_game()
+    (
+        player,
+        computer,
+        board_player,
+        board_computer,
+        board_computer_players_view,
+        fleet_player,
+        fleet_computer,
+        beginner
+    ) = setup_game()
 
     # Place ships for both player and computer
     place_ships(player)
@@ -215,4 +261,13 @@ if __name__ == "__main__":
 
     place_ships(computer)
 
-    main_game_loop(player, computer, board_player, board_computer, board_computer_players_view, fleet_player, fleet_computer, beginner)
+    main_game_loop(
+        player,
+        computer,
+        board_player,
+        board_computer,
+        board_computer_players_view,
+        fleet_player,
+        fleet_computer,
+        beginner
+        )
