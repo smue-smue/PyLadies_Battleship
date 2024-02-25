@@ -51,7 +51,7 @@ def main_game_loop(
                     record_hit(fleet_computer, hit_ship_name, coordinate)
                     print(f"{Fore.MAGENTA}*** Hit registered on {hit_ship_name}! ***")
                     fleet_computer.update_ship_statuses()
-            
+
             elif outcome == 'miss':
                 if board_computer.grid[row_index][column_index] == '.':
                     board_computer.grid[row_index][column_index] = '~'
@@ -92,7 +92,7 @@ def main_game_loop(
                 print(f"\nComputer attacked {coordinate} and it was a {outcome}.")
 
             column_index, row_index = board_player.convert_coordinate_to_indices(coordinate)
-            
+
             if outcome == 'hit':
                 board_player.grid[row_index][column_index] = 'X'
                 hit_ship_name = get_hit_ship(fleet_player, coordinate)
@@ -123,7 +123,7 @@ def main_game_loop(
 
             elif outcome == 'repeat':
                 continue
-            
+
             else:
                 # Mark a miss with '~' only if the cell was not previously targeted
                 if board_player.grid[row_index][column_index] == '.':

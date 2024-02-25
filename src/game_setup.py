@@ -11,9 +11,9 @@ Functions:
     coin_flip: Randomly decide which player starts the game.
     setup_game: Conduct the complete setup of the game before starting the main loop.
 '''
-import colorama
 import time
 from random import randrange
+import colorama
 from colorama import Fore, Style
 from grid import Grid
 from fleet import Fleet
