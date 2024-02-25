@@ -121,9 +121,9 @@ class Player():
             if direction in ['H', 'V']:
                 return direction  # Return the direction if it's valid
             # Notify the user and ask again
-            print("Invalid input. Please enter 'H' for horizontal or 'V' for vertical.")
+            else:
+                print("Invalid input. Please enter 'H' for horizontal or 'V' for vertical.")
 
-            return direction
 
     def random_coordinate(self, grid_size):
         '''
