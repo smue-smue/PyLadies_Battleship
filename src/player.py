@@ -78,9 +78,9 @@ class Player():
 
         while True: # Use a loop to keep asking until a valid input is received
             if attacking:
-                prompt_message = f"{Fore.GREEN}Captain, it's your turn for the attack, please enter the coordinate: {Style.RESET_ALL}"
+                prompt_message = f"{Fore.GREEN}Captain, it's your turn! Call out the coordinate for your strike: {Style.RESET_ALL}"
             else:
-                prompt_message = f"{Fore.GREEN}Captain, enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares): {Style.RESET_ALL}"
+                prompt_message = f"{Fore.GREEN}Captain, mark the the starting coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares): {Style.RESET_ALL}"
 
             coordinate = input(prompt_message).strip().upper()
 
@@ -108,7 +108,7 @@ class Player():
 
         while True:  # Use a loop to keep asking until a valid input is received
             # Convert to upper case
-            direction = input(f"{Fore.GREEN}Please enter the direction (H for horizontal, V for vertical). {Style.RESET_ALL}").upper()
+            direction = input(f"{Fore.GREEN}Choose 'H' for a grand horizontal or 'V' for a majestic vertical positioning. {Style.RESET_ALL}").upper()
             if direction in ['H', 'V']:
                 return direction  # Return the direction if it's valid
             # Notify the user and ask again
