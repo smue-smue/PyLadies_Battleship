@@ -78,19 +78,19 @@ class Player():
 
         while True: # Use a loop to keep asking until a valid input is received
             if attacking:
-                prompt_message = "It's your turn for the attack, please enter the coordinate: "
+                prompt_message = f"{Fore.GREEN}Captain, it's your turn for the attack, please enter the coordinate: {Style.RESET_ALL}"
             else:
-                prompt_message = f"Please enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares): "
+                prompt_message = f"{Fore.GREEN}Captain, enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares): {Style.RESET_ALL}"
 
             coordinate = input(prompt_message).strip().upper()
 
             if len(coordinate) <2 or not coordinate[0].isalpha() or not coordinate[1:].isdigit():
-                print("Invalid input. please enter a valid coordinate (e.g. 'B1').")
+                print(f"{Fore.GREEN}Invalid input. please enter a valid coordinate (e.g. 'B1').{Style.RESET_ALL}")
                 continue
 
             # Check if the attack is valid within the grid bounds
             if not grid_instance.is_valid_attack(coordinate):
-                print("Coordinate is out of grid bounds. Please try again.")
+                print(f"{Fore.GREEN}Coordinate is out of grid bounds. Please try again.{Style.RESET_ALL}")
                 continue
 
             return coordinate
@@ -108,12 +108,12 @@ class Player():
 
         while True:  # Use a loop to keep asking until a valid input is received
             # Convert to upper case
-            direction = input("Please enter the direction (H for horizontal, V for vertical). ").upper()
+            direction = input(f"{Fore.GREEN}Please enter the direction (H for horizontal, V for vertical). {Style.RESET_ALL}").upper()
             if direction in ['H', 'V']:
                 return direction  # Return the direction if it's valid
             # Notify the user and ask again
             else:
-                print("Invalid input. Please enter 'H' for horizontal or 'V' for vertical.")
+                print(f"{Fore.GREEN}Invalid input. Please enter 'H' for horizontal or 'V' for vertical.{Style.RESET_ALL}")
 
 
     def random_coordinate(self, grid_size):
@@ -211,4 +211,4 @@ class Player():
                     board_player.print_grid()
                     return  # Ship placed successfully, exit the loop.
             else:
-                print("Invalid ship placement, please try again.")
+                print(f"{Fore.GREEN}Invalid ship placement, please try again.{Style.RESET_ALL}")
