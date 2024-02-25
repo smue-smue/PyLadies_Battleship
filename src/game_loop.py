@@ -38,7 +38,7 @@ def main_game_loop(
             )
 
             outcome = check_hit_or_miss(coordinate, board_computer)
-            print(f"Attack on {coordinate} resulted in a {outcome}.")
+            print(f"{Fore.Green}Attack on {coordinate} resulted in a {outcome}.")
 
             column_index, row_index = board_computer.convert_coordinate_to_indices(coordinate)
 

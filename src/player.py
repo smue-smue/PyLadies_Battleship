@@ -9,6 +9,10 @@ Classes:
   attributes such as name and game state (e.g., hunt mode, last hit, potential targets).
 """
 import random
+import colorama
+from colorama import Fore, Style
+
+colorama.init(autoreset=True)
 
 class Player():
     '''
@@ -53,7 +57,7 @@ class Player():
             str: The name entered by the user.
         '''
 
-        return input("Ready, Player? What's your name?\n")
+        return input(f"{Fore.GREEN}Ready, Captain? What's your name?{Style.RESET_ALL}\n")
 
     def player_coordinate(self, fleet_player, shipname, grid_instance, attacking=False):
         '''

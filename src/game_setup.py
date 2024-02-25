@@ -11,13 +11,16 @@ Functions:
     coin_flip: Randomly decide which player starts the game.
     setup_game: Conduct the complete setup of the game before starting the main loop.
 '''
-
+import colorama
 import time
 from random import randrange
+from colorama import Fore, Style
 from grid import Grid
 from fleet import Fleet
 from ship import Destroyer, Cruiser, Battleship, AircraftCarrier
 from player import Player
+
+colorama.init(autoreset=True)
 
 def initialize_players():
     '''
@@ -28,7 +31,7 @@ def initialize_players():
         tuple: Two Player instances for the human and the computer.
     '''
 
-    print("A fleet captain has been invited to the battle against the computer.")
+    print(f"{Fore.GREEN}\nA fleet captain has been invited to the battle against the computer.")
     time.sleep(1)
     player_name = Player.prompt_for_player_name()
     player = Player(player_name)
@@ -48,7 +51,7 @@ def initialize_grids():
     board_player = Grid()
     board_computer = Grid()
     board_computer_players_view = Grid()
-    print("Clearing the seas for an upcoming epic battle.")
+    print(f"{Fore.GREEN}Clearing the seas for an upcoming epic battle.")
     time.sleep(2)
     return board_player, board_computer, board_computer_players_view
 
@@ -65,7 +68,7 @@ def initialize_fleets(player_name):
 
     fleet_player = Fleet(player_name)
     fleet_computer = Fleet("Computer's Fleet")
-    print("Summoning the fleet, captains at the ready - the time for battle is nigh.")
+    print(f"{Fore.GREEN}Summoning the fleet, captains at the ready - the time for battle is nigh.")
     time.sleep(2)
     populate_fleets(fleet_player, fleet_computer, player_name)
     return fleet_player, fleet_computer
@@ -132,9 +135,9 @@ def setup_game():
     fleet_player, fleet_computer = initialize_fleets(player.name)
     beginner = coin_flip(player, computer)
     print(
-        f"The coin of destiny has been tossed, "
-        f"and the tides have chosen: {beginner.name} "
-        f"shall lead the first assault."
+        f"{Fore.GREEN}The coin of destiny has been tossed, "
+        f"{Fore.GREEN}and the tides have chosen: {Style.BRIGHT}{beginner.name}{Style.RESET_ALL} "
+        f"{Fore.GREEN}shall lead the first assault."
         )
     time.sleep(2)
 
@@ -157,8 +160,8 @@ def place_ships(player, fleet, board, opponent_board=None):
     If the player is human, prompts for ship placement are displayed.
     """
 
-    print("Captains, to your battle stations! "
-          "It's time to position your vessels for the impending maritime showdown.")
+    print(f"{Fore.GREEN}Captains, to your battle stations! "
+          f"{Fore.GREEN}It's time to position your vessels for the impending maritime showdown.")
     if player.name == "Computer":
         player.random_placing_ships(fleet.ships, board)
         print("Computer ships placed randomly.")
