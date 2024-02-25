@@ -109,9 +109,7 @@ def main_game_loop(
                 coordinate = player.random_coordinate(board_player.size)
 
             outcome = check_hit_or_miss(coordinate, board_player)
-            if outcome != 'repeat':
-                print(f"\nComputer attacked {coordinate} and it was a {outcome}.")
-
+            
             column_index, row_index = board_player.convert_coordinate_to_indices(coordinate)
 
             if outcome == 'hit':
@@ -128,6 +126,11 @@ def main_game_loop(
 
                 # If the computer is in hunt mode, add the new targets to the existing list of potential targets
                 if computer.hunt_mode:
+                    # Check if the hits are in a line
+                    if computer.last_hit and abs(computer.last_hit[0] - coordinate[0]) <= 1 and abs(computer.last_hit[1] - coordinate[1]) <= 1:
+                        # If the hits are in a line, only add the new targets that are in the same direction
+                        direction = (coordinate[0] - computer.last_hit[0], coordinate[1] - computer.last_hit[1])
+                        new_targets = [target for target in new_targets if (target[0] - coordinate[0], target[1] - coordinate[1]) == direction]
                     computer.potential_targets.extend(new_targets)
                     print(f"{Fore.CYAN}*** Added new potential targets! ***")
 
@@ -153,6 +156,9 @@ def main_game_loop(
                     computer.hunt_mode = False
                     computer.last_hit = None
 
+            if outcome != 'repeat':
+                print(f"\nComputer attacked {coordinate} and it was a {outcome}.")
+
             print("\nPlayer's grid after computer's attack:")
             board_player.print_grid()
             # print(fleet_player) # debugging
@@ -163,6 +169,6 @@ def main_game_loop(
 
             current_turn = player  # Switch turn back to player only if the game is not over
             time.sleep(1)
-
+            
         if game_over:
             print(f"\nGame Over! {current_turn.name} wins!\n")

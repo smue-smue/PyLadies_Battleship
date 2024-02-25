@@ -88,7 +88,7 @@ def populate_fleets(fleet_player, fleet_computer, player_name):
             fleet_player.add_ship(ship_class(f"{name} {player_name}"))
             fleet_computer.add_ship(ship_class(f"{name} Computer"))
             ship_counts[name] += 1
-    time.sleep(2)
+    time.sleep(1)
     return ship_counts
 
 def initialize_fleets(player_name):
@@ -105,7 +105,7 @@ def initialize_fleets(player_name):
     fleet_player = Fleet(player_name)
     fleet_computer = Fleet("Computer's Fleet")
     print(f"{Fore.GREEN}Summoning the fleet, captains at the ready - the time for battle is nigh.\n")
-    time.sleep(2)
+    time.sleep(1)
     ship_counts = populate_fleets(fleet_player, fleet_computer, player_name)
     print(f"{Fore.GREEN}Your fleet will consist of the following ships:\n")
     for ship, count in ship_counts.items():
