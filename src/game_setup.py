@@ -32,11 +32,11 @@ def initialize_players():
     '''
 
     print(f"{Fore.GREEN}\nA fleet captain has been invited to the battle against the computer.")
-    time.sleep(1)
+    time.sleep(2)
     player_name = Player.prompt_for_player_name()
     player = Player(player_name)
     computer = Player("Computer")
-    time.sleep(1)
+    time.sleep(2)
     return player, computer
 
 def initialize_grids():
@@ -102,7 +102,7 @@ def populate_fleets(fleet_player, fleet_computer, player_name):
             ship_class = ship_classes[name]
             fleet_player.add_ship(ship_class(f"{name} {player_name}"))
             fleet_computer.add_ship(ship_class(f"{name} Computer"))
-    time.sleep(1)
+    time.sleep(2)
 
 def coin_flip(player, computer):
     '''
