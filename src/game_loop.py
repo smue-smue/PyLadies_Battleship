@@ -88,10 +88,11 @@ def main_game_loop(
                 coordinate = player.random_coordinate(board_player.size)
 
             outcome = check_hit_or_miss(coordinate, board_player)
-            print(f"\nComputer attacked {coordinate} and it was a {outcome}.")
+            if outcome != 'repeat':
+                print(f"\nComputer attacked {coordinate} and it was a {outcome}.")
 
             column_index, row_index = board_player.convert_coordinate_to_indices(coordinate)
-
+            
             if outcome == 'hit':
                 board_player.grid[row_index][column_index] = 'X'
                 hit_ship_name = get_hit_ship(fleet_player, coordinate)
@@ -101,10 +102,19 @@ def main_game_loop(
                     print(f"{Fore.CYAN}*** Hit registered on {hit_ship_name}! ***")
                     fleet_player.update_ship_statuses()
 
+                # Get the adjacent cells of the hit cell
+                new_targets = get_adjacent_cells(coordinate, board_player.size)
+
+                # If the computer is in hunt mode, add the new targets to the existing list of potential targets
+                if computer.hunt_mode:
+                    computer.potential_targets.extend(new_targets)
+                    print(f"{Fore.CYAN}*** Added new potential targets! ***")
+
+                # If the computer is not in hunt mode, switch to hunt mode and initialize the potential targets list with the new targets
                 if not computer.hunt_mode:
                     computer.hunt_mode = True
                     computer.last_hit = coordinate
-                    computer.potential_targets = get_adjacent_cells(coordinate, board_player.size)
+                    computer.potential_targets = new_targets  # Initialize the list here instead of extending it
                     print(f"{Fore.CYAN}*** Switching to hunt mode! ***")
 
             elif outcome == 'miss':
