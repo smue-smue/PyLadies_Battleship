@@ -80,7 +80,7 @@ class Player():
 
             coordinate = input(prompt_message).strip().upper()
 
-            if len(coordinate) <2:
+            if len(coordinate) <2 or not coordinate[0].isalpha() or not coordinate[1:].isdigit():
                 print("Invalid input. please enter a valid coordinate (e.g. 'B1').")
                 continue
 
@@ -90,19 +90,6 @@ class Player():
                 continue
 
             return coordinate
-
-            # coordinate_upper = coordinate[0].upper()
-            # row_part = coordinate[1:]
-
-            # try:
-            #     row_number = int(row_part)
-            #     row_key = str(row_number) # Convert row_number back to string for comparison
-            #     if coordinate_upper in Grid.coordinates_x and row_key in Grid.coordinates_y:
-            #         return coordinate_upper + row_key
-            #     else:
-            #         print("Invalid input. please enter a valid coordinate (e.g. 'B1').")
-            # except ValueError:
-            #     print("Invalid row number. Please enter a valid coordinate (e.g. 'B1').")
 
     def player_direction(self):
         '''
