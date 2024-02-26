@@ -31,7 +31,7 @@ def initialize_players():
         tuple: Two Player instances for the human and the computer.
     '''
 
-    print(f"{Fore.GREEN}\nA fleet captain has been invited to the battle against the computer.\n")
+    print(f"{Fore.GREEN}\nYou've been invited to a battle against a prestigious captain - the computer.\n")
     time.sleep(2)
     player_name = Player.prompt_for_player_name()
     player = Player(player_name)
@@ -181,11 +181,11 @@ def place_ships(player, fleet, board, opponent_board=None):
 
     if player.name == "Computer":
         player.random_placing_ships(fleet.ships, board)
-        print("Computer ships placed randomly.\n")
+        print(f"{Fore.GREEN}Alert! The enemy fleet's already in formation, ready to rumble!\n")
 
     else:
-        print(f"{Fore.GREEN}Captains, to your battle stations! "
-              f"{Fore.GREEN}It's time to position your vessels for the impending maritime showdown.\n")
+        print(f"\n{Fore.GREEN}Captains, to your battle stations! "
+            f"{Fore.GREEN}It's time to position your vessels for the impending maritime showdown.\n")
         board.print_grid()
         player.player_placing_ships(fleet.ships, board, opponent_board)
-        print(f"{player.name}'s ships placed.\n")
+        print(f"{Fore.GREEN}Captain {player.name}'s armada has positioned itself on the waters, poised for an epic battle!")

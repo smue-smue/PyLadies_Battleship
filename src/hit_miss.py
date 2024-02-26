@@ -2,6 +2,10 @@
 This module manages the hits and misses placed by
 computer and player.
 '''
+import colorama
+from colorama import Fore, Style
+
+colorama.init(autoreset=True)
 
 def check_hit_or_miss(coordinate, grid):
     '''
@@ -62,7 +66,7 @@ def record_hit(fleet, hit_ship_name, hit_coordinate):
     if hit_ship_name in fleet.ships:
         fleet.ships[hit_ship_name]['hits'].append(hit_coordinate)
     else:
-        print(f"Ship name {hit_ship_name} not found in fleet.")
+        print(f"{Fore.GREEN}Ship name {hit_ship_name} not found in fleet.{Style.RESET_ALL}")
 
 def get_adjacent_cells(coordinate, grid_size):
     '''

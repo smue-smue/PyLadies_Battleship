@@ -78,19 +78,19 @@ class Player():
 
         while True: # Use a loop to keep asking until a valid input is received
             if attacking:
-                prompt_message = f"{Fore.GREEN}Captain, it's your turn for the attack, please enter the coordinate: {Style.RESET_ALL}"
+                prompt_message = f"{Fore.GREEN}Captain, it's your turn! Call out the coordinate for your strike: {Style.RESET_ALL}\n"
             else:
-                prompt_message = f"{Fore.GREEN}Captain, enter a start coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares): {Style.RESET_ALL}"
+                prompt_message = f"{Fore.GREEN}Captain, mark the the starting coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares): {Style.RESET_ALL}"
 
             coordinate = input(prompt_message).strip().upper()
 
             if len(coordinate) <2 or not coordinate[0].isalpha() or not coordinate[1:].isdigit():
-                print(f"{Fore.GREEN}Invalid input. please enter a valid coordinate (e.g. 'B1').{Style.RESET_ALL}")
+                print(f"{Fore.GREEN}Invalid input. please enter a valid coordinate (e.g. 'B1').{Style.RESET_ALL}\n")
                 continue
 
             # Check if the attack is valid within the grid bounds
             if not grid_instance.is_valid_attack(coordinate):
-                print(f"{Fore.GREEN}Coordinate is out of grid bounds. Please try again.{Style.RESET_ALL}")
+                print(f"{Fore.GREEN}Coordinate is out of grid bounds. Please try again.{Style.RESET_ALL}\n")
                 continue
 
             return coordinate
@@ -108,12 +108,12 @@ class Player():
 
         while True:  # Use a loop to keep asking until a valid input is received
             # Convert to upper case
-            direction = input(f"{Fore.GREEN}Please enter the direction (H for horizontal, V for vertical). {Style.RESET_ALL}").upper()
+            direction = input(f"{Fore.GREEN}Choose 'H' for a grand horizontal or 'V' for a majestic vertical positioning. {Style.RESET_ALL}\n").upper()
             if direction in ['H', 'V']:
                 return direction  # Return the direction if it's valid
             # Notify the user and ask again
             else:
-                print(f"{Fore.GREEN}Invalid input. Please enter 'H' for horizontal or 'V' for vertical.{Style.RESET_ALL}")
+                print(f"{Fore.GREEN}Invalid input. Please enter 'H' for horizontal or 'V' for vertical.{Style.RESET_ALL}\n")
 
 
     def random_coordinate(self, grid_size):

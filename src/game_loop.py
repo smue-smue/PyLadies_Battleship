@@ -59,7 +59,8 @@ def main_game_loop(
             )
 
             outcome = check_hit_or_miss(coordinate, board_computer)
-            print(f"{Fore.GREEN}Attack on {coordinate} resulted in a {outcome}.")
+            if outcome != 'repeat':
+                print(f"\n{Fore.GREEN}Your daring attack on {coordinate} turned out a {Style.BRIGHT}{outcome}.{Style.RESET_ALL}")
 
             column_index, row_index = board_computer.convert_coordinate_to_indices(coordinate)
 
@@ -70,7 +71,7 @@ def main_game_loop(
 
                 if hit_ship_name is not None:
                     record_hit(fleet_computer, hit_ship_name, coordinate)
-                    print(f"{Fore.MAGENTA}*** Hit registered on {hit_ship_name}! ***")
+                    print(f"\n{Fore.MAGENTA}*** Hit registered on {hit_ship_name}! ***")
                     fleet_computer.update_ship_statuses()
 
             elif outcome == 'miss':
@@ -80,20 +81,20 @@ def main_game_loop(
                     board_computer_players_view.grid[row_index][column_index] = '~'
 
             elif outcome == 'repeat':
-                print("You've already hit this coordinate. Try another one.")
+                print(f"{Fore.GREEN}You've already fired a cannonball here. Set your sights on new coordinates, Captain.{Style.RESET_ALL}")
                 continue  # Skip the rest of the loop and let the player choose another coordinate
 
             else: # Mark the miss on the grid
                 board_computer.grid[row_index][column_index] = '~'
                 board_computer_players_view.grid[row_index][column_index] = '~'
 
-            print("\nComputer's grid after player's attack:")
+            print(f"\n{Fore.GREEN}The status of the enemy's fleet after your attack:{Style.RESET_ALL}")
             board_computer_players_view.print_grid()
             board_computer.print_grid() # TODO: only for WINNING
             # print(fleet_computer) # debugging
 
             if fleet_computer.update_ship_statuses():
-                print(f"{Fore.MAGENTA}{Style.BRIGHT}\nGame Over! {player.name} wins!\n")
+                print(f"{Fore.MAGENTA}{Style.BRIGHT}\nGame Over! Captain {player.name} triumphs over the seas and claims the title of supreme commander!{Style.RESET_ALL}\n")
                 break  # Break out of the loop immediately if the computer's fleet is sunk
 
             time.sleep(2)
@@ -141,7 +142,7 @@ def main_game_loop(
                 if board_player.grid[row_index][column_index] == '.':
                     board_player.grid[row_index][column_index] = '~'
                 # Print the outcome of the computer's attack
-                print(f"\nComputer attacked {coordinate} and it was a {outcome}.\n")
+                print(f"{Fore.GREEN}The enemy attacked {coordinate} and it was a {Style.BRIGHT}{outcome}.{Style.RESET_ALL}")
 
             elif outcome == 'repeat':
                 continue
@@ -154,16 +155,16 @@ def main_game_loop(
                     computer.hunt_mode = False
                     computer.last_hit = None
 
-            print("\nPlayer's grid after computer's attack:")
+            print(f"\n{Fore.GREEN}Your fleet's status after the enemy's attack:{Style.RESET_ALL}")
             board_player.print_grid()
             # print(fleet_player) # debugging
 
             if fleet_player.update_ship_statuses():
-                print(f"{Fore.CYAN}{Style.BRIGHT}\nGame Over! {computer.name} wins!\n")
+                print(f"{Fore.MAGENTA}{Style.BRIGHT}\nGame Over! Captain {player.name} triumphs over the seas and claims the title of supreme commander!{Style.RESET_ALL}\n")
                 break  # Break out of the loop immediately if the player's fleet is sunk
 
             current_turn = player  # Switch turn back to player only if the game is not over
             time.sleep(1)
 
         if game_over:
-            print(f"\nGame Over! {current_turn.name} wins!\n")
+            print(f"\nGame Over! {current_turn.name} wins!\n") #TODO: brauchen wir das?
