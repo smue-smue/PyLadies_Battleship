@@ -108,13 +108,12 @@ def main_game_loop(
                 coordinate = player.random_coordinate(board_player.size)
 
             outcome = check_hit_or_miss(coordinate, board_player)
-            
             column_index, row_index = board_player.convert_coordinate_to_indices(coordinate)
 
             if outcome == 'hit':
                 # Print the outcome of the computer's attack
                 print(f"\nComputer attacked {coordinate} and it was a {outcome}.\n")
-                
+
                 board_player.grid[row_index][column_index] = 'X'
                 hit_ship_name = get_hit_ship(fleet_player, coordinate)
 
@@ -165,6 +164,6 @@ def main_game_loop(
 
             current_turn = player  # Switch turn back to player only if the game is not over
             time.sleep(1)
-            
+
         if game_over:
             print(f"\nGame Over! {current_turn.name} wins!\n")

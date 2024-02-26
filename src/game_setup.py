@@ -104,8 +104,12 @@ def initialize_fleets(player_name):
 
     fleet_player = Fleet(player_name)
     fleet_computer = Fleet("Computer's Fleet")
-    print(f"{Fore.GREEN}Summoning the fleet, captains at the ready - the time for battle is nigh.\n")
+    print(
+        f"{Fore.GREEN}Summoning the fleet, captains at the ready - "
+        f"the time for battle is nigh.\n"
+        )
     time.sleep(1)
+
     ship_counts = populate_fleets(fleet_player, fleet_computer, player_name)
     print(f"{Fore.GREEN}Your fleet will consist of the following ships:\n")
     for ship, count in ship_counts.items():
@@ -134,7 +138,8 @@ def coin_flip(player, computer):
 def setup_game():
     '''
     Conduct the complete setup of the game, including player initialization,
-    grid setup, fleet creation, and ship placement. The starting player is decided after ship placement.
+    grid setup, fleet creation, and ship placement.
+    The starting player is decided after ship placement.
 
     Returns:
         tuple: Collection of all game-related instances needed to start the game loop.

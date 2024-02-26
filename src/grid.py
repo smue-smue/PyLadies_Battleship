@@ -255,20 +255,3 @@ class Grid:
                     row_str += cell + ' '
             print(' ', row_str)
         print()
-
-    def calculate_direction(self, start_coordinate, end_coordinate):
-        """
-        Calculate the direction from start_coordinate to end_coordinate.
-
-        Parameters:
-        start_coordinate (str): The starting coordinate in the format 'A1'.
-        end_coordinate (str): The ending coordinate in the format 'A1'.
-
-        Returns:
-        tuple: A tuple representing the direction from start_coordinate to end_coordinate.
-               The first element is the difference in rows (positive if moving down, negative if moving up),
-               and the second element is the difference in columns (positive if moving right, negative if moving left).
-        """
-        start_row, start_col = self.convert_coordinate(start_coordinate)
-        end_row, end_col = self.convert_coordinate(end_coordinate)
-        return end_row - start_row, end_col - start_col
