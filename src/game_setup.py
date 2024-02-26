@@ -52,7 +52,7 @@ def initialize_grids():
     board_computer = Grid()
     board_computer_players_view = Grid()
     print(f"\n{Fore.GREEN}Clearing the seas for an upcoming epic battle.\n")
-    time.sleep(2)
+    time.sleep(1)
     return board_player, board_computer, board_computer_players_view
 
 def populate_fleets(fleet_player, fleet_computer, player_name):

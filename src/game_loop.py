@@ -112,6 +112,9 @@ def main_game_loop(
             column_index, row_index = board_player.convert_coordinate_to_indices(coordinate)
 
             if outcome == 'hit':
+                # Print the outcome of the computer's attack
+                print(f"\nComputer attacked {coordinate} and it was a {outcome}.\n")
+                
                 board_player.grid[row_index][column_index] = 'X'
                 hit_ship_name = get_hit_ship(fleet_player, coordinate)
 
@@ -138,6 +141,8 @@ def main_game_loop(
             elif outcome == 'miss':
                 if board_player.grid[row_index][column_index] == '.':
                     board_player.grid[row_index][column_index] = '~'
+                # Print the outcome of the computer's attack
+                print(f"\nComputer attacked {coordinate} and it was a {outcome}.\n")
 
             elif outcome == 'repeat':
                 continue
@@ -149,9 +154,6 @@ def main_game_loop(
                 if not computer.potential_targets:
                     computer.hunt_mode = False
                     computer.last_hit = None
-
-            if outcome != 'repeat':
-                print(f"\nComputer attacked {coordinate} and it was a {outcome}.")
 
             print("\nPlayer's grid after computer's attack:")
             board_player.print_grid()
