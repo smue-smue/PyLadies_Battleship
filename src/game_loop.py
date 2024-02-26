@@ -97,13 +97,12 @@ def main_game_loop(
                 break  # Break out of the loop immediately if the computer's fleet is sunk
 
             time.sleep(2)
-
             current_turn = computer  # Switch turn to computer only if the game is not over
 
         else:
             if computer.hunt_mode and computer.potential_targets:
                 # If in hunt mode, choose the next target from the list of potential targets.
-                coordinate = computer.potential_targets.pop(0)
+                coordinate = computer.potential_targets.pop()
             else:
                 # Otherwise, select a random coordinate to attack.
                 coordinate = player.random_coordinate(board_player.size)
@@ -126,16 +125,11 @@ def main_game_loop(
 
                 # If the computer is in hunt mode, add the new targets to the existing list of potential targets
                 if computer.hunt_mode:
-                    # Check if the hits are in a line
-                    if computer.last_hit and abs(computer.last_hit[0] - coordinate[0]) <= 1 and abs(computer.last_hit[1] - coordinate[1]) <= 1:
-                        # If the hits are in a line, only add the new targets that are in the same direction
-                        direction = (coordinate[0] - computer.last_hit[0], coordinate[1] - computer.last_hit[1])
-                        new_targets = [target for target in new_targets if (target[0] - coordinate[0], target[1] - coordinate[1]) == direction]
                     computer.potential_targets.extend(new_targets)
                     print(f"{Fore.CYAN}*** Added new potential targets! ***")
 
                 # If the computer is not in hunt mode, switch to hunt mode and initialize the potential targets list with the new targets
-                if not computer.hunt_mode:
+                else:
                     computer.hunt_mode = True
                     computer.last_hit = coordinate
                     computer.potential_targets = new_targets  # Initialize the list here instead of extending it
