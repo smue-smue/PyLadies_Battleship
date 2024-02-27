@@ -95,7 +95,7 @@ def main_game_loop(
             # print(fleet_computer) # debugging
 
             if fleet_computer.update_ship_statuses():
-                print(f"{Fore.MAGENTA}{Style.BRIGHT}\nGame Over! Captain {player.name} triumphs over the seas and claims the title of supreme commander!{Style.RESET_ALL}\n")
+                print(f"{Fore.MAGENTA}{Style.BRIGHT}\nGame Over! Captain {current_turn.name} triumphs over the seas and claims the title of supreme commander!{Style.RESET_ALL}\n")
                 break  # Break out of the loop immediately if the computer's fleet is sunk
 
             time.sleep(2)
@@ -162,13 +162,9 @@ def main_game_loop(
             # print(fleet_player) # debugging
 
             if fleet_player.update_ship_statuses():
-                print(f"{Fore.MAGENTA}{Style.BRIGHT}\nGame Over! Captain {player.name} triumphs over the seas and claims the title of supreme commander!{Style.RESET_ALL}\n")
+                print(f"{Fore.MAGENTA}{Style.BRIGHT}\nGame Over! Captain {current_turn.name} triumphs over the seas and claims the title of supreme commander!{Style.RESET_ALL}\n")
                 break  # Break out of the loop immediately if the player's fleet is sunk
 
             current_turn = player  # Switch turn back to player only if the game is not over
             time.sleep(1)
-
-        if game_over:
-
-            print(f"\nGame Over! {current_turn.name} wins!\n") # TODO: brauchen wir das?
 
