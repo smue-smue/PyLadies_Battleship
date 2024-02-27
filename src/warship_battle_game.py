@@ -19,7 +19,7 @@ Example:
         python warship_battle_game.py
 '''
 
-from game_setup import setup_game, place_ships
+from game_setup import setup_game
 from game_loop import main_game_loop
 
 if __name__ == "__main__":
@@ -34,11 +34,7 @@ if __name__ == "__main__":
         beginner
     ) = setup_game()
 
-    # Place ships for both player and computer
-    place_ships(player, fleet_player, board_player, board_computer_players_view)
     board_player.print_grid()  # Show player's grid after placing ships
-
-    place_ships(computer, fleet_computer, board_computer)
 
     main_game_loop(
         player,

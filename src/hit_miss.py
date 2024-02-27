@@ -2,6 +2,10 @@
 This module manages the hits and misses placed by
 computer and player.
 '''
+import colorama
+from colorama import Fore, Style
+
+colorama.init(autoreset=True)
 
 import colorama
 from colorama import Fore, Style

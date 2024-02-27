@@ -22,6 +22,27 @@ def main_game_loop(
         fleet_computer,
         beginner
 ):
+    """
+    This function represents the main game loop for a game of Battleship.
+
+    Parameters:
+    player (Player): The human player.
+    computer (Computer): The computer player.
+    board_player (Board): The game board for the human player.
+    board_computer (Board): The game board for the computer player.
+    board_computer_players_view (Board): The game board for the computer player 
+                                         as viewed by the human player.
+    fleet_player (Fleet): The fleet of ships for the human player.
+    fleet_computer (Fleet): The fleet of ships for the computer player.
+    beginner (Player or Computer): The player who begins the game.
+
+    The function alternates turns between the human player and the computer. On each turn, 
+    the current player chooses a coordinate to attack on the opponent's board. The function 
+    checks if the attack is a hit or a miss and updates the game boards accordingly. If a 
+    ship is hit, the function also updates the status of the ship in the fleet. The game 
+    continues until all the ships in a player's fleet have been sunk, at which point the 
+    game ends and the other player is declared the winner.
+    """
 
     game_over = False
     # Set the current turn to the beginner
@@ -38,7 +59,9 @@ def main_game_loop(
             )
 
             outcome = check_hit_or_miss(coordinate, board_computer)
-            print(f"\n{Fore.GREEN}Your daring attack on {coordinate} turned out a {Style.BRIGHT}{outcome}.{Style.RESET_ALL}")
+
+            if outcome != 'repeat':
+                print(f"\n{Fore.GREEN}Your daring attack on {coordinate} turned out a {Style.BRIGHT}{outcome}.{Style.RESET_ALL}")
 
             column_index, row_index = board_computer.convert_coordinate_to_indices(coordinate)
 
@@ -49,9 +72,9 @@ def main_game_loop(
 
                 if hit_ship_name is not None:
                     record_hit(fleet_computer, hit_ship_name, coordinate)
-                    print(f"{Fore.MAGENTA}*** Hit registered on {hit_ship_name}! ***")
+                    print(f"\n{Fore.MAGENTA}*** Hit registered on {hit_ship_name}! ***")
                     fleet_computer.update_ship_statuses()
-            
+
             elif outcome == 'miss':
                 if board_computer.grid[row_index][column_index] == '.':
                     board_computer.grid[row_index][column_index] = '~'
@@ -76,23 +99,24 @@ def main_game_loop(
                 break  # Break out of the loop immediately if the computer's fleet is sunk
 
             time.sleep(2)
-
             current_turn = computer  # Switch turn to computer only if the game is not over
 
         else:
             if computer.hunt_mode and computer.potential_targets:
                 # If in hunt mode, choose the next target from the list of potential targets.
-                coordinate = computer.potential_targets.pop(0)
+                coordinate = computer.potential_targets.pop()
             else:
                 # Otherwise, select a random coordinate to attack.
                 coordinate = player.random_coordinate(board_player.size)
 
             outcome = check_hit_or_miss(coordinate, board_player)
-            print(f"{Fore.GREEN}The enemy attacked {coordinate} and it was a {Style.BRIGHT}{outcome}.{Style.RESET_ALL}")
 
             column_index, row_index = board_player.convert_coordinate_to_indices(coordinate)
 
             if outcome == 'hit':
+                # Print the outcome of the computer's attack
+                print(f"\nComputer attacked {coordinate} and it was a {outcome}.\n")
+
                 board_player.grid[row_index][column_index] = 'X'
                 hit_ship_name = get_hit_ship(fleet_player, coordinate)
 
@@ -101,19 +125,30 @@ def main_game_loop(
                     print(f"{Fore.CYAN}*** Hit registered on {hit_ship_name}! ***")
                     fleet_player.update_ship_statuses()
 
-                if not computer.hunt_mode:
+                # Get the adjacent cells of the hit cell
+                new_targets = get_adjacent_cells(coordinate, board_player.size)
+
+                # If the computer is in hunt mode, add the new targets to the existing list of potential targets
+                if computer.hunt_mode:
+                    computer.potential_targets.extend(new_targets)
+                    print(f"{Fore.CYAN}*** Added new potential targets! ***")
+
+                # If the computer is not in hunt mode, switch to hunt mode and initialize the potential targets list with the new targets
+                else:
                     computer.hunt_mode = True
                     computer.last_hit = coordinate
-                    computer.potential_targets = get_adjacent_cells(coordinate, board_player.size)
+                    computer.potential_targets = new_targets  # Initialize the list here instead of extending it
                     print(f"{Fore.CYAN}*** Switching to hunt mode! ***")
 
             elif outcome == 'miss':
                 if board_player.grid[row_index][column_index] == '.':
                     board_player.grid[row_index][column_index] = '~'
+                # Print the outcome of the computer's attack
+                print(f"{Fore.GREEN}The enemy attacked {coordinate} and it was a {Style.BRIGHT}{outcome}.{Style.RESET_ALL}")
 
             elif outcome == 'repeat':
                 continue
-            
+
             else:
                 # Mark a miss with '~' only if the cell was not previously targeted
                 if board_player.grid[row_index][column_index] == '.':
@@ -134,4 +169,6 @@ def main_game_loop(
             time.sleep(1)
 
         if game_over:
+
             print(f"\nGame Over! {current_turn.name} wins!\n") # TODO: brauchen wir das?
+
