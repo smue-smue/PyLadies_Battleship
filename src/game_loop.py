@@ -51,6 +51,9 @@ def main_game_loop(
     current_turn = player if beginner == player else computer
 
     while not game_over:
+
+# ================= HUMAN PLAYER ======================================================================
+
         if current_turn == player:
             # Pass an empty string for 'shipname'
             coordinate = player.player_coordinate(
@@ -103,6 +106,8 @@ def main_game_loop(
             time.sleep(2)
             current_turn = computer  # Switch turn to computer only if the game is not over
 
+# ================= COMPUTER ======================================================================
+
         else:
             if computer.hunt_mode and computer.potential_targets:
                 # Keep popping coordinates until one not in past_targets is found or potential_targets is empty.
@@ -125,7 +130,7 @@ def main_game_loop(
                         break
 
             collect_hits_misses(past_targets, coordinate)
-            print(past_targets)
+            print(past_targets) # TODO: delete after debugging
 
             outcome = check_hit_or_miss(coordinate, board_player)
 
