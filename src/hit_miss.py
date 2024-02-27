@@ -7,6 +7,11 @@ from colorama import Fore, Style
 
 colorama.init(autoreset=True)
 
+import colorama
+from colorama import Fore, Style
+
+colorama.init(autoreset=True)
+
 def check_hit_or_miss(coordinate, grid):
     '''
     Determines if the given coordinate on the grid is a hit, a miss, or a repeated hit.

@@ -108,7 +108,9 @@ class Player():
 
         while True:  # Use a loop to keep asking until a valid input is received
             # Convert to upper case
+
             direction = input(f"{Fore.GREEN}Choose 'H' for a grand horizontal or 'V' for a majestic vertical positioning. {Style.RESET_ALL}\n").upper()
+
             if direction in ['H', 'V']:
                 return direction  # Return the direction if it's valid
             # Notify the user and ask again

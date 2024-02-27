@@ -33,6 +33,7 @@ def initialize_players():
 
     print(f"{Fore.GREEN}\nYou've been invited to a battle against a prestigious captain - the computer.\n")
     time.sleep(2)
+
     player_name = Player.prompt_for_player_name()
     player = Player(player_name)
     computer = Player("Computer")
@@ -51,8 +52,10 @@ def initialize_grids():
     board_player = Grid()
     board_computer = Grid()
     board_computer_players_view = Grid()
+
     print(f"\n{Fore.GREEN}Clearing the seas for an upcoming epic battle.\n")
     time.sleep(1)
+
     return board_player, board_computer, board_computer_players_view
 
 def populate_fleets(fleet_player, fleet_computer, player_name):
@@ -160,6 +163,9 @@ def setup_game():
         )
     time.sleep(2)
 
+    print(f"\n{Fore.GREEN}Captains, to your battle stations! "
+        f"{Fore.GREEN}It's time to position your vessels for the impending maritime showdown.\n")
+
     return (
         player,
         computer,
@@ -187,5 +193,6 @@ def place_ships(player, fleet, board, opponent_board=None):
         print(f"\n{Fore.GREEN}Captains, to your battle stations! "
             f"{Fore.GREEN}It's time to position your vessels for the impending maritime showdown.\n")
         board.print_grid()
+
         player.player_placing_ships(fleet.ships, board, opponent_board)
         print(f"{Fore.GREEN}Captain {player.name}'s armada has positioned itself on the waters, poised for an epic battle!")

@@ -59,6 +59,7 @@ def main_game_loop(
             )
 
             outcome = check_hit_or_miss(coordinate, board_computer)
+
             if outcome != 'repeat':
                 print(f"\n{Fore.GREEN}Your daring attack on {coordinate} turned out a {Style.BRIGHT}{outcome}.{Style.RESET_ALL}")
 
@@ -109,6 +110,7 @@ def main_game_loop(
                 coordinate = player.random_coordinate(board_player.size)
 
             outcome = check_hit_or_miss(coordinate, board_player)
+
             column_index, row_index = board_player.convert_coordinate_to_indices(coordinate)
 
             if outcome == 'hit':
@@ -167,4 +169,6 @@ def main_game_loop(
             time.sleep(1)
 
         if game_over:
-            print(f"\nGame Over! {current_turn.name} wins!\n") #TODO: brauchen wir das?
+
+            print(f"\nGame Over! {current_turn.name} wins!\n") # TODO: brauchen wir das?
+
