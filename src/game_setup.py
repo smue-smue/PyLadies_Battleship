@@ -163,8 +163,8 @@ def setup_game():
         )
     time.sleep(2)
 
-    print(f"\n{Fore.GREEN}Captains, to your battle stations! "
-        f"{Fore.GREEN}It's time to position your vessels for the impending maritime showdown.\n")
+    # print(f"\n{Fore.GREEN}Captains, to your battle stations! "
+    #     f"{Fore.GREEN}It's time to position your vessels for the impending maritime showdown.\n")
 
     return (
         player,

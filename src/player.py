@@ -80,7 +80,7 @@ class Player():
             if attacking:
                 prompt_message = f"{Fore.GREEN}Captain, it's your turn! Call out the coordinate for your strike: {Style.RESET_ALL}\n"
             else:
-                prompt_message = f"{Fore.GREEN}Captain, mark the the starting coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares): {Style.RESET_ALL}"
+                prompt_message = f"{Fore.GREEN}Captain, mark the starting coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares):\n{Style.RESET_ALL}"
 
             coordinate = input(prompt_message).strip().upper()
 
