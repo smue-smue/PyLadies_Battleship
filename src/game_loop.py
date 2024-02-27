@@ -8,9 +8,11 @@ Continues until one player's fleet is completely sunk, declaring the other playe
 import time
 import colorama
 from colorama import Fore, Style
-from hit_miss import check_hit_or_miss, get_hit_ship, record_hit, get_adjacent_cells
+from hit_miss import check_hit_or_miss, get_hit_ship, record_hit, get_adjacent_cells, collect_hits_misses
 
 colorama.init(autoreset=True)
+
+past_targets = [] # TODO: vielleicht findet sich ein besserer Ort
 
 def main_game_loop(
         player,
@@ -103,11 +105,27 @@ def main_game_loop(
 
         else:
             if computer.hunt_mode and computer.potential_targets:
-                # If in hunt mode, choose the next target from the list of potential targets.
-                coordinate = computer.potential_targets.pop()
+                # Keep popping coordinates until one not in past_targets is found or potential_targets is empty.
+                coordinate = None
+                while computer.potential_targets:
+                    # If in hunt mode, choose the next target from the list of potential targets.
+                    coordinate_pop = computer.potential_targets.pop()
+                    if coordinate_pop not in past_targets:
+                        # Found a coordinate not in past_targets, use this one.
+                        coordinate = coordinate_pop
+                        break # Exit the loop once a valid coordinate is found.
+                    
             else:
-                # Otherwise, select a random coordinate to attack.
-                coordinate = player.random_coordinate(board_player.size)
+                # Otherwise, select a random coordinate to attack, but consider past targets.
+                coordinate = None
+                while not coordinate:
+                    coordinate_test = player.random_coordinate(board_player.size)
+                    if coordinate_test not in past_targets:
+                        coordinate = coordinate_test
+                        break
+
+            collect_hits_misses(past_targets, coordinate)
+            print(past_targets)
 
             outcome = check_hit_or_miss(coordinate, board_player)
 

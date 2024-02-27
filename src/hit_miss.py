@@ -104,3 +104,7 @@ def get_adjacent_cells(coordinate, grid_size):
 
     print("Potential targets:", adjacent_cells)
     return adjacent_cells
+
+def collect_hits_misses(past_targets_list, coordinate):
+    past_targets_list.append(coordinate)
+
