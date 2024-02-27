@@ -7,11 +7,6 @@ from colorama import Fore, Style
 
 colorama.init(autoreset=True)
 
-import colorama
-from colorama import Fore, Style
-
-colorama.init(autoreset=True)
-
 def check_hit_or_miss(coordinate, grid):
     '''
     Determines if the given coordinate on the grid is a hit, a miss, or a repeated hit.
@@ -108,3 +103,25 @@ def get_adjacent_cells(coordinate, grid_size):
 def collect_hits_misses(past_targets_list, coordinate):
     past_targets_list.append(coordinate)
 
+def refine_targets(first_hit, second_hit, direction, board_size):
+    potential_targets = []
+    letters = 'ABCDEFGHIJKLMNOPQRST'[:board_size]  # Adjust based on grid size
+    col_first, row_first = letters.find(first_hit[0]), int(first_hit[1:])
+    col_second, row_second = letters.find(second_hit[0]), int(second_hit[1:])
+
+    if direction == 'horizontal':
+        # Ship is aligned horizontally, target the left and right of the ship's known points
+        min_col, max_col = min(col_first, col_second), max(col_first, col_second)
+        if min_col > 0:
+            potential_targets.append(f"{letters[min_col - 1]}{row_first}")  # Left of the first hit
+        if max_col < board_size - 1:
+            potential_targets.append(f"{letters[max_col + 1]}{row_first}")  # Right of the second hit
+    elif direction == 'vertical':
+        # Ship is aligned vertically, target above and below the ship's known points
+        min_row, max_row = min(row_first, row_second), max(row_first, row_second)
+        if min_row > 1:
+            potential_targets.append(f"{letters[col_first]}{min_row - 1}")  # Above the first hit
+        if max_row < board_size:
+            potential_targets.append(f"{letters[col_first]}{max_row + 1}")  # Below the second hit
+
+    return potential_targets

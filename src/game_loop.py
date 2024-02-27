@@ -8,7 +8,7 @@ Continues until one player's fleet is completely sunk, declaring the other playe
 import time
 import colorama
 from colorama import Fore, Style
-from hit_miss import check_hit_or_miss, get_hit_ship, record_hit, get_adjacent_cells, collect_hits_misses
+from hit_miss import check_hit_or_miss, get_hit_ship, record_hit, get_adjacent_cells, collect_hits_misses, refine_targets
 
 colorama.init(autoreset=True)
 
@@ -100,7 +100,7 @@ def main_game_loop(
             # print(fleet_computer) # debugging
 
             if fleet_computer.update_ship_statuses():
-                print(f"{Fore.MAGENTA}{Style.BRIGHT}\nGame Over! Captain {current_turn.name} triumphs over the seas and claims the title of supreme commander!{Style.RESET_ALL}\n")
+                print(f"{Fore.MAGENTA}{Style.BRIGHT}\nGame Over! Captain {current_turn.name}triumphs over the seas and claims the title of supreme commander!{Style.RESET_ALL}\n")
                 break  # Break out of the loop immediately if the computer's fleet is sunk
 
             time.sleep(2)
@@ -114,10 +114,10 @@ def main_game_loop(
                 coordinate = None
                 while computer.potential_targets:
                     # If in hunt mode, choose the next target from the list of potential targets.
-                    coordinate_pop = computer.potential_targets.pop()
-                    if coordinate_pop not in past_targets:
+                    next_potential_target = computer.potential_targets.pop()
+                    if next_potential_target is not None and next_potential_target not in past_targets:
                         # Found a coordinate not in past_targets, use this one.
-                        coordinate = coordinate_pop
+                        coordinate = next_potential_target
                         break # Exit the loop once a valid coordinate is found.
                     
             else:
@@ -129,7 +129,14 @@ def main_game_loop(
                         coordinate = coordinate_test
                         break
 
+            if coordinate is None:
+                # Implement fallback strategy to ensure coordinate is never None
+                while not coordinate or coordinate in past_targets:
+                    coordinate = player.random_coordinate(board_player.size)
+
             collect_hits_misses(past_targets, coordinate)
+            print(f"Next attack at: {coordinate}") # TODO: delete after debugging
+            past_targets.sort()
             print(past_targets) # TODO: delete after debugging
 
             outcome = check_hit_or_miss(coordinate, board_player)
@@ -137,6 +144,9 @@ def main_game_loop(
             column_index, row_index = board_player.convert_coordinate_to_indices(coordinate)
 
             if outcome == 'hit':
+
+                computer.hunt_mode = True
+
                 # Print the outcome of the computer's attack
                 print(f"\n{Fore.GREEN}Computer attacked {coordinate} and it was a {outcome}.{Style.RESET_ALL}\n")
 
@@ -155,11 +165,26 @@ def main_game_loop(
                 if computer.hunt_mode:
                     computer.potential_targets.extend(new_targets)
                     print(f"{Fore.CYAN}*** Added new potential targets! ***")
+                
+                if computer.first_hit and not computer.discovered_ship_direction:
+                    if computer.first_hit[0] == coordinate[0]:
+                        computer.discovered_ship_direction = 'horizontal' # Same row, different column
+                    elif computer.first_hit[1] == coordinate[1]:
+                        computer.discovered_ship_direction = 'vertical' # Same column, different row
+                    # Focus future attacks based on direction
+                    computer.potential_targets = refine_targets(computer.first_hit, coordinate, computer.discovered_ship_direction, board_player.size)
+                elif not computer.first_hit:
+                    # Record the first hit if it's the very first successful hit
+                    computer.first_hit = coordinate
+                    # Get the adjacent cells of the hit cell
+                    new_targets = get_adjacent_cells(coordinate, board_player.size)
+                    computer.potential_targets.extend(new_targets)
 
                 # If the computer is not in hunt mode, switch to hunt mode and initialize the potential targets list with the new targets
                 else:
                     computer.hunt_mode = True
                     computer.last_hit = coordinate
+                    new_targets = get_adjacent_cells(coordinate, board_player.size)
                     computer.potential_targets = new_targets  # Initialize the list here instead of extending it
                     print(f"{Fore.CYAN}*** Switching to hunt mode! ***")
 
@@ -190,4 +215,3 @@ def main_game_loop(
 
             current_turn = player  # Switch turn back to player only if the game is not over
             time.sleep(1)
-

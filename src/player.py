@@ -46,6 +46,9 @@ class Player():
         self.hunt_mode = False  # Indicates whether the computer is in hunt mode
         self.last_hit = None  # Stores the last hit coordinate
         self.potential_targets = []  # Stores potential targets for the next move in hunt mode
+        self.first_hit = None
+        self.second_hit = None
+        self.discovered_ship_direction = None # None, 'horizontal, 'verticel'
 
     @staticmethod
     def prompt_for_player_name():
