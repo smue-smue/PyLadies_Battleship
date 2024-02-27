@@ -129,10 +129,10 @@ def main_game_loop(
                         coordinate = coordinate_test
                         break
 
+            # Add a check here to ensure coordinate is not None
             if coordinate is None:
-                # Implement fallback strategy to ensure coordinate is never None
-                while not coordinate or coordinate in past_targets:
-                    coordinate = player.random_coordinate(board_player.size)
+                print("No valid coordinate found for the computer's turn, skipping to the next turn.")
+                continue  # Skip the rest of the loop and try again
 
             collect_hits_misses(past_targets, coordinate)
             print(f"Next attack at: {coordinate}") # TODO: delete after debugging
