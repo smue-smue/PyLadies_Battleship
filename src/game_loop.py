@@ -129,6 +129,11 @@ def main_game_loop(
                         coordinate = coordinate_test
                         break
 
+            # Add a check here to ensure coordinate is not None
+            if coordinate is None:
+                print("No valid coordinate found for the computer's turn, skipping to the next turn.")
+                continue  # Skip the rest of the loop and try again
+
             collect_hits_misses(past_targets, coordinate)
             print(past_targets) # TODO: delete after debugging
 
