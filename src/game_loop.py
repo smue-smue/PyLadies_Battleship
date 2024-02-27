@@ -115,7 +115,7 @@ def main_game_loop(
 
             if outcome == 'hit':
                 # Print the outcome of the computer's attack
-                print(f"\nComputer attacked {coordinate} and it was a {outcome}.\n")
+                print(f"\n{Fore.GREEN}Computer attacked {coordinate} and it was a {outcome}.{Style.RESET_ALL}\n")
 
                 board_player.grid[row_index][column_index] = 'X'
                 hit_ship_name = get_hit_ship(fleet_player, coordinate)
