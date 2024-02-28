@@ -156,37 +156,58 @@ def main_game_loop(
                 if hit_ship_name is not None:
                     record_hit(fleet_player, hit_ship_name, coordinate)
                     print(f"{Fore.CYAN}*** Hit registered on {hit_ship_name}! ***")
-                    fleet_player.update_ship_statuses()
-
-                # Get the adjacent cells of the hit cell
-                new_targets = get_adjacent_cells(coordinate, board_player.size)
-
-                # If the computer is in hunt mode, add the new targets to the existing list of potential targets
-                if computer.hunt_mode:
-                    computer.potential_targets.extend(new_targets)
-                    print(f"{Fore.CYAN}*** Added new potential targets! ***")
                 
-                if computer.first_hit and not computer.discovered_ship_direction:
-                    if computer.first_hit[0] == coordinate[0]:
-                        computer.discovered_ship_direction = 'horizontal' # Same row, different column
-                    elif computer.first_hit[1] == coordinate[1]:
-                        computer.discovered_ship_direction = 'vertical' # Same column, different row
-                    # Focus future attacks based on direction
-                    computer.potential_targets = refine_targets(computer.first_hit, coordinate, computer.discovered_ship_direction, board_player.size)
-                elif not computer.first_hit:
-                    # Record the first hit if it's the very first successful hit
-                    computer.first_hit = coordinate
-                    # Get the adjacent cells of the hit cell
-                    new_targets = get_adjacent_cells(coordinate, board_player.size)
-                    computer.potential_targets.extend(new_targets)
+                previously_active_ships = [name for name, details in fleet_player.ships.items() if details['status'] == "active"]
+                print("Active before status update:", previously_active_ships)
 
-                # If the computer is not in hunt mode, switch to hunt mode and initialize the potential targets list with the new targets
+                fleet_player.update_ship_statuses()
+
+                newly_sunk_ships = [name for name, details in fleet_player.ships.items() if details['status'] == "sunk" and name in previously_active_ships]
+                print("Newly sunk ships:", newly_sunk_ships)
+                
+                if newly_sunk_ships:
+                    print(f"{Fore.CYAN}*** {', '.join(newly_sunk_ships)} has been sunk! Exiting hunt mode. ***")
+                    computer.hunt_mode = False
+                    computer.first_hit = None
+                    computer.second_hit = None
+                    computer.last_hit = None
+                    computer.discovered_ship_direction = None
+                    computer.potential_targets.clear()  # This clears the list of potential targets
+
                 else:
-                    computer.hunt_mode = True
-                    computer.last_hit = coordinate
-                    new_targets = get_adjacent_cells(coordinate, board_player.size)
-                    computer.potential_targets = new_targets  # Initialize the list here instead of extending it
-                    print(f"{Fore.CYAN}*** Switching to hunt mode! ***")
+                    print(f"{Fore.CYAN}*** Hunt mode! ***")
+                    if not computer.first_hit:
+                        computer.first_hit = coordinate
+                        # Record the first hit if it's the very first successful hit
+                        new_targets = get_adjacent_cells(coordinate, board_player.size)
+                        # Get the adjacent cells of the hit cell
+                        computer.potential_targets.extend(new_targets)
+
+                    elif not computer.second_hit:
+                        # Check if second_hit is not set
+                        computer.second_hit = coordinate
+                        if computer.first_hit[0] == computer.second_hit[0]:
+                            computer.discovered_ship_direction = 'vertical' # Same row, different column  
+                        elif computer.first_hit[1] == computer.second_hit[1]:
+                            computer.discovered_ship_direction = 'horizontal' # Same column, different row
+                        
+                        # Focus future attacks based on direction
+                        print(computer.first_hit)
+                        print(computer.second_hit)
+                        print(computer.discovered_ship_direction)
+
+                        computer.potential_targets = refine_targets(computer.first_hit, computer.second_hit, computer.discovered_ship_direction, board_player.size)
+
+                    else:
+                        # Extend the potential targets along the discovered direction
+                        if computer.discovered_ship_direction:
+                            computer.last_hit = coordinate
+                            computer.potential_targets = refine_targets(computer.first_hit,computer.last_hit, computer.discovered_ship_direction, board_player.size)
+                        else: 
+                        # If no direction has been established, revert to hunt mode logic.
+                            computer.last_hit = coordinate
+                            new_targets = get_adjacent_cells(coordinate, board_player.size)
+                            computer.potential_targets.extend(new_targets)
 
             elif outcome == 'miss':
                 if board_player.grid[row_index][column_index] == '.':
@@ -212,6 +233,6 @@ def main_game_loop(
             if fleet_player.update_ship_statuses():
                 print(f"{Fore.MAGENTA}{Style.BRIGHT}\nGame Over! Captain {current_turn.name} triumphs over the seas and claims the title of supreme commander!{Style.RESET_ALL}\n")
                 break  # Break out of the loop immediately if the player's fleet is sunk
-
-            current_turn = player  # Switch turn back to player only if the game is not over
-            time.sleep(1)
+            else:
+                current_turn = player  # Switch turn back to player only if the game is not over
+                time.sleep(1)
