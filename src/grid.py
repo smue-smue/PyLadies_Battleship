@@ -84,9 +84,16 @@ class Grid:
                     representing 0-based grid indices.
         '''
 
+        coordinate = coordinate.upper()
         # Extract colum letter and row number from the coordinates
         column_letter = coordinate[0]
         row_number = coordinate[1:]
+
+        if column_letter not in self.coordinates_x:
+            raise ValueError(
+                f"{Fore.RED}Invalid column letter: {column_letter}. "
+                f"Please enter a valid column.{Style.RESET_ALL}"
+            )
 
         # Convert to 0-based grid indices
         column_index = self.coordinates_x[column_letter]
