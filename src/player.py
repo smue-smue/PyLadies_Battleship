@@ -89,13 +89,19 @@ class Player():
             coordinate = input(prompt_message).strip().upper()
 
             if len(coordinate) <2 or not coordinate[0].isalpha() or not coordinate[1:].isdigit():
-                print(f"{Fore.GREEN}Invalid input. please enter a valid coordinate (e.g. 'B1').{Style.RESET_ALL}\n")
+                print(f"{Fore.RED}Invalid input. please enter a valid coordinate (e.g. 'B1').{Style.RESET_ALL}\n")
                 continue
 
+            try:
+            # Attempt to validate the attack, this may raise a ValueError if invalid
             # Check if the attack is valid within the grid bounds
-            if not grid_instance.is_valid_attack(coordinate):
-                print(f"{Fore.GREEN}Coordinate is out of grid bounds. Please try again.{Style.RESET_ALL}\n")
-                continue
+                if not grid_instance.is_valid_attack(coordinate):
+                    print(f"{Fore.RED}Coordinate is out of grid bounds. Please try again.{Style.RESET_ALL}\n")
+                    continue
+            except ValueError as e:
+                # Handle the ValueError raised from the grid validation
+                print(f"{Fore.RED}{e}{Style.RESET_ALL}\n")
+                continue       
 
             return coordinate
 
@@ -119,7 +125,7 @@ class Player():
                 return direction  # Return the direction if it's valid
             # Notify the user and ask again
             else:
-                print(f"{Fore.GREEN}Invalid input. Please enter 'H' for horizontal or 'V' for vertical.{Style.RESET_ALL}\n")
+                print(f"{Fore.RED}Invalid input. Please enter 'H' for horizontal or 'V' for vertical.{Style.RESET_ALL}\n")
 
 
     def random_coordinate(self, grid_size):
@@ -217,4 +223,4 @@ class Player():
                     board_player.print_grid()
                     return  # Ship placed successfully, exit the loop.
             else:
-                print(f"{Fore.GREEN}Invalid ship placement, please try again.{Style.RESET_ALL}")
+                print(f"{Fore.RED}Invalid ship placement, please try again.{Style.RESET_ALL}")
