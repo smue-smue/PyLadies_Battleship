@@ -14,7 +14,8 @@ from hit_miss import (
     record_hit,
     get_adjacent_cells,
     collect_hits_misses,
-    refine_targets
+    refine_targets,
+    get_surrounding_cells
 )
 
 colorama.init(autoreset=True)
@@ -205,6 +206,17 @@ def main_game_loop(
                     computer.last_hit = None
                     computer.discovered_ship_direction = None
                     computer.potential_targets.clear()  # This clears the list of potential targets
+
+                    # After a ship is sunk
+                    for ship_name in newly_sunk_ships:
+                        ship_coordinates = fleet_player.ships[ship_name]['coordinates']
+                        for coordinate in ship_coordinates:
+                            safe_cells = get_surrounding_cells(coordinate, board_player.size)
+                            for cell in safe_cells:
+                                if cell not in computer.past_targets:
+                                    computer.past_targets.append(cell)
+                        print(f"Safe cells around the sunken ship {ship_name} are: {safe_cells}") #TODO: delete after debugging
+                    print(f"Complete list of past targets (including safe cells): {computer.past_targets}") #TODO: delete after debugging
 
                 else:
                     print(f"{Fore.CYAN}*** Hunt mode! ***")
