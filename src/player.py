@@ -49,6 +49,7 @@ class Player():
         self.first_hit = None
         self.second_hit = None
         self.discovered_ship_direction = None # None, 'horizontal, 'verticel'
+        self.past_targets = []
 
     @staticmethod
     def prompt_for_player_name():
@@ -133,7 +134,7 @@ class Player():
                 combining a column letter and a row number.
         '''
 
-        column_label = random.choice('ABCDEFGHIJKLMNOPQRST'[0:grid_size])
+        column_label = random.choice('ABCDEFGHIJKLMNOPQRSTUVXYZ'[0:grid_size])
         row_number = str(random.randint(1, grid_size))
         return column_label + row_number
 

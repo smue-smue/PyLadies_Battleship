@@ -240,7 +240,7 @@ class Grid:
         '''
         # Display column headers
         print()
-        column_labels = '     ' + ' '.join('ABCDEFGHIJKLMNOPQRST'[:self.size])
+        column_labels = '     ' + ' '.join('ABCDEFGHIJKLMNOPQRSTUVXYZ'[:self.size])
         print(column_labels)
 
         # Display each row with its row number
