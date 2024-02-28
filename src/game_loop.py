@@ -209,14 +209,23 @@ def main_game_loop(
 
                     # After a ship is sunk
                     for ship_name in newly_sunk_ships:
+                        safe_cells = set()
                         ship_coordinates = fleet_player.ships[ship_name]['coordinates']
                         for coordinate in ship_coordinates:
-                            safe_cells = get_surrounding_cells(coordinate, board_player.size)
-                            for cell in safe_cells:
-                                if cell not in computer.past_targets:
-                                    computer.past_targets.append(cell)
-                        print(f"Safe cells around the sunken ship {ship_name} are: {safe_cells}") #TODO: delete after debugging
-                    print(f"Complete list of past targets (including safe cells): {computer.past_targets}") #TODO: delete after debugging
+                            surrounding_cells = get_surrounding_cells(coordinate, board_player.size)
+                            safe_cells.update(surrounding_cells)
+
+                        # Extend the safe cells list with the new safe cells    
+                        computer.safe_cells.extend(cell for cell in safe_cells if cell not in computer.safe_cells)
+                        
+                        # Transfer safe cells to past targets
+                        for cell in safe_cells:
+                            if cell not in computer.past_targets:
+                                computer.past_targets.append(cell)
+
+                        #Debugging: TODO: delete after debugging
+                        print(f"Safe cells around the sunken ship {ship_name} are: {sorted(computer.safe_cells)}")
+                        print(f"Past targets with safe cells: {sorted(computer.past_targets)}")
 
                 else:
                     print(f"{Fore.CYAN}*** Hunt mode! ***")
