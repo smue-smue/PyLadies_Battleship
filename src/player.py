@@ -102,7 +102,7 @@ class Player():
             except ValueError as e:
                 # Handle the ValueError raised from the grid validation
                 print(f"{Fore.RED}{e}{Style.RESET_ALL}\n")
-                continue       
+                continue
 
             return coordinate
 
