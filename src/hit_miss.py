@@ -73,11 +73,11 @@ def get_adjacent_cells(coordinate, grid_size):
     Generates a list of valid adjacent cells around a given coordinate on the grid.
 
     Parameters:
-    - coordinate (str): The current grid coordinate in the format 'LetterNumber' (e.g., 'A1').
-    - grid_size (int): The size of the grid (the number of rows/columns).
+        coordinate (str): The current grid coordinate in the format 'LetterNumber' (e.g., 'A1').
+        grid_size (int): The size of the grid (the number of rows/columns).
 
     Returns:
-    - list: A list of strings representing valid adjacent coordinates on the grid.
+        list: A list of strings representing valid adjacent coordinates on the grid.
 
     The function calculates adjacent cells in all four cardinal directions (left, right, up, down)
     from the given coordinate, ensuring they fall within the grid boundaries defined by grid_size.
@@ -111,11 +111,11 @@ def collect_hits_misses(past_targets_list, coordinate):
     It appends the provided coordinate to the past_targets_list.
 
     Parameters:
-    - past_targets_list     (list): A list of strings representing the coordinates of past targets.
-    - coordinate            (str): A string of the coordinate to add to the list of past targets.
+        past_targets_list     (list): A list of strings representing the coordinates of past targets.
+        coordinate            (str): A string of the coordinate to add to the list of past targets.
 
     Returns:
-    - None
+        None
     '''
 
     past_targets_list.append(coordinate)
@@ -131,13 +131,13 @@ def refine_targets(first_hit, second_hit, direction, board_size):
     are valid within the game board.
 
     Parameters:
-    - first_hit     (str): A string representing the coordinate of the first hit on the ship.
-    - second_hit    (str): A string representing the coordinate of the second hit on the ship.
-    - direction     (str): A string ('horizontal' or 'vertical') indicating the ship's direction.
-    - board_size    (int): An integer representing the size of the game board.
+        first_hit     (str): A string representing the coordinate of the first hit on the ship.
+        second_hit    (str): A string representing the coordinate of the second hit on the ship.
+        direction     (str): A string ('horizontal' or 'vertical') indicating the ship's direction.
+        board_size    (int): An integer representing the size of the game board.
 
     Returns:
-    - potential_targets (list): A list of strings representing coordinates of potential targets.
+        potential_targets (list): A list of strings representing coordinates of potential targets.
     '''
 
     potential_targets = []
@@ -170,12 +170,12 @@ def get_surrounding_cells(coordinate, board_size):
     Returns a list of cells surrounding a given cell, including diagonally adjacent cells.
 
     Parameters:
-    - coordinate (str): The coordinate of the cell.
-    - board_size (int): The size of the game board.
+        coordinate (str): The coordinate of the cell.
+        board_size (int): The size of the game board.
 
     Returns:
-    - surrounding_cells (list): A list of strings representing the coordinates of the cells 
-                                surrounding the given cell.
+        surrounding_cells (list):   A list of strings representing the coordinates of the cells 
+                                    surrounding the given cell.
     '''
     surrounding_cells = []
     col, row = ord(coordinate[0]) - ord('A'), int(coordinate[1:]) - 1
