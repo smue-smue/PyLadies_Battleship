@@ -1,71 +1,59 @@
 import pytest
-from unittest.mock import patch
-"""
-`patch` is used to temporarily replace the real objects in your code with mock objects during testing. 
-It allows you to simulate different behaviors and responses of these objects, making it easier to test 
-functions or methods that depend on external systems or user input. For example, `patch` can be used to 
-mock the behavior of the `input()` function to simulate user inputs without requiring actual keyboard input 
-during tests. This is particularly useful for testing functions that involve user interaction or depend on 
-external resources.
-
-"""
-
 from player import Player
-from fleet import Fleet
-from grid import Grid 
 
-@pytest.fixture
-def player():
+def test_random_coordinate():
     """
-    A pytest fixture that creates a new Player instance for testing.
-    
-    This fixture sets up a Player with a default name 'Test Player' and returns it for use in test functions.
-    
-    Returns:
-        Player: An instance of the Player class.
+    Test that the random_coordinate method returns a valid coordinate.
     """
-    return Player("Test Player")
+    player = Player()
+    for _ in range(100):  # repeat the test 100 times to ensure randomness
+        coordinate = player.random_coordinate(10)
+        assert 2 <= len(coordinate) <= 3
+        assert coordinate[0] in 'ABCDEFGHIJ'
+        assert 1 <= int(coordinate[1:]) <= 10
 
-def test_init(player):
+def test_random_direction():
     """
-    Tests the initialization of the Player class.
-    
-    Verifies that a Player instance can be created with the correct name attribute.
+    Test that the random_direction method returns a valid direction.
     """
-    assert player.name == "Test Player", "Player name should be initialized correctly."
+    player = Player()
+    for _ in range(100):  # repeat the test 100 times to ensure randomness
+        direction = player.random_direction()
+        assert direction in ['H', 'V']
 
-@patch('builtins.input', return_value='John Doe')
-def test_prompt_for_player_name(mock_input):
+def test_random_placing_ships():
     """
-    Tests the static method prompt_for_player_name of the Player class.
-    
-    This test simulates user input 'John Doe' for the player's name and verifies the method returns this input correctly.
+    Test that the random_placing_ships method correctly places ships in the fleet.
     """
-    name = Player.prompt_for_player_name()
-    assert name == 'John Doe', "The prompt_for_player_name method should return the user input as the player's name."
+    player = Player()
+    fleet = {
+        'ship1': {'size': 2, 'coordinates': []},
+        'ship2': {'size': 3, 'coordinates': []},
+    }
+    grid = StubGrid(10)
 
-# Example test for player_coordinate with mocking input and output
-@patch('builtins.print')
-@patch('builtins.input', side_effect=['A1', 'H'])
-def test_player_coordinate(mock_input, mock_print, player):
-    """
-    Tests the player_coordinate method of the Player class.
-    
-    This test simulates user inputs for ship coordinates and verifies that the method returns the first valid coordinate.
-    """
-    fleet = {'TestShip': {'size': 3}}  # Simulated fleet dictionary
-    coordinate = player.player_coordinate(fleet, 'TestShip')
-    assert coordinate == 'A1', "The player_coordinate method should return the first valid coordinate input by the user."
+    player.random_placing_ships(fleet, grid)
 
-# Example test for player_direction with mocking input
-@patch('builtins.input', return_value='H')
-def test_player_direction(mock_input, player):
-    """
-    Tests the player_direction method of the Player class.
-    
-    This test simulates user input 'H' for the ship's direction and verifies that the method returns this input correctly.
-    """
-    direction = player.player_direction()
-    assert direction == 'H', "The player_direction method should return the user input for the ship's direction."
+    # Check that each ship in the fleet has been placed
+    for ship in fleet.values():
+        assert len(ship['coordinates']) == ship['size']
 
+class StubGrid:
+    """
+    A stub class for the Grid class, used for testing the Player class.
+    """
+    def __init__(self, size):
+        self.size = size
 
+    def is_valid_placement(self, start_coordinate, direction, ship_size):
+        """
+        Always returns True, indicating that the placement is valid.
+        """
+        return True
+
+    def update_grid_fleet(self, start_coordinate, direction, fleet, ship_size, ship_name, show_errors=False):
+        """
+        Updates the fleet dictionary to reflect the placement of the ship.
+        """
+        fleet[ship_name]['coordinates'] = [start_coordinate] * ship_size
+        return True
