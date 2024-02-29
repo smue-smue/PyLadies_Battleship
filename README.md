@@ -1,6 +1,11 @@
-# Battleship Game with Pygame
+# Battleship Game
 
-This project is a Python implementation of the classic Battleship game, enhanced with a graphical interface using Pygame.
+This project is a Python implementation of the classic Battleship game. 
+The plan was to enhance it with a graphical interface using Pygame, but that will be tackled later on.
+
+## Game Overview
+
+In this implementation of Battleship, players set up their ships on a grid and then take turns guessing the locations of their opponent's ships. The goal is to sink all of the opponent's ships before they sink all of yours. This version brings an interactive console-based interface to life, enhanced with colorful output thanks to the Colorama library, making the gameplay experience more engaging and visually appealing.
 
 ## Getting Started
 
@@ -49,13 +54,17 @@ A step-by-step series of examples that tell you how to get a development environ
     python src/main.py
     ```
 
+## Enhancement with Colorama
+
+To make the game output more visually appealing, we utilized the Colorama library. This addition allows us to output text in various colors and styles, enhancing the overall user experience and making the game interface more intuitive and engaging.
+
+
 ## Structure
 
 The project is structured as follows:
 
-- `src/`: Contains the source code for the game.
-- `assets/`: Contains game assets like images, sounds, and fonts.
 - `docs/`: Documentation related to the project.
+- `src/`: Contains the source code for the game.
 - `tests/`: Test scripts for the game.
 - `venv/`: Virtual environment for managing dependencies.
 
@@ -69,8 +78,3 @@ The project is structured as follows:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-- PyGame Tutorial by [Clear Code](https://www.youtube.com/watch?v=AY9MnQ4x3zk)
-
