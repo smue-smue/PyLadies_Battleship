@@ -111,7 +111,7 @@ def main_game_loop(
                 f" your attack:{Style.RESET_ALL}"
             )
             board_computer_players_view.print_grid()
-            board_computer.print_grid() # TODO: only for WINNING
+            #board_computer.print_grid() # Print the computer's grid for debugging
             #print(fleet_computer) # debugging
 
             if fleet_computer.update_ship_statuses():
@@ -187,7 +187,7 @@ def main_game_loop(
                     name for name, details in fleet_player.ships.items()
                     if details['status'] == "active"
                 ]
-                print("Active before status update:", previously_active_ships)
+                #print("Active before status update:", previously_active_ships) # Print statement for debugging
 
                 fleet_player.update_ship_statuses()
 
@@ -195,7 +195,7 @@ def main_game_loop(
                     name for name, details in fleet_player.ships.items()
                     if details['status'] == "sunk" and name in previously_active_ships
                 ]
-                print("Newly sunk ships:", newly_sunk_ships)
+                #print("Newly sunk ships:", newly_sunk_ships) # Print statement for debugging
 
                 if newly_sunk_ships:
                     print(

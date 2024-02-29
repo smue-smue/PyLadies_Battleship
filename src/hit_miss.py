@@ -97,8 +97,8 @@ def get_adjacent_cells(coordinate, grid_size):
     if row < grid_size:  # Down
         adjacent_cells.append(f"{column}{row + 1}")
 
-    print(f"{Fore.CYAN}*** Added new potential targets! ***")
-    print("Potential targets:", adjacent_cells)
+    #print(f"{Fore.CYAN}*** Added new potential targets! ***") # Print for debugging
+    #print("Potential targets:", adjacent_cells) # Print for debugging
 
     return adjacent_cells
 
@@ -160,8 +160,8 @@ def refine_targets(first_hit, second_hit, direction, board_size):
         if max_row < board_size:
             potential_targets.append(f"{letters[col_first]}{max_row + 1}")  # Below the second hit
 
-    print(f"{Fore.CYAN}*** Added new potential targets! ***")
-    print("Potential targets:", potential_targets)
+    #print(f"{Fore.CYAN}*** Added new potential targets! ***") # Print for debugging
+    #print("Potential targets:", potential_targets) # Print for debugging
 
     return potential_targets
 
