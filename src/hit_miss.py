@@ -164,3 +164,25 @@ def refine_targets(first_hit, second_hit, direction, board_size):
     print("Potential targets:", potential_targets)
 
     return potential_targets
+
+def get_surrounding_cells(coordinate, board_size):
+    '''
+    Returns a list of cells surrounding a given cell, including diagonally adjacent cells.
+
+    Parameters:
+    - coordinate (str): The coordinate of the cell.
+    - board_size (int): The size of the game board.
+
+    Returns:
+    - surrounding_cells (list): A list of strings representing the coordinates of the cells 
+                                surrounding the given cell.
+    '''
+    surrounding_cells = []
+    col, row = ord(coordinate[0]) - ord('A'), int(coordinate[1:]) - 1
+
+    for i in range(max(0, row - 1), min(board_size, row + 2)):
+        for j in range(max(0, col - 1), min(board_size, col + 2)):
+            if (j, i) != (col, row):
+                surrounding_cells.append(chr(j + ord('A')) + str(i + 1))
+
+    return surrounding_cells

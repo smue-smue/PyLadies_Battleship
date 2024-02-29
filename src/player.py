@@ -50,6 +50,7 @@ class Player():
         self.second_hit = None
         self.discovered_ship_direction = None # None, 'horizontal, 'verticel'
         self.past_targets = []
+        self.safe_cells = [] # Attribute to store safe cells for the computer player
 
     @staticmethod
     def prompt_for_player_name():
@@ -101,7 +102,7 @@ class Player():
             except ValueError as e:
                 # Handle the ValueError raised from the grid validation
                 print(f"{Fore.RED}{e}{Style.RESET_ALL}\n")
-                continue       
+                continue
 
             return coordinate
 

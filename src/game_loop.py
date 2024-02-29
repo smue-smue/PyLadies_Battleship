@@ -14,7 +14,8 @@ from hit_miss import (
     record_hit,
     get_adjacent_cells,
     collect_hits_misses,
-    refine_targets
+    refine_targets,
+    get_surrounding_cells
 )
 
 colorama.init(autoreset=True)
@@ -111,7 +112,7 @@ def main_game_loop(
             )
             board_computer_players_view.print_grid()
             board_computer.print_grid() # TODO: only for WINNING
-            # print(fleet_computer) # debugging
+            #print(fleet_computer) # debugging
 
             if fleet_computer.update_ship_statuses():
                 print(
@@ -155,9 +156,11 @@ def main_game_loop(
                 continue  # Skip the rest of the loop and try again
 
             collect_hits_misses(computer.past_targets, coordinate)
-            print(f"Next attack at: {coordinate}") # TODO: delete after debugging
+            # Print statement for debugging
+            #print(f"Next attack at: {coordinate}")
             computer.past_targets.sort()
-            print(computer.past_targets) # TODO: delete after debugging
+            # Print statement for debbuging
+            #print(computer.past_targets)
 
             outcome = check_hit_or_miss(coordinate, board_player)
 
@@ -206,6 +209,26 @@ def main_game_loop(
                     computer.discovered_ship_direction = None
                     computer.potential_targets.clear()  # This clears the list of potential targets
 
+                    # After a ship is sunk
+                    for ship_name in newly_sunk_ships:
+                        safe_cells = set()
+                        ship_coordinates = fleet_player.ships[ship_name]['coordinates']
+                        for coordinate in ship_coordinates:
+                            surrounding_cells = get_surrounding_cells(coordinate, board_player.size)
+                            safe_cells.update(surrounding_cells)
+
+                        # Extend the safe cells list with the new safe cells
+                        computer.safe_cells.extend(cell for cell in safe_cells if cell not in computer.safe_cells)
+
+                        # Transfer safe cells to past targets
+                        for cell in safe_cells:
+                            if cell not in computer.past_targets:
+                                computer.past_targets.append(cell)
+
+                        # Print statements for debugging
+                        #print(f"Safe cells around the sunken ship {ship_name} are: {sorted(computer.safe_cells)}")
+                        #print(f"Past targets with safe cells: {sorted(computer.past_targets)}")
+
                 else:
                     print(f"{Fore.CYAN}*** Hunt mode! ***")
                     if not computer.first_hit:
@@ -225,10 +248,10 @@ def main_game_loop(
                             # Same row, different column
                             computer.discovered_ship_direction = 'horizontal'
 
-                        # Focus future attacks based on direction
-                        print(computer.first_hit)
-                        print(computer.second_hit)
-                        print(computer.discovered_ship_direction)
+                        # Focus future attacks based on direction // Debugging print statements
+                        #print(computer.first_hit)
+                        #print(computer.second_hit)
+                        #print(computer.discovered_ship_direction)
 
                         computer.potential_targets = refine_targets(
                             computer.first_hit,
