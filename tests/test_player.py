@@ -1,4 +1,11 @@
-from player import Player
+'''
+Unit tests for Player class methods, ensuring random coordinate and direction 
+generation and ship placement behave as expected.
+'''
+import sys
+from pathlib import Path
+from src.player import Player
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 def test_random_coordinate():
     """
@@ -50,7 +57,15 @@ class StubGrid:
         """
         return True
 
-    def update_grid_fleet(self, start_coordinate, direction, fleet, ship_size, ship_name, show_errors=False):
+    def update_grid_fleet(
+            self,
+            start_coordinate,
+            direction,
+            fleet,
+            ship_size,
+            ship_name,
+            show_errors=False
+        ):
         """
         Updates the fleet dictionary to reflect the placement of the ship.
         """

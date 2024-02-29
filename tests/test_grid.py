@@ -1,5 +1,12 @@
+'''
+Tests for Grid class functionality, including initialization, 
+coordinate conversion, placement validation, and grid updates.
+'''
+import sys
+from pathlib import Path
 import pytest
-from grid import Grid
+from src.grid import Grid
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 def test_initialize_grid_default_size():
     """
@@ -41,6 +48,7 @@ def test_mark_water_around_ship():
     """
     grid = Grid(size=5)
     grid.grid[2][2] = "S"  # Place a ship at a specific location
+    # pylint: disable=protected-access
     grid._mark_water_around_ship(2, 2)  # Mark water around the ship
 
     expected_grid = [
