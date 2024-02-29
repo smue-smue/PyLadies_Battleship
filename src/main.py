@@ -1,28 +1,7 @@
-'''
-This module is the entry point for a battleship-style game. It orchestrates the game setup, 
-ship placement, and execution of the main game loop.
-
-Functions:
-    setup_game:     Initializes the game, setting up players, grids, and fleets, and decides 
-                    who starts the game.
-    place_ships:    Handles the placement of ships on the grid for both the human player 
-                    and the computer.
-    main_game_loop: Runs the main loop of the game where players take turns to attack each 
-                    other's fleet.
-
-The game starts by setting up the players, ships, and boards. 
-It then allows the human player and computer to place their ships. 
-Once the setup is complete, the main game loop begins, processing turns until the game concludes.
-
-Example:
-    Run this module directly to start the game:
-        python warship_battle_game.py
-'''
-
 from game_setup import setup_game
 from game_loop import main_game_loop
 
-if __name__ == "__main__":
+def main():
     (
         player,
         computer,
@@ -46,3 +25,6 @@ if __name__ == "__main__":
         fleet_computer,
         beginner
         )
+
+if __name__ == "__main__":
+    main()
