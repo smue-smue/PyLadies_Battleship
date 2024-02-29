@@ -22,6 +22,23 @@ from player import Player
 
 colorama.init(autoreset=True)
 
+def display_intro():
+    intro_text = r'''
+**************************************************
+*                                                *
+*       Welcome to the Ultimate Battleship       *
+*                                                *
+**************************************************
+
+             __/___            
+          _____/______|           
+  _______/_____\_______\_____     
+  \              < < <       |    
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'''
+    print(intro_text)
+    time.sleep(1)
+
 def initialize_players():
     '''
     Create player instances for the game, one for the human player based on input name
@@ -150,6 +167,7 @@ def setup_game():
     Returns:
         tuple: Collection of all game-related instances needed to start the game loop.
     '''
+    display_intro()  # Call the intro display function here
     player, computer = initialize_players()
     board_player, board_computer, board_computer_players_view = initialize_grids()
     fleet_player, fleet_computer = initialize_fleets(player.name)
