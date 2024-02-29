@@ -1,6 +1,20 @@
+'''
+Unit tests for game setup processes including player initialization, 
+grid setup, and fleet population.
+'''
+import sys
+from pathlib import Path
 from unittest.mock import patch
-from game_setup import initialize_players, initialize_grids, populate_fleets, initialize_fleets, coin_flip, setup_game, place_ships
-from grid import Grid
+from src.game_setup import (
+    initialize_players,
+    initialize_grids,
+    populate_fleets,
+    initialize_fleets,
+    coin_flip,
+    setup_game
+)
+from src.grid import Grid
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 class MockPlayer:
     """Mock class for Player to simulate player behaviors without actual game logic."""
@@ -9,24 +23,21 @@ class MockPlayer:
 
     def player_placing_ships(self, ships, grid, opponent_board=None):
         """Simulate the player placing ships on the grid."""
-        pass
 
     def random_placing_ships(self, ships, grid):
         """Simulate the computer player randomly placing ships on the grid."""
-        pass
 
 class MockGrid:
     """Mock class for Grid to simulate grid behaviors without actual game logic."""
     def print_grid(self):
         """Simulate printing the grid to the console."""
-        pass
 
 class MockFleet:
     """Mock class for Fleet to simulate fleet behaviors without actual game logic."""
     def __init__(self, name):
         self.name = name
         self.ships = {}
-    
+
     def add_ship(self, ship):
         """Simulate adding a ship to the fleet."""
         self.ships[ship.name] = ship
@@ -38,7 +49,8 @@ class MockShip:
         self.size = 3
 
 @patch('game_setup.Player.prompt_for_player_name', return_value='Test Player')
-def test_initialize_players(mock_prompt):
+def test_initialize_players(_mock_prompt):
+    # pylint: disable=unused-argument
     """Test the initialization of player objects."""
     player, computer = initialize_players()
     assert player.name == 'Test Player'
@@ -71,10 +83,23 @@ def test_coin_flip():
     beginner = coin_flip(player, computer)
     assert beginner in [player, computer]
 
-@patch('game_setup.initialize_players', return_value=(MockPlayer('Test Player'), MockPlayer('Computer')))
+@patch(
+        'game_setup.initialize_players',
+        return_value=(
+            MockPlayer('Test Player'),
+            MockPlayer('Computer')
+        )
+)
 @patch('game_setup.initialize_grids', return_value=(MockGrid(), MockGrid(), MockGrid()))
-@patch('game_setup.initialize_fleets', return_value=(MockFleet('Player Fleet'), MockFleet('Computer Fleet')))
-def test_setup_game(mock_initialize_players, mock_initialize_grids, mock_initialize_fleets):
+@patch(
+    'game_setup.initialize_fleets',
+    return_value=(
+        MockFleet('Player Fleet'),
+        MockFleet('Computer Fleet')
+    )
+)
+def test_setup_game(_mock_initialize_players, _mock_initialize_grids, _mock_initialize_fleets):
+    # pylint: disable=unused-argument
     """Test the complete setup of the game, including players, grids, and fleets."""
     game_setup = setup_game()
     assert len(game_setup) == 8
