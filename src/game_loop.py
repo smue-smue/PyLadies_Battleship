@@ -30,19 +30,19 @@ def main_game_loop(
         fleet_computer,
         beginner
 ):
-    """
+    '''
     This function represents the main game loop for a game of Battleship.
 
     Parameters:
-    player (Player): The human player.
-    computer (Computer): The computer player.
-    board_player (Board): The game board for the human player.
-    board_computer (Board): The game board for the computer player.
-    board_computer_players_view (Board): The game board for the computer player 
-                                         as viewed by the human player.
-    fleet_player (Fleet): The fleet of ships for the human player.
-    fleet_computer (Fleet): The fleet of ships for the computer player.
-    beginner (Player or Computer): The player who begins the game.
+        player (Player): The human player.
+        computer (Computer): The computer player.
+        board_player (Board): The game board for the human player.
+        board_computer (Board): The game board for the computer player.
+        board_computer_players_view (Board): The game board for the computer player 
+                                            as viewed by the human player.
+        fleet_player (Fleet): The fleet of ships for the human player.
+        fleet_computer (Fleet): The fleet of ships for the computer player.
+        beginner (Player or Computer): The player who begins the game.
 
     The function alternates turns between the human player and the computer. On each turn, 
     the current player chooses a coordinate to attack on the opponent's board. The function 
@@ -50,7 +50,7 @@ def main_game_loop(
     ship is hit, the function also updates the status of the ship in the fleet. The game 
     continues until all the ships in a player's fleet have been sunk, at which point the 
     game ends and the other player is declared the winner.
-    """
+    '''
 
     game_over = False
     # Set the current turn to the beginner
