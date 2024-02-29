@@ -1,68 +1,86 @@
 import pytest
-from grid import Grid
-from fleet import Fleet
-from ship import Ship
-from hit_miss import check_hit_or_miss, get_hit_ship, record_hit
+from hit_miss import check_hit_or_miss, get_hit_ship, record_hit, get_adjacent_cells, collect_hits_misses, refine_targets, get_surrounding_cells
 
-@pytest.fixture
-def setup_grid():
+class GridMock:
     """
-    Fixture to initialize a grid and place a ship at a specific location.
+    A mock Grid class for testing purposes. Mimics the behavior of the actual Grid class used in the game.
     
-    This fixture sets up a grid with a single 'ship' placed at the 'B2' coordinate 
-    (which translates to grid coordinates [1][1]). It is used to test hit or miss detection.
-    
-    Returns:
-        Grid: An instance of the Grid class with a ship placed at 'B2'.
+    Attributes:
+        grid (list): A 2D list representing the game grid.
     """
-    grid = Grid() 
-    grid.grid[1][1] = 'S'  # 'B2' is the location of the ship
-    return grid
+    def __init__(self, grid):
+        self.grid = grid
 
-@pytest.fixture
-def setup_fleet():
-    """
-    Creates a Fleet instance and adds a single ship to the fleet.
-    
-    This fixture also updates the ship's coordinates to simulate a placed ship. It is used 
-    to test the functionality of recording hits on ships within the fleet.
-    
-    Returns:
-        tuple: A tuple containing the Fleet instance and the name of the added ship.
-    """
-    fleet = Fleet("Test Fleet")
-    ship = Ship("TestShip", "Destroyer", 3)
-    fleet.add_ship(ship)
-    fleet.ships["TestShip"]['coordinates'] = ['A1', 'A2', 'A3']
-    return fleet, "TestShip"
+    def convert_coordinate_to_indices(self, coordinate):
+        """
+        Converts a grid coordinate into its corresponding row and column indices.
+        
+        Args:
+            coordinate (str): The grid coordinate, e.g., 'A1'.
+            
+        Returns:
+            tuple: A tuple containing row and column indices.
+        """
+        return ord(coordinate[0]) - ord('A'), int(coordinate[1:]) - 1
 
-def test_hit_detection(setup_grid):
+class FleetMock:
     """
-    Tests if a hit is correctly detected on a ship's location.
+    A mock Fleet class for testing purposes. Mimics the behavior of the actual Fleet class used in the game.
     
-    This test verifies that the check_hit_or_miss function identifies a hit when a ship 
-    is present at the specified grid coordinate ('B2').
+    Attributes:
+        ships (dict): A dictionary representing the fleet, with ship names as keys and ship details as values.
     """
-    grid = setup_grid
-    assert check_hit_or_miss('B2', grid) == 'hit', "Expected a hit at 'B2', but it was missed."
+    def __init__(self, ships):
+        self.ships = ships
 
-def test_miss_detection(setup_grid):
+def test_check_hit_or_miss():
     """
-    Tests if a miss is correctly identified on an empty grid location.
-    
-    This test checks that the check_hit_or_miss function returns 'miss' for a grid coordinate 
-    ('C3') where no ship is placed, ensuring accurate miss detection.
+    Tests the check_hit_or_miss function with different scenarios including a hit, a repeat, and a miss.
     """
-    grid = setup_grid
-    assert check_hit_or_miss('C3', grid) == 'miss', "Expected a miss at 'C3', but it was marked as a hit."
+    grid = GridMock([['S', '.'], ['X', '.']])
+    assert check_hit_or_miss('A1', grid) == 'hit'
+    assert check_hit_or_miss('A2', grid) == 'repeat'
+    assert check_hit_or_miss('B1', grid) == 'miss'
 
-def test_record_hit(setup_fleet):
+def test_get_hit_ship():
     """
-    Tests the record_hit function's ability to correctly log a hit on a ship.
-    
-    This test ensures that when a hit is recorded against a ship ('TestShip') at a specific 
-    coordinate ('A1'), it is accurately reflected in the fleet's ship details.
+    Tests the get_hit_ship function to ensure it correctly identifies the ship hit at a given coordinate,
+    and returns None when no ship is hit.
     """
-    fleet, ship_name = setup_fleet
-    record_hit(fleet, ship_name, 'A1')
-    assert 'A1' in fleet.ships[ship_name]['hits'], "Expected 'A1' to be recorded as a hit for 'TestShip'."
+    fleet = FleetMock({'Destroyer': {'coordinates': ['A1']}})
+    assert get_hit_ship(fleet, 'A1') == 'Destroyer'
+    assert get_hit_ship(fleet, 'B1') is None
+
+def test_record_hit():
+    """
+    Tests the record_hit function to ensure it correctly records a hit on a ship by adding the hit coordinate to the ship's 'hits' list.
+    """
+    fleet = FleetMock({'Destroyer': {'hits': []}})
+    record_hit(fleet, 'Destroyer', 'A1')
+    assert 'A1' in fleet.ships['Destroyer']['hits']
+
+def test_get_adjacent_cells():
+    """
+    Tests the get_adjacent_cells function to ensure it correctly returns a list of valid adjacent cells around a given coordinate.
+    """
+    assert get_adjacent_cells('B2', 3) == ['A2', 'C2', 'B1', 'B3']
+
+def test_collect_hits_misses():
+    """
+    Tests the collect_hits_misses function to ensure it correctly adds a coordinate to the list of past targets.
+    """
+    past_targets = []
+    collect_hits_misses(past_targets, 'A1')
+    assert 'A1' in past_targets
+
+def test_refine_targets():
+    """
+    Tests the refine_targets function to ensure it generates a list of potential targets based on the first and second hits and the ship's direction.
+    """
+    assert refine_targets('A1', 'A2', 'vertical', 3) == ['A3']
+
+def test_get_surrounding_cells():
+    """
+    Tests the get_surrounding_cells function to ensure it correctly returns a list of all surrounding cells for a given coordinate, including diagonally adjacent ones.
+    """
+    assert get_surrounding_cells('B2', 3) == ['A1', 'B1', 'C1', 'A2', 'C2', 'A3', 'B3', 'C3']
