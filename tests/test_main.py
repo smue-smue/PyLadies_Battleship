@@ -1,10 +1,7 @@
 '''
 Tests the main game flow, ensuring setup and game loop are called.
 '''
-import sys
-from pathlib import Path
 from unittest.mock import patch, MagicMock
-sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 @patch('main.setup_game', return_value=(
         MagicMock(),
@@ -25,7 +22,7 @@ def test_main(mock_main_game_loop, mock_setup_game):
     # Import the module under test. The import statement is inside the function
     # so it's executed after the mocks are set up.
     # pylint: disable=import-outside-toplevel
-    import src.main as game_module
+    import main as game_module
 
     # Call the main function.
     game_module.main()

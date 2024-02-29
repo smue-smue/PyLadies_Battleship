@@ -2,10 +2,8 @@
 Unit tests for game setup processes including player initialization, 
 grid setup, and fleet population.
 '''
-import sys
-from pathlib import Path
 from unittest.mock import patch
-from src.game_setup import (
+from game_setup import (
     initialize_players,
     initialize_grids,
     populate_fleets,
@@ -13,8 +11,7 @@ from src.game_setup import (
     coin_flip,
     setup_game
 )
-from src.grid import Grid
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+from grid import Grid
 
 class MockPlayer:
     """Mock class for Player to simulate player behaviors without actual game logic."""

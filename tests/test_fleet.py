@@ -2,10 +2,7 @@
 Tests for Fleet and Ship classes, including initialization, ship addition, 
 status updates, and string representation.
 '''
-import sys
-from pathlib import Path
-from src.fleet import Fleet
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+from fleet import Fleet
 
 class Ship:
     '''

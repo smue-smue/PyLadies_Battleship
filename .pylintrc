@@ -1,0 +1,6 @@
+[MASTER]
+# Set up to add the 'src' directory to sys.path, 
+# allowing Pylint to correctly import anything from 'src' 
+# while analyzing files anywhere in your project.
+
+init-hook='import sys; sys.path.append("src")'
