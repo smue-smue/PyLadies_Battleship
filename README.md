@@ -78,3 +78,9 @@ The project is structured as follows:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgement
+
+We would like to thank [PyLadies Vienna](https://pyladies.at/) for offering the beginners course in Autumn 2023, which helped us start our journey into Python programming. This Battleship game project, a collaborative effort between [Nebulaleaf](https://github.com/Nebulaleaf) and [smue-smue](https://github.com/smue-smue), serves as our final assignment for the course. We appreciate the guidance, knowledge, and support provided by the PyLadies Vienna team, essential in helping us reach this milestone. Special thanks to the mentors and fellow PyLadies of Autumn 2023 for their encouragement and advice throughout the course.
+
+PyLadies is an international mentorship group with a focus on helping more women become active participants and leaders in the Python open-source community. Their mission is to promote, educate and advance a diverse Python community through outreach, education, conferences, events and social gatherings.
