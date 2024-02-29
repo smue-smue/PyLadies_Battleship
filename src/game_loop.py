@@ -56,7 +56,16 @@ def main_game_loop(
     # Set the current turn to the beginner
     current_turn = player if beginner == player else computer
 
+    # Initialize round counter and turn counter
+    round_counter = 0
+    turn_counter = 0
+
     while not game_over:
+
+        # Increment round counter and print it when both players have had their turn
+        if turn_counter % 2 == 0:
+            round_counter += 1
+            print(f"\n{Fore.YELLOW}*** Round {round_counter}! ***{Style.RESET_ALL}")
 
 # ================= HUMAN PLAYER =============================================
 
@@ -122,9 +131,10 @@ def main_game_loop(
                 )
                 game_over = True
                 break  # Break out of the loop immediately if the computer's fleet is sunk
-
-            time.sleep(2)
-            current_turn = computer  # Switch turn to computer only if the game is not over
+            else:
+                turn_counter += 1
+                current_turn = computer  # Switch turn to computer only if the game is not over
+                time.sleep(1)
 
 # ================= COMPUTER ======================================================================
 
@@ -314,5 +324,6 @@ def main_game_loop(
                 game_over = True
                 break  # Break out of the loop immediately if the player's fleet is sunk
             else:
+                turn_counter += 1
                 current_turn = player  # Switch turn back to player only if the game is not over
                 time.sleep(1)
