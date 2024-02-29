@@ -2,10 +2,8 @@
 Unit tests for Ship class and its subclasses, 
 verifying correct initialization and inheritance.
 '''
-import sys
-from pathlib import Path
-from src.ship import Ship, Destroyer, Cruiser, Battleship, AircraftCarrier
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+
+from ship import Ship, Destroyer, Cruiser, Battleship, AircraftCarrier
 
 def test_ship_initialization():
     """

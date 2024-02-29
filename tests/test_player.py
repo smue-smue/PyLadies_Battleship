@@ -2,10 +2,8 @@
 Unit tests for Player class methods, ensuring random coordinate and direction 
 generation and ship placement behave as expected.
 '''
-import sys
-from pathlib import Path
-from src.player import Player
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+
+from player import Player
 
 def test_random_coordinate():
     """

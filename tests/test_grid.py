@@ -2,11 +2,9 @@
 Tests for Grid class functionality, including initialization, 
 coordinate conversion, placement validation, and grid updates.
 '''
-import sys
-from pathlib import Path
+
 import pytest
-from src.grid import Grid
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+from grid import Grid
 
 def test_initialize_grid_default_size():
     """

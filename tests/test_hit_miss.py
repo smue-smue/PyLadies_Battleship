@@ -1,9 +1,8 @@
 '''
 Unit tests for hit/miss logic and target management in a battleship game.
 '''
-import sys
-from pathlib import Path
-from src.hit_miss import (
+
+from hit_miss import (
     check_hit_or_miss,
     get_hit_ship,
     record_hit,
@@ -12,7 +11,6 @@ from src.hit_miss import (
     refine_targets,
     get_surrounding_cells
 )
-sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 class GridMock:
     """
