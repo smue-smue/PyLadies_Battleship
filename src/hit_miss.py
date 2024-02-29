@@ -111,7 +111,7 @@ def collect_hits_misses(past_targets_list, coordinate):
     It appends the provided coordinate to the past_targets_list.
 
     Parameters:
-        past_targets_list     (list): A list of strings representing the coordinates of past targets.
+        past_targets_list     (list): A list of strings representing coordinates of past targets.
         coordinate            (str): A string of the coordinate to add to the list of past targets.
 
     Returns:

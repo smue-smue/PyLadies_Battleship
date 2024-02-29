@@ -115,7 +115,10 @@ class Grid:
         '''
 
         # Find the letter corresponding to the 0-based column index
-        column_letter = [key for key, value in self.coordinates_x.items() if value == column_index][0]
+        column_letter = [
+            key for key, value in self.coordinates_x.items()
+            if value == column_index
+            ][0]
 
         # Adjust row_index to 1-based for display
         coordinate = f"{column_letter}{row_index + 1}"
@@ -197,7 +200,15 @@ class Grid:
         return True  # Attack is within grid bounds
 
 
-    def update_grid_fleet(self, start_coordinate, direction, fleet, size, shipname, show_errors=True):
+    def update_grid_fleet(
+            self,
+            start_coordinate,
+            direction,
+            fleet,
+            size,
+            shipname,
+            show_errors=True
+            ):
         '''
         Updates the grid with a new ship placement based on the given parameters.
 

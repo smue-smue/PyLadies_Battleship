@@ -1,5 +1,5 @@
 import pytest
-from grid import Grid  # Make sure 'grid' matches the actual name of your Python file
+from grid import Grid
 
 def test_initialize_grid_default_size():
     """

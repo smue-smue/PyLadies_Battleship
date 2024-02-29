@@ -135,7 +135,9 @@ class Fleet:
                 # Check if this is a new update to the ship's status
                 if ship_details['status'] != "sunk":
                     ship_details['status'] = "sunk"
-                    print(f"{Fore.RED}{Style.BRIGHT}*** {ship_name} is destroyed! ***{Style.RESET_ALL}")
+                    print(
+                        f"{Fore.RED}{Style.BRIGHT}*** "
+                        f"{ship_name} is destroyed! ***{Style.RESET_ALL}")
             else:
                 ship_details['status'] = "active"
                 all_sunk = False  # If any ship is not sunk, the entire fleet isn't sunk

@@ -1,4 +1,3 @@
-import pytest
 from player import Player
 
 def test_random_coordinate():

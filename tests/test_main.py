@@ -1,6 +1,4 @@
-import pytest
 from unittest.mock import patch, MagicMock
-from main import setup_game, main_game_loop
 
 @patch('main.setup_game', return_value=(MagicMock(), MagicMock(), MagicMock(), MagicMock(), MagicMock(), MagicMock(), MagicMock(), MagicMock()))
 @patch('main.main_game_loop')

@@ -83,21 +83,34 @@ class Player():
 
         while True: # Use a loop to keep asking until a valid input is received
             if attacking:
-                prompt_message = f"{Fore.GREEN}Captain, it's your turn! Call out the coordinate for your strike: {Style.RESET_ALL}\n"
+                prompt_message = (
+                    f"{Fore.GREEN}Captain, it's your turn! Call out the coordinate "
+                    f"for your strike: {Style.RESET_ALL}\n"
+                )
             else:
-                prompt_message = f"{Fore.GREEN}Captain, mark the starting coordinate of your {shipname} (total size: {fleet_player[shipname]['size']} squares):\n{Style.RESET_ALL}"
+                prompt_message = (
+                    f"{Fore.GREEN}Captain, mark the starting coordinate of your "
+                    f"{shipname} (total size: {fleet_player[shipname]['size']} "
+                    f"squares):\n{Style.RESET_ALL}"
+                )
 
             coordinate = input(prompt_message).strip().upper()
 
             if len(coordinate) <2 or not coordinate[0].isalpha() or not coordinate[1:].isdigit():
-                print(f"{Fore.RED}Invalid input. please enter a valid coordinate (e.g. 'B1').{Style.RESET_ALL}\n")
+                print(
+                    f"{Fore.RED}Invalid input. please enter a valid coordinate "
+                    f"(e.g. 'B1').{Style.RESET_ALL}\n"
+                    )
                 continue
 
             try:
             # Attempt to validate the attack, this may raise a ValueError if invalid
             # Check if the attack is valid within the grid bounds
                 if not grid_instance.is_valid_attack(coordinate):
-                    print(f"{Fore.RED}Coordinate is out of grid bounds. Please try again.{Style.RESET_ALL}\n")
+                    print(
+                        f"{Fore.RED}Coordinate is out of grid bounds. "
+                        f"Please try again.{Style.RESET_ALL}\n"
+                        )
                     continue
             except ValueError as e:
                 # Handle the ValueError raised from the grid validation
@@ -120,14 +133,19 @@ class Player():
         while True:  # Use a loop to keep asking until a valid input is received
             # Convert to upper case
 
-            direction = input(f"{Fore.GREEN}Choose 'H' for a grand horizontal or 'V' for a majestic vertical positioning. {Style.RESET_ALL}\n").upper()
+            direction = input(
+                f"{Fore.GREEN}Choose 'H' for a grand horizontal or 'V' for "
+                f"a majestic vertical positioning. {Style.RESET_ALL}\n"
+                ).upper()
 
             if direction in ['H', 'V']:
                 return direction  # Return the direction if it's valid
             # Notify the user and ask again
             else:
-                print(f"{Fore.RED}Invalid input. Please enter 'H' for horizontal or 'V' for vertical.{Style.RESET_ALL}\n")
-
+                print(
+                    f"{Fore.RED}Invalid input. Please enter 'H' for horizontal "
+                    f"or 'V' for vertical.{Style.RESET_ALL}\n"
+                    )
 
     def random_coordinate(self, grid_size):
         '''
@@ -182,7 +200,13 @@ class Player():
 
                 # Check if the placement is valid before attempting to update the grid
                 if grid.is_valid_placement(start_coordinate, direction, shipdetails['size']):
-                    if grid.update_grid_fleet(start_coordinate, direction, fleet, shipdetails['size'], shipname, show_errors=False):
+                    if grid.update_grid_fleet(
+                        start_coordinate,
+                        direction, fleet,
+                        shipdetails['size'],
+                        shipname,
+                        show_errors=False
+                        ):
                         placed = True  # Ship placed successfully
 
     def player_placing_ships(self, fleet_player, board_player, board_computer):
@@ -219,8 +243,17 @@ class Player():
             coordinate = self.player_coordinate(fleet_player, shipname, board_computer)
             direction = self.player_direction()
 
-            if board_player.is_valid_placement(coordinate, direction, fleet_player[shipname]['size']):
-                if board_player.update_grid_fleet(coordinate, direction, fleet_player, fleet_player[shipname]['size'], shipname):
+            if board_player.is_valid_placement(
+                coordinate, direction,
+                fleet_player[shipname]['size']
+                ):
+                if board_player.update_grid_fleet(
+                    coordinate,
+                    direction,
+                    fleet_player,
+                    fleet_player[shipname]['size'],
+                    shipname
+                    ):
                     board_player.print_grid()
                     return  # Ship placed successfully, exit the loop.
             else:

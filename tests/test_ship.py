@@ -1,4 +1,3 @@
-import pytest
 from ship import Ship, Destroyer, Cruiser, Battleship, AircraftCarrier
 
 def test_ship_initialization():
