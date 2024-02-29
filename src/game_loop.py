@@ -187,7 +187,8 @@ def main_game_loop(
                     name for name, details in fleet_player.ships.items()
                     if details['status'] == "active"
                 ]
-                #print("Active before status update:", previously_active_ships) # Print statement for debugging
+                # Print statement for debugging
+                #print("Active before status update:", previously_active_ships)
 
                 fleet_player.update_ship_statuses()
 
@@ -195,7 +196,8 @@ def main_game_loop(
                     name for name, details in fleet_player.ships.items()
                     if details['status'] == "sunk" and name in previously_active_ships
                 ]
-                #print("Newly sunk ships:", newly_sunk_ships) # Print statement for debugging
+                # Print statement for debugging
+                #print("Newly sunk ships:", newly_sunk_ships)
 
                 if newly_sunk_ships:
                     print(
@@ -218,7 +220,9 @@ def main_game_loop(
                             safe_cells.update(surrounding_cells)
 
                         # Extend the safe cells list with the new safe cells
-                        computer.safe_cells.extend(cell for cell in safe_cells if cell not in computer.safe_cells)
+                        computer.safe_cells.extend(
+                            cell for cell in safe_cells if cell not in computer.safe_cells
+                            )
 
                         # Transfer safe cells to past targets
                         for cell in safe_cells:
@@ -226,7 +230,7 @@ def main_game_loop(
                                 computer.past_targets.append(cell)
 
                         # Print statements for debugging
-                        #print(f"Safe cells around the sunken ship {ship_name} are: {sorted(computer.safe_cells)}")
+                        #print(f"Safe cells around sunken ship are: {sorted(computer.safe_cells)}")
                         #print(f"Past targets with safe cells: {sorted(computer.past_targets)}")
 
                 else:

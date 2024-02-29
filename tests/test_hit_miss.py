@@ -1,4 +1,3 @@
-import pytest
 from hit_miss import check_hit_or_miss, get_hit_ship, record_hit, get_adjacent_cells, collect_hits_misses, refine_targets, get_surrounding_cells
 
 class GridMock:
