@@ -56,16 +56,7 @@ def main_game_loop(
     # Set the current turn to the beginner
     current_turn = player if beginner == player else computer
 
-    # Initialize round counter
-    round_counter = 1
-
-    # Initialize first turn flag
-    first_turn = True
-
     while not game_over:
-        # Print the round number at the start of each round
-        if current_turn == player:
-            print(f"\n{Fore.YELLOW}*** Round {round_counter} ***{Style.RESET_ALL}")
 
 # ================= HUMAN PLAYER =============================================
 
@@ -313,12 +304,6 @@ def main_game_loop(
             print(f"\n{Fore.GREEN}Your fleet's status after the enemy's attack:{Style.RESET_ALL}")
             board_player.print_grid()
             # print(fleet_player) # debugging
-
-            # Increment the round counter when the turn switches back to the player
-            if not first_turn:
-                round_counter += 1
-            else:
-                first_turn = False
 
             if fleet_player.update_ship_statuses():
                 print(
