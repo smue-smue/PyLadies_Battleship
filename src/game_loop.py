@@ -56,7 +56,16 @@ def main_game_loop(
     # Set the current turn to the beginner
     current_turn = player if beginner == player else computer
 
+    # Initialize round counter
+    round_counter = 1
+
+    # Initialize first turn flag
+    first_turn = True
+
     while not game_over:
+        # Print the round number at the start of each round
+        if current_turn == player:
+            print(f"\n{Fore.YELLOW}*** Round {round_counter} ***{Style.RESET_ALL}")
 
 # ================= HUMAN PLAYER =============================================
 
@@ -120,6 +129,7 @@ def main_game_loop(
                     f"triumphs over the seas and claims the title of supreme commander! "
                     f"{Style.RESET_ALL}\n"
                 )
+                game_over = True
                 break  # Break out of the loop immediately if the computer's fleet is sunk
 
             time.sleep(2)
@@ -300,12 +310,19 @@ def main_game_loop(
             board_player.print_grid()
             # print(fleet_player) # debugging
 
+            # Increment the round counter when the turn switches back to the player
+            if not first_turn:
+                round_counter += 1
+            else:
+                first_turn = False
+
             if fleet_player.update_ship_statuses():
                 print(
                     f"{Fore.MAGENTA}{Style.BRIGHT}\nGame Over! Captain "
                     f"{current_turn.name} triumphs over the seas and claims the title of "
                     f"supreme commander!{Style.RESET_ALL}\n"
                 )
+                game_over = True
                 break  # Break out of the loop immediately if the player's fleet is sunk
             else:
                 current_turn = player  # Switch turn back to player only if the game is not over
