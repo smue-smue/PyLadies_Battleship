@@ -1,42 +1,92 @@
 import pytest
 from grid import Grid
 
-@pytest.fixture
-def test_grid():
-    """
-    A pytest fixture that initializes a new Grid instance.
-    This fixture is used to provide a fresh Grid instance for each test function that needs it.
-    """
-    return Grid()
+def test_initialize_grid_default_size():
+    grid = Grid()
+    assert len(grid.grid) == 10  # Default size
+    assert all(len(row) == 10 for row in grid.grid)  # Each row has 10 columns
 
-def test_initialize_grid(test_grid):
-    """
-    Test to ensure that the grid initializes correctly.
-    Checks that the grid has the default size of 10x10 and that all cells are initialized properly.
-    """
-    assert len(test_grid.grid) == 10  # Default grid size is 10x10
-    assert all(len(row) == 10 for row in test_grid.grid), "All rows in the grid should have a length of 10."
+def test_initialize_grid_custom_size():
+    size = 5
+    grid = Grid(size=size)
+    assert len(grid.grid) == size
+    assert all(len(row) == size for row in grid.grid)
 
-def test_convert_coordinate_to_indices(test_grid):
-    """
-    Test the conversion of a board coordinate (e.g., 'A1') into its corresponding 0-based grid indices.
-    Verifies that the coordinate 'A1' correctly converts to (0, 0) indices.
-    """
-    column_index, row_index = test_grid._convert_coordinate_to_indices('A1')
-    assert column_index == 0 and row_index == 0, "The coordinate 'A1' should convert to indices (0, 0)."
+def test_convert_coordinate_to_indices_valid():
+    grid = Grid()
+    column_index, row_index = grid.convert_coordinate_to_indices('A1')
+    assert column_index == 0
+    assert row_index == 0
 
-def test_is_valid_placement(test_grid):
-    """
-    Test to check the validity of ship placement on the grid.
-    Ensures that placing a ship of size 3 at 'A1' horizontally is considered a valid placement when the grid is empty.
-    """
-    assert test_grid.is_valid_placement('A1', 'H', 3), "Placing a ship of size 3 at 'A1' horizontally should be valid on an empty grid."
+def test_convert_coordinate_to_indices_invalid():
+    grid = Grid()
+    with pytest.raises(ValueError):
+        grid.convert_coordinate_to_indices('Z10')  # Assuming Z is out of bounds
 
-def test_update_grid_fleet(test_grid):
-    """
-    Test the functionality of updating the grid with a new ship placement.
-    Checks that placing a ship of size 3 starting at 'A1' horizontally results in the correct grid update, 
-    with the first three cells of the first row marked as 'S' to represent the ship.
-    """
-    test_grid.update_grid_fleet('A1', 'H', {'TestShip': {'coordinates': []}}, 3, 'TestShip')
-    assert test_grid.grid[0][:3] == ['S', 'S', 'S'], "The first three cells of the first row should be marked as 'S' after placing a ship of size 3 at 'A1' horizontally."
+def test_mark_water_around_ship():
+    # Initialize a grid
+    grid = Grid(size=5)
+
+    # Place a ship at a specific location
+    grid.grid[2][2] = "S"
+
+    # Call the method to mark water around the ship
+    grid._mark_water_around_ship(2, 2)
+
+    # Define the expected grid after marking water around the ship
+    expected_grid = [
+        ['.', '.', '.', '.', '.'],
+        ['.', '~', '~', '~', '.'],
+        ['.', '~', 'S', '~', '.'],
+        ['.', '~', '~', '~', '.'],
+        ['.', '.', '.', '.', '.']
+    ]
+
+    # Assert that the grid matches the expected grid
+    assert grid.grid == expected_grid
+
+def test_is_valid_placement():
+    grid = Grid(size=5)
+    assert grid.is_valid_placement('A1', 'H', 3) is True  # Horizontal placement within bounds
+    assert grid.is_valid_placement('A1', 'V', 6) is False  # Vertical placement exceeding bounds
+
+def test_is_valid_attack():
+    grid = Grid(size=5)
+    assert grid.is_valid_attack('A1') is True  # Attack within bounds
+    assert grid.is_valid_attack('F1') is False  # Attack out of bounds
+
+def test_update_grid_fleet():
+    # Initialize a grid
+    grid = Grid(size=5)
+
+    # Define a fleet
+    fleet = {
+        'Destroyer': {
+            'size': 2,
+            'coordinates': []
+        }
+    }
+
+    # Call the method to update the grid with the fleet
+    grid.update_grid_fleet('A1', 'H', fleet, 2, 'Destroyer')
+
+    # Define the expected grid after updating the grid with the fleet
+    expected_grid = [
+        ['S', 'S', '~', '.', '.'],
+        ['~', '~', '~', '.', '.'],
+        ['.', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.']
+    ]
+
+    # Define the expected fleet after updating the grid with the fleet
+    expected_fleet = {
+        'Destroyer': {
+            'size': 2,
+            'coordinates': ['A1', 'B1']
+        }
+    }
+
+    # Assert that the grid and fleet match the expected grid and fleet
+    assert grid.grid == expected_grid
+    assert fleet == expected_fleet
