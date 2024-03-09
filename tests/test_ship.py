@@ -60,10 +60,6 @@ def test_aircraft_carrier_initialization():
     with the correct name, fixed style 'Aircraft Carrier', and fixed size 5.
     """
     aircraft_carrier = AircraftCarrier("Aircraft Carrier 1")
-    assert aircraft_carrier.name == (
-        "Aircraft Carrier 1", "Aircraft Carrier name should be initialized correctly."
-    )
-    assert aircraft_carrier.style == (
-        "Aircraft Carrier", "Aircraft Carrier style should be 'Aircraft Carrier'."
-    )
+    assert aircraft_carrier.name == "Aircraft Carrier 1", "Aircraft Carrier name should be initialized correctly."
+    assert aircraft_carrier.style == "Aircraft Carrier", "Aircraft Carrier style should be 'Aircraft Carrier'."
     assert aircraft_carrier.size == 5, "Aircraft Carrier size should be 5."
