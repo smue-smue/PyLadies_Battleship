@@ -24,12 +24,12 @@ A step-by-step series of examples that tell you how to get a development environ
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/smue-smue/battleship_game.git
+    git clone https://github.com/smue-smue/PyLadies_Battleship.git
     ```
 
 2. Navigate to the project directory:
     ```bash
-    cd battleship_game
+    cd PyLadies_Battleship
     ```
 
 3. Create a virtual environment:
