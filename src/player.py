@@ -90,7 +90,7 @@ class Player():
             else:
                 prompt_message = (
                     f"{Fore.GREEN}Captain, mark the starting coordinate of your "
-                    f"{shipname} (total size: {fleet_player[shipname]['size']} "
+                    f"{shipname} (e.g. 'B1', total size: {fleet_player[shipname]['size']} "
                     f"squares):\n{Style.RESET_ALL}"
                 )
 
