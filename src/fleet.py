@@ -15,7 +15,7 @@ class Fleet:
 
     Class Attributes:
     -----------------
-        max_size    (int):  Class attribute to define the maximum size of the fleet. Default is 16.
+        MAX_SIZE    (int):  Class attribute to define the maximum size of the fleet. Default is 16.
 
     Attributes:
     -----------
@@ -39,7 +39,7 @@ class Fleet:
                                 battleship_1_pl, aircraft_carrier_1_pl)
     '''
 
-    max_size = 16
+    MAX_SIZE = 16
 
     def __init__(self, name, *ships): # '*ships' stands for a variable number of ship instances
         '''

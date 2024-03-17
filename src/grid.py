@@ -18,9 +18,9 @@ class Grid:
     ----------- 
         grid            (list):     Matrix representing the game grid, where each cell can 
                                     hold a value indicating a ship part, hit/miss, or empty.
-        coordinates_x   (dict):     Dictionary mapping column labels (A, B, C, ...) 
+        COORDINATES_X   (dict):     Dictionary mapping column labels (A, B, C, ...) 
                                     to their respective 1-based numerical indices.
-        coordinates_y   (dict):     Dictionary mapping row labels ('1', '2', '3', ...) 
+        COORDINATES_Y   (dict):     Dictionary mapping row labels ('1', '2', '3', ...) 
                                     to their respective 1-based numerical indices.
 
     Methods:
@@ -35,14 +35,14 @@ class Grid:
         print_grid()
    '''
 
-    coordinates_x = {
+    COORDINATES_X = {
         'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4,
         'F': 5, 'G': 6, 'H': 7, 'I': 8, 'J': 9,
         'K': 10, 'L': 11, 'M': 12, 'N': 13, 'O': 14,
         'P': 15, 'Q': 16, 'R': 17, 'S': 18, 'T': 19
         }
 
-    coordinates_y = {
+    COORDINATES_Y = {
         '1': 0, '2': 1, '3': 2, '4': 3, '5': 4,
         '6': 5, '7': 6, '8': 7, '9': 8, '10': 9,
         '11': 10, '12': 11, '13': 12, '14': 13, '15': 14,
@@ -89,14 +89,14 @@ class Grid:
         column_letter = coordinate[0]
         row_number = coordinate[1:]
 
-        if column_letter not in self.coordinates_x:
+        if column_letter not in self.COORDINATES_X:
             raise ValueError(
                 f"{Fore.RED}Invalid column letter: {column_letter}. "
                 f"Please enter a valid column.{Style.RESET_ALL}"
             )
 
         # Convert to 0-based grid indices
-        column_index = self.coordinates_x[column_letter]
+        column_index = self.COORDINATES_X[column_letter]
         row_index = int(row_number) - 1 # Convert row to 0-based
 
         return column_index, row_index
@@ -116,7 +116,7 @@ class Grid:
 
         # Find the letter corresponding to the 0-based column index
         column_letter = [
-            key for key, value in self.coordinates_x.items()
+            key for key, value in self.COORDINATES_X.items()
             if value == column_index
             ][0]
 
@@ -154,7 +154,7 @@ class Grid:
         '''
 
         column_label, row_number = start_coordinate[0], int(start_coordinate[1:])
-        column_index = self.coordinates_x[column_label]
+        column_index = self.COORDINATES_X[column_label]
         row_index = row_number -1 # Convert to 0-based indexing
 
         if direction == 'H':
