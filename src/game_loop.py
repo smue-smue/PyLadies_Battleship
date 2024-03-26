@@ -323,7 +323,7 @@ def main_game_loop(
                 )
                 if current_turn.name == "Computer":  # Check if the current turn belongs to the computer
                     print(
-                        f"{Fore.MAGENTA}{Style.BRIGHT}\nBut at least you found the secret map "
+                        f"{Fore.MAGENTA}{Style.BRIGHT}But at least you found the secret map "
                         f"of the Captain Computer's hidden armada:{Style.RESET_ALL}\n"
                     )
                     board_computer.print_grid()  # Print the computer's grid, assuming board_computer is the correct variable name
