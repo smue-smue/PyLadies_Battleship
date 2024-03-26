@@ -321,8 +321,16 @@ def main_game_loop(
                     f"{current_turn.name} triumphs over the seas and claims the title of "
                     f"supreme commander!{Style.RESET_ALL}\n"
                 )
+                if current_turn.name == "Computer":  # Check if the current turn belongs to the computer
+                    print(
+                        f"{Fore.MAGENTA}{Style.BRIGHT}\nBut at least you found the secret map "
+                        f"of the Captain Computer's hidden armada:{Style.RESET_ALL}\n"
+                    )
+                    board_computer.print_grid()  # Print the computer's grid, assuming board_computer is the correct variable name
+
                 game_over = True
                 break  # Break out of the loop immediately if the player's fleet is sunk
+
             else:
                 turn_counter += 1
                 current_turn = player  # Switch turn back to player only if the game is not over
